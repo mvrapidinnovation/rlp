@@ -198,14 +198,14 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
 
         it('initial RPT mint', async() => {
                 await rpToken.mint(royaleLP.address, toDai('300'));
-            })
+        })
             
         it('set up curve address in rCurve', async() => {
             await rCurve.setPool(crvPool.address);
         });
 
         it('set up yield optimizer in RoyaleLP', async() => {
-            royaleLP.setYieldOpt(rCurve.address);
+            await royaleLP.setYieldOpt(rCurve.address);
         });
     });
 

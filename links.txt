@@ -1,0 +1,26 @@
+mDai:
+https://ropsten.etherscan.io/address/0x29860760485ac90b082043545e3e8d40c69dbdc5
+
+mUsdc:
+https://ropsten.etherscan.io/address/0xc11bb97eeb02b848980a13840ffb968b48966c43
+
+mUsdt:
+https://ropsten.etherscan.io/address/0x7eba8682d3b4d3126dd1b514579b4b9607a728cf
+
+CRV Token:
+https://ropsten.etherscan.io/address/0xf4dc6fbfc6b3b817fed76148864f1fdf5e4aa5e7
+
+CRVPOOL:
+https://ropsten.etherscan.io/address/0x5B2A3246d70ABB9121EA532a9Ac6f77D45366643
+
+RPToken:
+https://ropsten.etherscan.io/address/0xb735312998D5a79679a763cF980FF98A5cf17B02
+
+RoyaleLP:
+https://ropsten.etherscan.io/address/0xA7Bd5581C9D98fD34474019dF2D091ecE1ED0BAF
+
+RCurve:
+https://ropsten.etherscan.io/address/0xF101C0bf1451277Bb4C56b3a0EBDd9De2df2D49D
+
+mRoya:
+https://ropsten.etherscan.io/address/0xa5684A61E9E40736F9B8323f265c30ac3c8A0a28

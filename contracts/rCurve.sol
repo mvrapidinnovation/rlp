@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
-import './CurveInterface.sol';
+import './Interfaces/CurveInterface.sol';
+import './Interfaces/ERC20Interface.sol';
 
 contract rCurve {
 

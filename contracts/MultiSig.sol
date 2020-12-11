@@ -2,20 +2,45 @@
 pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
-import './Erc20Interface.sol';
+import './Interfaces/Erc20Interface.sol';
 import './RoyaleLPstorage.sol';
 
 contract multiSig is RoyaleLPstorage {
+
+    /* Events */
+
+    event loanRequested(
+        address by,
+        uint[N_COINS] amounts,
+        uint loanID
+    );
+
+    event signed(
+        address signee,
+        uint loanID
+    );
+
+    event approved(
+        uint loanID
+    );
+
+    event addedRequiredSignee(
+        address adder,
+        uint numberOfSignees
+    );
+
+    event signeeAdded(
+        address signee
+    );
+
+    event signeeRemoved(
+        address signee
+    );
 
     /* Modifiers */
 
     modifier onlyOwner {
         require(msg.sender == owner);
-        _;
-    }
-
-    modifier signeeDoesNotExist(address signee) {
-        require(!isSignee[signee]);
         _;
     }
 
@@ -26,11 +51,6 @@ contract multiSig is RoyaleLPstorage {
 
     modifier transactionExists(uint _loanID) {
         require(_loanID > 0 && _loanID <= transactionCount);
-        _;
-    }
-
-    modifier confirmed(address addr, uint _loanID) {
-        require(confirmations[addr][_loanID]);
         _;
     }
 
@@ -91,8 +111,10 @@ contract multiSig is RoyaleLPstorage {
     function requestLoan(
         uint256[N_COINS] calldata amounts
     ) external returns(uint256) {
-       require(signees.length >= required, "signees are less than required");
+       require(signees.length >= required, "insufficient signees");
        _addTransaction(amounts);
+
+       emit loanRequested(msg.sender, amounts, transactionCount);
     }
     
     // Gaming Platforms signs using this
@@ -100,13 +122,12 @@ contract multiSig is RoyaleLPstorage {
         require(transactions[_loanID].iGamingCompany == msg.sender);
         transactions[_loanID].isGamingCompanySigned = true;
 
+        emit signed(msg.sender, _loanID);
+
         if(_isConfirmed(_loanID)) {
            _approveLoan(_loanID);
+           emit approved(_loanID);
         }
-    }
-
-    function getAllLoans(address _address)public view returns(uint[] memory){
-        return takenLoan[_address];
     }
     
     // Signee signs using this
@@ -116,14 +137,13 @@ contract multiSig is RoyaleLPstorage {
         notConfirmed( msg.sender,_loanID) 
     {
         confirmations[msg.sender][_loanID] = true;
+        
+        emit signed(msg.sender, _loanID);
 
         if(_isConfirmed(_loanID)) {
            _approveLoan(_loanID);
+           emit approved(_loanID);
         }
-    }
-    
-    function checkLoanApproved(uint _loanID) public view returns(bool) {
-        return transactions[_loanID].approved;
     }
 
     function getTransactionDetail(
@@ -132,28 +152,40 @@ contract multiSig is RoyaleLPstorage {
         return transactions[_loanID];
     }
 
+    function checkLoanApproved(uint _loanID) external view returns(bool) {
+        return transactions[_loanID].approved;
+    }
+
     /* Admin Function */
     
     function setRequiredSignee(
         uint _required
-    ) public validRequirement(signees.length, _required) {
+    ) public onlyOwner validRequirement(signees.length, _required) {
         required = _required;
+
+        emit addedRequiredSignee(msg.sender, required);
     }
 
     function addSignee(address signee) public onlyOwner {
         isSignee[signee] = true;
         signees.push(signee);
+
+        emit signeeAdded(signee);
     }
     
-    function removeSignee(address signee) public signeeExists(signee) {
+    function removeSignee(address signee) public onlyOwner signeeExists(signee) {
         isSignee[signee] = false;
-        for (uint i=0; i<signees.length - 1; i++)
+        for (uint i=0; i<signees.length - 1; i++) {
             if (signees[i] == signee) {
                 signees[i] = signees[signees.length - 1];
                 break;
             }
+        }
         
-        if (required > signees.length)
+        if (required > signees.length) {
             setRequiredSignee(signees.length);
+        }
+
+        emit signeeRemoved(signee);
     } 
 }

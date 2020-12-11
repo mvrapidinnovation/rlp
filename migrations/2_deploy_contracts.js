@@ -5,7 +5,6 @@ const CrvToken = artifacts.require('PoolToken');
 const RpToken = artifacts.require('RPToken');
 
 const CrvPool = artifacts.require('StableSwap3Pool');
-const MultiSig = artifacts.require('multiSig');
 const RoyaleLP = artifacts.require('RoyaleLP');
 
 const RCurve = artifacts.require('rCurve');
@@ -34,10 +33,10 @@ module.exports = async function (deployer, network, accounts) {
 
   // await deployer.deploy(CrvPool,
   //   accounts[0],
-  //   // [daiToken.address, usdcToken.address, usdtToken.address],
-  //   [address.mDai, address.mUsdc, address.mUsdt],
-  //   // crvToken.address,
-  //   address.CRV,
+  //   [daiToken.address, usdcToken.address, usdtToken.address],
+  //   // [address.mDai, address.mUsdc, address.mUsdt],
+  //   crvToken.address,
+  //   // address.CRV,
   //   200, 
   //   4000000, 
   //   5000000000,
@@ -52,22 +51,31 @@ module.exports = async function (deployer, network, accounts) {
   //   // rpToken.address
   //   address.RPToken
   // );
+  // const royaleLP = await RoyaleLP.deployed();
 
   // await deployer.deploy(
   //   RCurve,
-  //   address.CRV,
-  //   [address.mDai, address.mUsdc, address.mUsdt],
-  //   address.RoyaleLP
+  //   // address.CRV,
+  //   crvPool.address,
+  //   // [address.mDai, address.mUsdc, address.mUsdt],
+  //   [daiToken.address, usdcToken.address, usdtToken.address],
+  //   // address.RoyaleLP
+  //   royaleLP.address
   // );
 
   // await deployer.deploy(
   //   MRoya
   // );
+  // const mRoya = await MRoya.deployed();
 
-  await deployer.deploy(
-    address.mRoya,
-    address.RPToken
-  )
+  // await deployer.deploy(
+  //   MRoyaFarm,
+  //   address.mRoya,
+  //   // mRoya.address,
+  //   address.RPToken
+  //   // rpToken.address
+  // );
+  // const mRoyaFarm = await MRoyaFarm.deployed();
 
   // await deployer.deploy(MultiSig);
 };

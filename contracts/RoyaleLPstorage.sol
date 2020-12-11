@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
-import './Erc20Interface.sol';
+import './Interfaces/Erc20Interface.sol';
 // import './CurveInterface.sol';
-import './YieldOptInterface.sol';
+import './Interfaces/YieldOptInterface.sol';
 
 contract WithdrawQueue {
     mapping(uint256 => address) withdrawQ;
@@ -51,7 +51,7 @@ contract RoyaleLPstorage  is WithdrawQueue {
     uint256 public thresholdTokenAmount = 500;
 
     // Lock period in days
-    uint128 lock_period = 14;
+    uint128 public lock_period;
 
     struct depositDetails {
         uint256[N_COINS] amount;
@@ -67,6 +67,7 @@ contract RoyaleLPstorage  is WithdrawQueue {
     mapping(address => bool) public isInQ;
     uint32 recipientCount;
     uint256[N_COINS] public totalWithdraw;
+
 
     /* MULTISIG STORAGE */
 

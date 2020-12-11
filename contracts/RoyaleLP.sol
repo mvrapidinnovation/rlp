@@ -4,12 +4,12 @@ pragma experimental ABIEncoderV2;
 
 import './MathLib.sol';
 
-import './Erc20Interface.sol';
-import './CurveInterface.sol';
-import './RoyaleLPstorage.sol';
+// import './Erc20Interface.sol';
+// import './CurveInterface.sol';
+// import './RoyaleLPstorage.sol';
 import './MultiSig.sol';
 
-contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
+contract RoyaleLP is multiSig, rNum {
 
     constructor(
         address[N_COINS] memory _tokens,
@@ -26,6 +26,51 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
         rpToken = Erc20(_rpToken);
     }
     
+    /* EVENTS */
+    event userSupplied(
+        address user,
+        uint[N_COINS] amounts
+    );
+
+    event userRecieved(
+        address user,
+        uint[N_COINS] amounts
+    );
+
+    event userAddedToQ(
+        address user,
+        uint[N_COINS] amounts
+    );
+
+    event loanWithdrawn(
+        address by,
+        uint[N_COINS] requestedAmount,
+        uint[N_COINS] remainingAmount,
+        uint loanID
+    );
+
+    event loanFulfilled(
+        address by,
+        uint[N_COINS] requestedAmount,
+        uint[N_COINS] remainingAmount,
+        uint loanID
+    );
+
+    event loanRepayed(
+        address by,
+        uint[N_COINS] repayedAmount,
+        uint[N_COINS] amountRemaining,
+        uint loanID
+    );
+
+    event wholeLoanRepayed(
+        address by,
+        uint[N_COINS] repayedAmount,
+        uint[N_COINS] amountRemaining,
+        uint loanID
+    );
+
+
     /* INTERNAL FUNCTIONS */
 
     function _getBalances() internal view returns(uint256[N_COINS] memory) {
@@ -64,7 +109,7 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
 
     // functions related to deposit and supply
 
-    // This function deposits the fund to 3POOL
+    // This function deposits the fund to Yield Optimizer
     function _deposit(uint256[N_COINS] memory amounts) internal {
         yldOpt.deposit(amounts);
         
@@ -99,7 +144,7 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
         supplyTime[msg.sender].push(d);
     }
 
-    // functions related to withdraw, withdraw queue and withdraw from curve pool
+    // functions related to withdraw, withdraw queue and withdraw from Yield Optimizer
 
     function _takeBack(address recipient) internal {
         bool result;
@@ -191,23 +236,25 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
     function supply(uint256[N_COINS] calldata amounts) external {
         require(
             _calcRptAmount(amounts, false) > 0,
-            "tokens supplied cannot be zero"
+            "zero tokens supply"
         );
         
         _supply(amounts);
+
+        emit userSupplied(msg.sender, amounts);
     }
 
     function requestWithdraw(uint256[N_COINS] calldata amounts) external {
         require(
             _calcRptAmount(amounts, false) > 0,
-            "tokens requested cannot be zero"
+            "zero tokens supply"
         );
 
         uint256 burnAmt;
         burnAmt = _calcRptAmount(amounts, true);
         require(
             rpToken.balanceOf(msg.sender) >= burnAmt, 
-            "Insufficient RPT"
+            "low RPT"
         );
         
         uint256[N_COINS] memory poolBalance;
@@ -225,7 +272,7 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
                     if(
                         (now - supplyTime[msg.sender][j].time) 
                         > 
-                        (0) // (24 * 60 * 60 * lock_period)
+                        (24 * 60 * 60 * lock_period)
                         &&
                         supplyTime[msg.sender][j].withdrawn[i] != true
                     ) {
@@ -238,11 +285,11 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
                 }
             }
         }
-        require(checkTime, "cannot withdraw before lock period");
+        require(checkTime, "lock period");
 
         // check if instant withdraw
         for(uint8 i=0; i<N_COINS; i++) {
-            if(amounts[i] < poolBalance[i]) {
+            if(amounts[i] < poolBalance[i] && amounts[i] != 0) {
                 instant = true;
             }
         }
@@ -255,10 +302,30 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
                     result = tokens[i].transfer(msg.sender, amounts[i]);
                     require(result);
                     selfBalance[i] -= amounts[i];
+                    
+                    uint x = amounts[i];
+                    for(uint8 j=0; j<supplyTime[msg.sender].length; j++) {
+                        if(supplyTime[msg.sender][j].withdrawn[i] != true && x > 0) {
+                            if(x >= supplyTime[msg.sender][j].remAmt[i]) {
+                                x = x - supplyTime[msg.sender][j].remAmt[i];
+                                supplyTime[msg.sender][j].remAmt[i] = 0;
+                                supplyTime[msg.sender][j].withdrawn[i] = true;
+                            }
+                            else {
+                                supplyTime[msg.sender][j].remAmt[i] -= x;
+                                x = 0;
+                            }
+                        }
+                    }
+
                 }
             }
+
+            emit userRecieved(msg.sender, amounts);
         } else {
             _takeBackQ(amounts);
+
+            emit userAddedToQ(msg.sender, amounts);
         }
     }
 
@@ -268,12 +335,12 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
     ) external {
 
         require(transactions[_loanID].iGamingCompany == msg.sender, "company not-exist");
-        require(transactions[_loanID].approved, "not approved for loan");
+        require(transactions[_loanID].approved, "not approved");
         
         for(uint8 i=0; i<N_COINS; i++) {
             require(
                 transactions[_loanID].remAmt[i] >= amounts[i], 
-                "amount requested exceeds amount approved"
+                "not approved"
             );
         }
 
@@ -291,6 +358,8 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
             }
         }
 
+        emit loanWithdrawn(msg.sender, amounts, transactions[_loanID].remAmt, _loanID);
+
         if(check == 3) {
             // Loan fulfilled, company used all its loan
             transactions[_loanID].executed = true;
@@ -299,6 +368,8 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
                   isRepaymentDone: false,
                   remainingTokenAmounts: transactions[_loanID].tokenAmounts
             });
+
+            emit loanFulfilled(msg.sender, amounts, transactions[_loanID].tokenAmounts, _loanID);
         }
     }
 
@@ -306,7 +377,7 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
         uint256[N_COINS] calldata _amounts, 
         uint _loanId
     ) external {
-        require(_loanId <= transactionCount, "Enter Valid ID");
+        require(_loanId <= transactionCount, "invalid loanID");
         require(transactions[_loanId].iGamingCompany == msg.sender, "not a valid user");
         require(!gamingCompanyRepayment[_loanId].isRepaymentDone, "repayment done");
         
@@ -326,8 +397,22 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
             }
         }
 
+        emit loanRepayed(
+            msg.sender,
+            _amounts, 
+            gamingCompanyRepayment[_loanId].remainingTokenAmounts,
+            _loanId
+        );
+
         if(counter == 3){
-            gamingCompanyRepayment[_loanId].isRepaymentDone=true;
+            gamingCompanyRepayment[_loanId].isRepaymentDone = true;
+
+            emit wholeLoanRepayed(
+                msg.sender,
+                _amounts, 
+                gamingCompanyRepayment[_loanId].remainingTokenAmounts,
+                _loanId
+            );
         }       
     }
 
@@ -394,20 +479,34 @@ contract RoyaleLP is RoyaleLPstorage, multiSig, rNum {
 
     /* ADMIN FUNCTIONS */
 
-    function changePoolPart(uint128 _newPoolPart) external onlyOwner {
+    function changePoolPart(uint128 _newPoolPart) external onlyOwner returns(bool) {
         poolPart = _newPoolPart;
+        return true;
     }
 
-    function setThresholdTokenAmount(uint256 _newThreshold) external onlyOwner {
+    function setThresholdTokenAmount(uint256 _newThreshold) external onlyOwner returns(bool) {
         thresholdTokenAmount = _newThreshold;
+        return true;
     }
 
-    function setInitialDeposit() onlyOwner external {
+    function setInitialDeposit() onlyOwner external returns(bool) {
         selfBalance = _getBalances();
+        return true;
     }
 
-    function setYieldOpt(IYieldOpt _yldOpt) onlyOwner external {
+    function setYieldOpt(IYieldOpt _yldOpt) onlyOwner external returns(bool) {
         yldOpt = _yldOpt;
+        return true;
+    }
+
+    function setLockPeriod(uint128 lockperiod) onlyOwner external returns(bool) {
+        lock_period = lockperiod;
+        return true;
+    }
+
+    function setWithdrawFees(uint128 _fees) onlyOwner external returns(bool) {
+        fees = _fees;
+        return true;
     }
 
 }

@@ -6,26 +6,35 @@ import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 contract MRoya is ERC20 {
 
     address public owner;
-    address public caller;
+    mapping(address => bool) minter;
 
     constructor() public ERC20("mRoya Token", "mRoya") {
         owner = msg.sender;
     }
 
     modifier onlyOwner {
-        require(msg.sender == owner || msg.sender == caller, "not authorized");
+        require(msg.sender == owner, "not authorized");
         _;
     }
 
-    function setCaller(address addr) external onlyOwner {
-        caller = addr;
+    modifier onlyMinter {
+        require(minter[msg.sender] == true, "not authorized");
+        _;
     }
 
-    function mint(address recipient, uint256 amount) external onlyOwner {
+    function addMinter(address addr) external onlyOwner returns(bool) {
+        minter[addr] = true;
+    }
+
+    function removeMinter(address addr) external onlyOwner returns(bool) {
+        minter[addr] = false;
+    }
+
+    function mint(address recipient, uint256 amount) external onlyMinter {
         _mint(recipient, amount);
     }
 
-    function burn(address sender, uint256 amount) external onlyOwner {
+    function burn(address sender, uint256 amount) external onlyMinter {
         _burn(sender, amount);
     }
 }

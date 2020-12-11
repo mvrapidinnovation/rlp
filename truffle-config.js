@@ -17,6 +17,7 @@ module.exports = {
   },
   contracts_directory: './contracts/',
   contracts_build_directory: './abis/',
+  plugins: ["truffle-contract-size"],
   compilers: {
     solc: {
       version: "^0.6.0",
