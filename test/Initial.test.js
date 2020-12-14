@@ -140,10 +140,10 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             });
 
             it('has set caller', async() => {
-                await mRoya.setCaller(mRoyaFarm.address);
+                await mRoya.addMinter(mRoyaFarm.address);
 
-                result = await mRoya.caller();
-                assert(result, mRoyaFarm.address);
+                result = await mRoya.minter(mRoyaFarm.address);
+                assert(result, false);
             });
         });
     });
@@ -440,6 +440,9 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
 
                 result = await royaleLP.isInQ(investorOne);
                 assert.equal(result, true);
+
+                result = await royaleLP.availableWithdraw(investorOne, 0);
+                console.log(result.toString());
 
                 result = await daiToken.balanceOf(investorOne);
                 console.log(result.toString());

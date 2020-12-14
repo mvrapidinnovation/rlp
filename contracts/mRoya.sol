@@ -6,7 +6,7 @@ import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 contract MRoya is ERC20 {
 
     address public owner;
-    mapping(address => bool) minter;
+    mapping(address => bool) public minter;
 
     constructor() public ERC20("mRoya Token", "mRoya") {
         owner = msg.sender;

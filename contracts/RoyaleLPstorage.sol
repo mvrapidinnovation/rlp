@@ -76,7 +76,7 @@ contract RoyaleLPstorage  is WithdrawQueue {
     mapping(uint256 => Transaction) public transactions;
     mapping(address => mapping (uint256 => bool)) public confirmations;
     mapping(uint256 => Repayment) gamingCompanyRepayment;
-    mapping(address => bool) public isSignee; // isSignee
+    mapping(address => bool) public isSignee;
 
     mapping(address => uint[]) takenLoan;
     address[] public signees;

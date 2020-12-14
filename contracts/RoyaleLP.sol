@@ -83,7 +83,7 @@ contract RoyaleLP is multiSig, rNum {
         return balances;
     }
 
-    function _calcRptAmount(uint256[N_COINS] memory amounts, bool burn) internal view returns(uint256) {
+    function calcRptAmount(uint256[N_COINS] memory amounts, bool burn) public view returns(uint256) {
         uint256 rptAmt;
         uint256 total = 0;
         uint256 decimal = 0;
@@ -120,7 +120,7 @@ contract RoyaleLP is multiSig, rNum {
 
     function _supply(uint256[N_COINS] memory amounts) internal {
         uint256 mintTokens;        
-        mintTokens = _calcRptAmount(amounts, false);    
+        mintTokens = calcRptAmount(amounts, false);    
         
         bool result;
         for(uint8 i=0; i<N_COINS; i++) {
@@ -151,7 +151,7 @@ contract RoyaleLP is multiSig, rNum {
 
         uint256 burnAmt;
 
-        burnAmt = _calcRptAmount(amountWithdraw[recipient], true);
+        burnAmt = calcRptAmount(amountWithdraw[recipient], true);
         rpToken.burn(recipient, burnAmt);
 
         for(uint8 i=0; i<N_COINS; i++) {
@@ -231,11 +231,29 @@ contract RoyaleLP is multiSig, rNum {
         }
     }
 
+    function availableWithdraw(address addr, uint coin) public view returns(uint256) {
+
+        uint256 amount=0;
+        for(uint8 j=0; j<supplyTime[addr].length; j++) {
+            if(
+                ((now - supplyTime[addr][j].time) 
+                > 
+                (24 * 60 * 60 * lock_period))
+                &&
+                supplyTime[addr][j].withdrawn[coin] != true
+            ) {
+                amount += supplyTime[addr][j].remAmt[coin];
+            }
+        }
+
+        return amount;
+    }
+
     /* USER FUNCTIONS (exposed to frontend) */
 
     function supply(uint256[N_COINS] calldata amounts) external {
         require(
-            _calcRptAmount(amounts, false) > 0,
+            calcRptAmount(amounts, false) > 0,
             "zero tokens supply"
         );
         
@@ -246,12 +264,12 @@ contract RoyaleLP is multiSig, rNum {
 
     function requestWithdraw(uint256[N_COINS] calldata amounts) external {
         require(
-            _calcRptAmount(amounts, false) > 0,
+            calcRptAmount(amounts, false) > 0,
             "zero tokens supply"
         );
 
         uint256 burnAmt;
-        burnAmt = _calcRptAmount(amounts, true);
+        burnAmt = calcRptAmount(amounts, true);
         require(
             rpToken.balanceOf(msg.sender) >= burnAmt, 
             "low RPT"
@@ -259,8 +277,6 @@ contract RoyaleLP is multiSig, rNum {
         
         uint256[N_COINS] memory poolBalance;
         poolBalance = _getBalances();
-
-        uint256[N_COINS] memory availableWithdraw;
         
         bool checkTime = true;
         bool instant;
@@ -268,19 +284,7 @@ contract RoyaleLP is multiSig, rNum {
         // check if user is withdrawing before lock period
         for(uint8 i=0; i<N_COINS; i++) {
             if(amounts[i] > 0) {
-                for(uint8 j=0; j<supplyTime[msg.sender].length; j++) {
-                    if(
-                        (now - supplyTime[msg.sender][j].time) 
-                        > 
-                        (24 * 60 * 60 * lock_period)
-                        &&
-                        supplyTime[msg.sender][j].withdrawn[i] != true
-                    ) {
-                        availableWithdraw[i] += supplyTime[msg.sender][j].remAmt[i];
-                    }
-                }
-
-                if(availableWithdraw[i] < amounts[i]) {
+                if(availableWithdraw(msg.sender, i) < amounts[i]) {
                     checkTime = false;
                 }
             }
@@ -301,6 +305,7 @@ contract RoyaleLP is multiSig, rNum {
                 if(amounts[i] > 0) {
                     result = tokens[i].transfer(msg.sender, amounts[i]);
                     require(result);
+                    amountSupplied[msg.sender][i] -= amounts[i];
                     selfBalance[i] -= amounts[i];
                     
                     uint x = amounts[i];
@@ -347,10 +352,13 @@ contract RoyaleLP is multiSig, rNum {
         _withdraw(amounts);
 
         uint8 check = 0;
+        bool result;
         for(uint8 i=0; i<N_COINS; i++) {
             if(amounts[i] > 0) {
-                tokens[i].transfer(msg.sender, amounts[i]);
+                result = tokens[i].transfer(msg.sender, amounts[i]);
+                require(result);
                 transactions[_loanID].remAmt[i] -= amounts[i];
+                selfBalance[i] -= amounts[i];
             }
 
             if(transactions[_loanID].remAmt[i] == 0) {
@@ -415,19 +423,6 @@ contract RoyaleLP is multiSig, rNum {
             );
         }       
     }
-
-    /* Some utility functions for front-end */
-
-    function checkMintAmount(uint256[N_COINS] calldata amounts) external view returns(uint256) {
-        uint256 result = _calcRptAmount(amounts, false);
-        return result;
-    }
-
-    function checkBurnAmount(uint256[N_COINS] calldata amounts) external view returns(uint256) {
-        uint256 result = _calcRptAmount(amounts, true);
-        return result;
-    }
-
 
     /* CORE FUNCTIONS (also exposed to frontend but to be called by owner only) */
 
