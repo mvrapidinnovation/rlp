@@ -335,33 +335,42 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
             emit userAddedToQ(msg.sender, amounts);
         }
     }
- function _loanWithdraw(uint256[N_COINS] memory amounts,address _loanSeeker)public returns(bool){
+    
+    // Following two functions are called by rLoan Only
+    function _loanWithdraw(uint256[N_COINS] memory amounts, address _loanSeeker) public returns(bool) {
         _withdraw(amounts);
+
         for(uint8 i=0; i<N_COINS; i++) {
             if(amounts[i] > 0) {
-                loanGiven[i] +=amounts[i];
-                selfBalance[i] -=amounts[i];
+                loanGiven[i] += amounts[i];
+                selfBalance[i] -= amounts[i];
                 tokens[i].transfer(_loanSeeker, amounts[i]);
-                
-
             }
         }
         return true;
     }
 
-    function _loanRepayment(uint256[N_COINS] memory amounts,address _loanSeeker)public returns(bool){
+    function _loanRepayment(uint256[N_COINS] memory amounts, address _loanSeeker) public returns(bool) {
         for(uint8 i=0; i<N_COINS; i++) {
             if(amounts[i] > 0) {
-                loanGiven[i] -=amounts[i];
-                selfBalance[i] +=amounts[i];
-                tokens[i].transferFrom(_loanSeeker,address(this),amounts[i]);
-
+                loanGiven[i] -= amounts[i];
+                selfBalance[i] += amounts[i];
+                tokens[i].transferFrom(_loanSeeker, address(this), amounts[i]);
             }
         }
         return true;
     }
 
-function depsoitInRoyale(uint256[N_COINS] calldata amounts)external {
+    function getCurrentPoolBalance() external view returns(uint256[3] memory) {
+        return selfBalance;
+    }
+
+    function getTotalLoanGiven() external view returns(uint256[3] memory) {
+        return loanGiven;
+    }
+
+    // this function deposits without minting 
+    function depsoitInRoyale(uint256[N_COINS] calldata amounts) external {
         for(uint8 i=0;i<N_COINS;i++){
             if(amounts[i]!=0){
              tokens[i].transferFrom(msg.sender,address(this),amounts[i]);

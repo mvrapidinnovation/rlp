@@ -14,6 +14,8 @@ const RCurve = artifacts.require('rCurve');
 const MRoya = artifacts.require('MRoya');
 const MRoyaFarm = artifacts.require('MRoyaFarm');
 
+const RLoan = artifacts.require('rLoan');
+
 function toDai(n) {
     return web3.utils.toWei(n, 'ether');
 }
@@ -26,7 +28,7 @@ function toUsd(n) {
 contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investorTwo]) => {
 
     let daiToken, usdcToken, usdtToken, crvToken, crvPool;
-    let royaleLP, rpToken, rCurve, mRoya, mRoyaFarm;
+    let royaleLP, rpToken, rCurve, mRoya, mRoyaFarm, rLoan;
 
     before(async() => {
         // Deploying Tokens
@@ -64,6 +66,11 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
         mRoyaFarm = await MRoyaFarm.new(
             rpToken.address,
             mRoya.address
+        );
+
+        rLoan = await RLoan.new(
+            [daiToken.address, usdcToken.address, usdtToken.address],
+            royaleLP.address
         );
     });
 
@@ -125,7 +132,7 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 assert.equal(name, "Royale Protocol");
             });
 
-            it('has set caller', async() => {
+            it('has set minter', async() => {
                 await rpToken.setCaller(royaleLP.address);
 
                 result = await rpToken.caller();
@@ -139,7 +146,7 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 assert.equal(name, "mRoya Token");
             });
 
-            it('has set caller', async() => {
+            it('has set minter', async() => {
                 await mRoya.addMinter(mRoyaFarm.address);
 
                 result = await mRoya.minter(mRoyaFarm.address);
@@ -331,39 +338,41 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             // });
 
             it('Add first Signee', async() => {
-                await royaleLP.addSignee(signeeOne);
+                await multiSig.addSignee(signeeOne);
 
-                result = await royaleLP.signees(0);
+                result = await multiSig.signees(0);
                 assert.equal(result, signeeOne);
             });
 
             it('Add second Signee', async() => {
-                await royaleLP.addSignee(signeeTwo);
+                await multiSig.addSignee(signeeTwo);
 
-                result = await royaleLP.signees(1);
+                result = await multiSig.signees(1);
                 assert.equal(result, signeeTwo);
             });
 
             it('set required signee', async() => {
-                await royaleLP.setRequiredSignee(2);
+                await multiSig.setRequiredSignee(2);
 
-                result = await royaleLP.required();
+                result = await multiSig.required();
                 assert.equal(result, 2);
             });
         });
 
         describe('Loan withdraw test', async() => {
 
+            let id;
+
             it('gamer requests for loan', async() => {
                 amtToWithdraw = [toDai('100'), toUsd('100'), toUsd('100')];
                 
-                await royaleLP.requestLoan(
+                await rLoan.requestLoan(
                     amtToWithdraw, { from: gamer });
                 
-                id = await royaleLP.transactionCount();
+                id = await rLoan.transactionCount();
                 console.log("Loan ID: ", id.toString());
 
-                result = await royaleLP.transactionCount();
+                result = await rLoan.transactionCount();
                 assert.equal(result.toString(), "1");
                 
                 // result = await royaleLP.getTransactionDetail(id.toString());
@@ -371,24 +380,24 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             });
 
             it('signeeOne signs', async() => {
-                id = await royaleLP.transactionCount();
-                await royaleLP.confirmLoan(id.toString(), { from: signeeOne });
+                // id = await rLoan.transactionCount();
+                await rLoan.confirmLoan(id.toString(), { from: signeeOne });
             });
 
             it('signeeTwo signs', async() => {
-                id = await royaleLP.transactionCount();
-                await royaleLP.confirmLoan(id.toString(), { from: signeeTwo });
+                // id = await rLoan.transactionCount();
+                await rLoan.confirmLoan(id.toString(), { from: signeeTwo });
             });
 
             it('gamer signs', async() => {
-                id = await royaleLP.transactionCount();
-                await royaleLP.signTransaction(id.toString(), { from: gamer });
+                // id = await rLoan.transactionCount();
+                await rLoan.signTransaction(id.toString(), { from: gamer });
             });
 
             it('loan approved', async() => {
-                id = await royaleLP.transactionCount();
+                // id = await rLoan.transactionCount();
 
-                result = await royaleLP.checkLoanApproved(id.toString());
+                result = await rLoan.checkLoanApproved(id.toString());
                 assert.equal(result, true);
 
                 // result = await royaleLP.getTransactionDetail(id.toString());
@@ -397,8 +406,8 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
 
             it('loan withdrawn', async() => {
                 amtToWithdraw = [toDai('50'), toUsd('50'), toUsd('50')];
-                id = await royaleLP.transactionCount();
-                await royaleLP.withdrawLoan(amtToWithdraw, id.toString(), { from: gamer });
+                // id = await rLoan.transactionCount();
+                await rLoan.withdrawLoan(amtToWithdraw, id.toString(), { from: gamer });
 
                 result = await daiToken.balanceOf(gamer);
                 assert.equal(result.toString(), toDai('50'));
@@ -419,8 +428,8 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                     royaleLP.address, toUsd('50'), { from: gamer }); 
 
                 amountToRepay = [toDai('50'), toUsd('50'), toUsd('50')];
-                id = await royaleLP.transactionCount();
-                royaleLP.repayLoan(amountToRepay, id.toString(), { from: gamer });
+                // id = await rLoan.transactionCount();
+                rLoan.repayLoan(amountToRepay, id.toString(), { from: gamer });
 
                 result = await daiToken.balanceOf(gamer);
                 assert.equal(result.toString(), toDai('0'));

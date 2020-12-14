@@ -6,7 +6,7 @@ import './Interfaces/Erc20Interface.sol';
 import './Interfaces/RoyaleInterface.sol';
 
 
-contract multiSig {
+contract rLoan {
     uint8 constant N_COINS = 3;
     
     Erc20[N_COINS] tokens;
@@ -30,8 +30,6 @@ contract multiSig {
 
     uint256[N_COINS] public totalLoanTaken;
     uint256[N_COINS] public totalApprovedLoan;
-    
- 
     
     struct Transaction {
         uint256 transactionId;
@@ -111,17 +109,15 @@ contract multiSig {
     }
 
 
-constructor( address[N_COINS] memory _tokens , address _royale)public{
-        ownerAddress=msg.sender;
+    constructor(address[N_COINS] memory _tokens , address _royale) public {
+        ownerAddress = msg.sender;
+
         // Set Tokens supported by Pool
         for(uint8 i=0; i<N_COINS; i++) {
             tokens[i] = Erc20(_tokens[i]);
-            royale=RoyaleInterface(_royale);
+            royale = RoyaleInterface(_royale);
         }
     }
-
-
-
 
     /* Internal Functions */
 
@@ -143,23 +139,20 @@ constructor( address[N_COINS] memory _tokens , address _royale)public{
         
     }
 
-   
-
     function _approveLoan(uint _loanID) internal {
         uint256[N_COINS] memory am=royale.getCurrentPoolBalance();
-         for(uint8 i=0;i<N_COINS;i++){
+        for(uint8 i=0;i<N_COINS;i++) {
             require(totalApprovedLoan[i]+transactions[_loanID].tokenAmounts[i]<am[i],"Can not approve that much amount");
         }
+
         transactions[_loanID].approved = true;
         transactions[_loanID].remAmt = transactions[_loanID].tokenAmounts;
+
         for(uint8 i=0;i<N_COINS;i++){
             totalApprovedLoan[i] +=transactions[_loanID].tokenAmounts[i];
         }
         takenLoan[transactions[_loanID].iGamingCompany].push(_loanID);
     }
-    
-
-
 
     function _isConfirmed(
         uint _loanID
@@ -174,7 +167,6 @@ constructor( address[N_COINS] memory _tokens , address _royale)public{
     }
 
   
-
     /* USER FUNCTIONS (exposed to frontend) */
 
     // Gaming platforms withdraw using this
@@ -186,13 +178,12 @@ constructor( address[N_COINS] memory _tokens , address _royale)public{
 
        emit loanRequested(msg.sender, amounts, transactionCount);
     }
-
-  
     
     
     // Gaming Platforms signs using this
     function signTransaction(uint _loanID) public {
         require(transactions[_loanID].iGamingCompany == msg.sender);
+        
         transactions[_loanID].isGamingCompanySigned = true;
 
         emit signed(msg.sender, _loanID);
@@ -218,8 +209,6 @@ constructor( address[N_COINS] memory _tokens , address _royale)public{
            emit approved(_loanID);
         }
     }
-
-    
 
     function getTransactionDetail(
         uint _loanID
@@ -263,7 +252,8 @@ constructor( address[N_COINS] memory _tokens , address _royale)public{
 
         emit signeeRemoved(signee);
     } 
-   function withdrawLoan( 
+
+    function withdrawLoan( 
         uint256[N_COINS] calldata amounts,
         uint _loanID
     ) external {
@@ -277,14 +267,14 @@ constructor( address[N_COINS] memory _tokens , address _royale)public{
                 "amount requested exceeds amount approved"
             );
         }
-        bool b= royale._loanWithdraw(amounts,transactions[_loanID].iGamingCompany);
-        require(b,"Loan Withdraw not succesfull");
+        bool b = royale._loanWithdraw(amounts,transactions[_loanID].iGamingCompany);
+        require(b, "Loan Withdraw not succesfull");
+
         uint8 check = 0;
         for(uint8 i=0; i<N_COINS; i++) {
             if(amounts[i] > 0) {
-            totalLoanTaken[i] +=amounts[i];
-             transactions[_loanID].remAmt[i] -= amounts[i];
-               
+                totalLoanTaken[i] +=amounts[i];
+                transactions[_loanID].remAmt[i] -= amounts[i];
             }
             if(transactions[_loanID].remAmt[i] == 0) {
                 check++;
@@ -303,13 +293,13 @@ constructor( address[N_COINS] memory _tokens , address _royale)public{
     } 
     
     
-    function repaymentOfLoan(uint _loanId,uint256[N_COINS] calldata _amounts) external {
+    function repayLoan(uint256[N_COINS] calldata _amounts, uint _loanId) external {
             require(_loanId<=transactionCount, "Enter Valid ID");
             require(transactions[_loanId].iGamingCompany==msg.sender, "you have not taken this loan");
             require(!gamingCompanyRepayment[_loanId].isRepaymentDone, "Already Repayment done");
             
 
-            bool b= royale._loanRepayment(_amounts,transactions[_loanId].iGamingCompany);
+            bool b = royale._loanRepayment(_amounts,transactions[_loanId].iGamingCompany);
             require(b,"Loan Payment not succesfull");
             uint counter=0;
             for(uint i=0;i<N_COINS;i++) {
