@@ -59,7 +59,7 @@ contract RoyaleLPstorage  is WithdrawQueue {
         bool[N_COINS] withdrawn;
     }
 
-    mapping(address => uint256[N_COINS]) amountSupplied;
+    mapping(address => uint256[N_COINS]) public amountSupplied;
     mapping(address => depositDetails[]) supplyTime;
 
     mapping(address => uint256[N_COINS]) amountWithdraw;
