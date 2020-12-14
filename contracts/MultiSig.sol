@@ -3,9 +3,52 @@ pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
 import './Interfaces/Erc20Interface.sol';
-import './RoyaleLPstorage.sol';
+import './Interfaces/RoyaleInterface.sol';
 
-contract multiSig is RoyaleLPstorage {
+
+contract multiSig {
+    uint8 constant N_COINS = 3;
+    
+    Erc20[N_COINS] tokens;
+
+    uint constant public MAX_SIGNEE_COUNT = 50;
+    
+    mapping(uint256 => Transaction) public transactions;
+    mapping(address => mapping (uint256 => bool)) public confirmations;
+    mapping(uint256 => Repayment) gamingCompanyRepayment;
+    mapping(address => bool) public isSignee;
+  
+    mapping(address => uint[]) takenLoan;
+    address[] public signees;
+    uint256 public transactionCount = 0;
+   
+    uint256 public required;
+
+    RoyaleInterface public royale;
+
+    address public ownerAddress;
+
+    uint256[N_COINS] public totalLoanTaken;
+    uint256[N_COINS] public totalApprovedLoan;
+    
+ 
+    
+    struct Transaction {
+        uint256 transactionId;
+        address iGamingCompany;
+        bool isGamingCompanySigned;
+        uint256[N_COINS] tokenAmounts;
+        uint256[N_COINS] remAmt;
+        bool approved;
+        bool executed;
+    }
+
+    struct Repayment {
+        uint256 transactionID;
+        bool isRepaymentDone;
+        uint256[N_COINS] remainingTokenAmounts;
+    }
+
 
     /* Events */
 
@@ -40,7 +83,7 @@ contract multiSig is RoyaleLPstorage {
     /* Modifiers */
 
     modifier onlyOwner {
-        require(msg.sender == owner);
+        require(msg.sender == ownerAddress);
         _;
     }
 
@@ -67,6 +110,19 @@ contract multiSig is RoyaleLPstorage {
         _;
     }
 
+
+constructor( address[N_COINS] memory _tokens , address _royale)public{
+        ownerAddress=msg.sender;
+        // Set Tokens supported by Pool
+        for(uint8 i=0; i<N_COINS; i++) {
+            tokens[i] = Erc20(_tokens[i]);
+            royale=RoyaleInterface(_royale);
+        }
+    }
+
+
+
+
     /* Internal Functions */
 
     function _addTransaction(
@@ -87,12 +143,24 @@ contract multiSig is RoyaleLPstorage {
         
     }
 
+   
+
     function _approveLoan(uint _loanID) internal {
+        uint256[N_COINS] memory am=royale.getCurrentPoolBalance();
+         for(uint8 i=0;i<N_COINS;i++){
+            require(totalApprovedLoan[i]+transactions[_loanID].tokenAmounts[i]<am[i],"Can not approve that much amount");
+        }
         transactions[_loanID].approved = true;
         transactions[_loanID].remAmt = transactions[_loanID].tokenAmounts;
+        for(uint8 i=0;i<N_COINS;i++){
+            totalApprovedLoan[i] +=transactions[_loanID].tokenAmounts[i];
+        }
         takenLoan[transactions[_loanID].iGamingCompany].push(_loanID);
     }
     
+
+
+
     function _isConfirmed(
         uint _loanID
     ) internal view returns (bool) {
@@ -105,6 +173,8 @@ contract multiSig is RoyaleLPstorage {
         }
     }
 
+  
+
     /* USER FUNCTIONS (exposed to frontend) */
 
     // Gaming platforms withdraw using this
@@ -116,6 +186,9 @@ contract multiSig is RoyaleLPstorage {
 
        emit loanRequested(msg.sender, amounts, transactionCount);
     }
+
+  
+    
     
     // Gaming Platforms signs using this
     function signTransaction(uint _loanID) public {
@@ -145,6 +218,8 @@ contract multiSig is RoyaleLPstorage {
            emit approved(_loanID);
         }
     }
+
+    
 
     function getTransactionDetail(
         uint _loanID
@@ -183,9 +258,85 @@ contract multiSig is RoyaleLPstorage {
         }
         
         if (required > signees.length) {
-            setRequiredSignee(signees.length);
+            required--;
         }
 
         emit signeeRemoved(signee);
     } 
+   function withdrawLoan( 
+        uint256[N_COINS] calldata amounts,
+        uint _loanID
+    ) external {
+
+        require(transactions[_loanID].iGamingCompany == msg.sender, "company not-exist");
+        require(transactions[_loanID].approved, "not approved for loan");
+        
+        for(uint8 i=0; i<N_COINS; i++) {
+            require(
+                transactions[_loanID].remAmt[i] >= amounts[i], 
+                "amount requested exceeds amount approved"
+            );
+        }
+        bool b= royale._loanWithdraw(amounts,transactions[_loanID].iGamingCompany);
+        require(b,"Loan Withdraw not succesfull");
+        uint8 check = 0;
+        for(uint8 i=0; i<N_COINS; i++) {
+            if(amounts[i] > 0) {
+            totalLoanTaken[i] +=amounts[i];
+             transactions[_loanID].remAmt[i] -= amounts[i];
+               
+            }
+            if(transactions[_loanID].remAmt[i] == 0) {
+                check++;
+            }
+        }
+
+        if(check == 3) {
+            // Loan fulfilled, company used all its loan
+            transactions[_loanID].executed = true;
+            gamingCompanyRepayment[_loanID] = Repayment({
+                  transactionID: _loanID,
+                  isRepaymentDone: false,
+                  remainingTokenAmounts: transactions[_loanID].tokenAmounts
+            });
+        }
+    } 
+    
+    
+    function repaymentOfLoan(uint _loanId,uint256[N_COINS] calldata _amounts) external {
+            require(_loanId<=transactionCount, "Enter Valid ID");
+            require(transactions[_loanId].iGamingCompany==msg.sender, "you have not taken this loan");
+            require(!gamingCompanyRepayment[_loanId].isRepaymentDone, "Already Repayment done");
+            
+
+            bool b= royale._loanRepayment(_amounts,transactions[_loanId].iGamingCompany);
+            require(b,"Loan Payment not succesfull");
+            uint counter=0;
+            for(uint i=0;i<N_COINS;i++) {
+                if(_amounts[i]!=0) {
+                    totalLoanTaken[i] -=_amounts[i];
+                    totalApprovedLoan[i]-=_amounts[i];
+                    gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] -= _amounts[i];
+                    if(gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] == 0) {
+                        counter++;
+                    }
+                }
+            }
+
+            if(counter==3){
+                gamingCompanyRepayment[_loanId].isRepaymentDone=true;
+            }       
+    }
+    
+   
+
+   /* functions for UI */
+
+    function getTotalTakenLoan(uint8 _number)public view returns(uint){
+        return totalLoanTaken[_number];
+    }
+
+    function getTotalApprovedLoan(uint8 _number)public view returns(uint){
+        return totalApprovedLoan[_number];
+    }
 }

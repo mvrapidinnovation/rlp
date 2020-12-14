@@ -3,13 +3,15 @@ pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
 import './MathLib.sol';
+import './RoyaleLPstorage.sol';
 
-// import './Erc20Interface.sol';
-// import './CurveInterface.sol';
-// import './RoyaleLPstorage.sol';
-import './MultiSig.sol';
 
-contract RoyaleLP is multiSig, rNum {
+contract RoyaleLP is RoyaleLPstorage, rNum {
+
+    modifier onlyOwner {
+        require(msg.sender == owner);
+        _;
+    }
 
     constructor(
         address[N_COINS] memory _tokens,
@@ -94,7 +96,7 @@ contract RoyaleLP is multiSig, rNum {
         
         for(uint8 i=0; i<N_COINS; i++) {
             decimal = tokens[i].decimals();
-            total += bdiv(selfBalance[i], 10**decimal);
+            total += bdiv(selfBalance[i]+loanGiven[i], 10**decimal);
             totalSuppliedTokens += bdiv(amounts[i], 10**decimal);
         }
 
@@ -130,7 +132,7 @@ contract RoyaleLP is multiSig, rNum {
                     address(this), 
                     amounts[i]
                 );
-                require(result);
+                require(result,"Transfer not successful");
                 selfBalance[i] += amounts[i];
                 amountSupplied[msg.sender][i] += amounts[i];
             }
@@ -333,96 +335,41 @@ contract RoyaleLP is multiSig, rNum {
             emit userAddedToQ(msg.sender, amounts);
         }
     }
-
-    function withdrawLoan( 
-        uint256[N_COINS] calldata amounts,
-        uint _loanID
-    ) external {
-
-        require(transactions[_loanID].iGamingCompany == msg.sender, "company not-exist");
-        require(transactions[_loanID].approved, "not approved");
-        
-        for(uint8 i=0; i<N_COINS; i++) {
-            require(
-                transactions[_loanID].remAmt[i] >= amounts[i], 
-                "not approved"
-            );
-        }
-
+ function _loanWithdraw(uint256[N_COINS] memory amounts,address _loanSeeker)public returns(bool){
         _withdraw(amounts);
-
-        uint8 check = 0;
-        bool result;
         for(uint8 i=0; i<N_COINS; i++) {
             if(amounts[i] > 0) {
-                result = tokens[i].transfer(msg.sender, amounts[i]);
-                require(result);
-                transactions[_loanID].remAmt[i] -= amounts[i];
-                selfBalance[i] -= amounts[i];
-            }
-
-            if(transactions[_loanID].remAmt[i] == 0) {
-                check++;
-            }
-        }
-
-        emit loanWithdrawn(msg.sender, amounts, transactions[_loanID].remAmt, _loanID);
-
-        if(check == 3) {
-            // Loan fulfilled, company used all its loan
-            transactions[_loanID].executed = true;
-            gamingCompanyRepayment[_loanID] = Repayment({
-                  transactionID: _loanID,
-                  isRepaymentDone: false,
-                  remainingTokenAmounts: transactions[_loanID].tokenAmounts
-            });
-
-            emit loanFulfilled(msg.sender, amounts, transactions[_loanID].tokenAmounts, _loanID);
-        }
-    }
-
-    function repayLoan(
-        uint256[N_COINS] calldata _amounts, 
-        uint _loanId
-    ) external {
-        require(_loanId <= transactionCount, "invalid loanID");
-        require(transactions[_loanId].iGamingCompany == msg.sender, "not a valid user");
-        require(!gamingCompanyRepayment[_loanId].isRepaymentDone, "repayment done");
-        
-        uint counter = 0;
-        for(uint i=0; i<N_COINS; i++) {
-            if(_amounts[i]!=0) {
-                tokens[i].transferFrom(
-                    msg.sender,
-                    address(this),
-                    _amounts[i]
-                );
-                gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] -= _amounts[i];
+                loanGiven[i] +=amounts[i];
+                selfBalance[i] -=amounts[i];
+                tokens[i].transfer(_loanSeeker, amounts[i]);
                 
-                if(gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] == 0) {
-                    counter++;
-                }
+
             }
         }
-
-        emit loanRepayed(
-            msg.sender,
-            _amounts, 
-            gamingCompanyRepayment[_loanId].remainingTokenAmounts,
-            _loanId
-        );
-
-        if(counter == 3){
-            gamingCompanyRepayment[_loanId].isRepaymentDone = true;
-
-            emit wholeLoanRepayed(
-                msg.sender,
-                _amounts, 
-                gamingCompanyRepayment[_loanId].remainingTokenAmounts,
-                _loanId
-            );
-        }       
+        return true;
     }
+
+    function _loanRepayment(uint256[N_COINS] memory amounts,address _loanSeeker)public returns(bool){
+        for(uint8 i=0; i<N_COINS; i++) {
+            if(amounts[i] > 0) {
+                loanGiven[i] -=amounts[i];
+                selfBalance[i] +=amounts[i];
+                tokens[i].transferFrom(_loanSeeker,address(this),amounts[i]);
+
+            }
+        }
+        return true;
+    }
+
+function depsoitInRoyale(uint256[N_COINS] calldata amounts)external {
+        for(uint8 i=0;i<N_COINS;i++){
+            if(amounts[i]!=0){
+             tokens[i].transferFrom(msg.sender,address(this),amounts[i]);
+             selfBalance[i]+=amounts[i];
+            }
+        }
+    }
+
 
     /* CORE FUNCTIONS (also exposed to frontend but to be called by owner only) */
 

@@ -2,7 +2,6 @@
 pragma solidity ^0.6.0;
 
 import './Interfaces/Erc20Interface.sol';
-// import './CurveInterface.sol';
 import './Interfaces/YieldOptInterface.sol';
 
 contract WithdrawQueue {
@@ -67,35 +66,5 @@ contract RoyaleLPstorage  is WithdrawQueue {
     mapping(address => bool) public isInQ;
     uint32 recipientCount;
     uint256[N_COINS] public totalWithdraw;
-
-
-    /* MULTISIG STORAGE */
-
-    uint constant public MAX_SIGNEE_COUNT = 50;
-    
-    mapping(uint256 => Transaction) public transactions;
-    mapping(address => mapping (uint256 => bool)) public confirmations;
-    mapping(uint256 => Repayment) gamingCompanyRepayment;
-    mapping(address => bool) public isSignee;
-
-    mapping(address => uint[]) takenLoan;
-    address[] public signees;
-    uint256 public transactionCount = 0;
-    uint256 public required;
-    
-    struct Transaction {
-        uint256 transactionId;
-        address iGamingCompany;
-        bool isGamingCompanySigned;
-        uint256[N_COINS] tokenAmounts;
-        uint256[N_COINS] remAmt;
-        bool approved;
-        bool executed;
-    }
-
-    struct Repayment {
-        uint256 transactionID;
-        bool isRepaymentDone;
-        uint256[N_COINS] remainingTokenAmounts;
-    }
+    uint256[N_COINS ] public loanGiven;  
 }
