@@ -44,35 +44,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         uint[N_COINS] amounts
     );
 
-    event loanWithdrawn(
-        address by,
-        uint[N_COINS] requestedAmount,
-        uint[N_COINS] remainingAmount,
-        uint loanID
-    );
-
-    event loanFulfilled(
-        address by,
-        uint[N_COINS] requestedAmount,
-        uint[N_COINS] remainingAmount,
-        uint loanID
-    );
-
-    event loanRepayed(
-        address by,
-        uint[N_COINS] repayedAmount,
-        uint[N_COINS] amountRemaining,
-        uint loanID
-    );
-
-    event wholeLoanRepayed(
-        address by,
-        uint[N_COINS] repayedAmount,
-        uint[N_COINS] amountRemaining,
-        uint loanID
-    );
-
-
     /* INTERNAL FUNCTIONS */
 
     function _getBalances() internal view returns(uint256[N_COINS] memory) {

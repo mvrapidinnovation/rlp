@@ -78,6 +78,34 @@ contract rLoan {
         address signee
     );
 
+    event loanWithdrawn(
+        address by,
+        uint[N_COINS] requestedAmount,
+        uint[N_COINS] remainingAmount,
+        uint loanID
+    );
+
+    event loanFulfilled(
+        address by,
+        uint[N_COINS] requestedAmount,
+        uint[N_COINS] remainingAmount,
+        uint loanID
+    );
+
+    event loanRepayed(
+        address by,
+        uint[N_COINS] repayedAmount,
+        uint[N_COINS] amountRemaining,
+        uint loanID
+    );
+
+    event wholeLoanRepayed(
+        address by,
+        uint[N_COINS] repayedAmount,
+        uint[N_COINS] amountRemaining,
+        uint loanID
+    );
+
     /* Modifiers */
 
     modifier onlyOwner {
@@ -273,13 +301,15 @@ contract rLoan {
         uint8 check = 0;
         for(uint8 i=0; i<N_COINS; i++) {
             if(amounts[i] > 0) {
-                totalLoanTaken[i] +=amounts[i];
+                totalLoanTaken[i] += amounts[i];
                 transactions[_loanID].remAmt[i] -= amounts[i];
             }
             if(transactions[_loanID].remAmt[i] == 0) {
                 check++;
             }
         }
+
+        emit loanWithdrawn(msg.sender, amounts, transactions[_loanID].remAmt, _loanID);
 
         if(check == 3) {
             // Loan fulfilled, company used all its loan
@@ -289,32 +319,48 @@ contract rLoan {
                   isRepaymentDone: false,
                   remainingTokenAmounts: transactions[_loanID].tokenAmounts
             });
+
+            emit loanFulfilled(msg.sender, amounts, transactions[_loanID].tokenAmounts, _loanID);
         }
     } 
     
     
     function repayLoan(uint256[N_COINS] calldata _amounts, uint _loanId) external {
-            require(_loanId<=transactionCount, "Enter Valid ID");
-            require(transactions[_loanId].iGamingCompany==msg.sender, "you have not taken this loan");
-            require(!gamingCompanyRepayment[_loanId].isRepaymentDone, "Already Repayment done");
-            
+        require(_loanId <= transactionCount, "invalid loan id");
+        require(transactions[_loanId].iGamingCompany == msg.sender, "company not-exist");
+        require(!gamingCompanyRepayment[_loanId].isRepaymentDone, "already repaid");
+        
 
-            bool b = royale._loanRepayment(_amounts,transactions[_loanId].iGamingCompany);
-            require(b,"Loan Payment not succesfull");
-            uint counter=0;
-            for(uint i=0;i<N_COINS;i++) {
-                if(_amounts[i]!=0) {
-                    totalLoanTaken[i] -=_amounts[i];
-                    totalApprovedLoan[i]-=_amounts[i];
-                    gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] -= _amounts[i];
-                    if(gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] == 0) {
-                        counter++;
-                    }
+        bool b = royale._loanRepayment(_amounts,transactions[_loanId].iGamingCompany);
+        require(b,"Loan Payment not succesfull");
+        uint counter=0;
+        for(uint i=0;i<N_COINS;i++) {
+            if(_amounts[i]!=0) {
+                totalLoanTaken[i] -=_amounts[i];
+                totalApprovedLoan[i]-=_amounts[i];
+                gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] -= _amounts[i];
+                if(gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] == 0) {
+                    counter++;
                 }
             }
+        }
+
+        emit loanRepayed(
+            msg.sender,
+            _amounts, 
+            gamingCompanyRepayment[_loanId].remainingTokenAmounts,
+            _loanId
+        );
 
             if(counter==3){
                 gamingCompanyRepayment[_loanId].isRepaymentDone=true;
+
+                emit wholeLoanRepayed(
+                    msg.sender,
+                    _amounts, 
+                    gamingCompanyRepayment[_loanId].remainingTokenAmounts,
+                    _loanId
+                );
             }       
     }
     

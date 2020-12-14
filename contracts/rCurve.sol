@@ -83,4 +83,9 @@ contract rCurve {
     function withdraw(uint256[N_COINS] calldata amount) external {
         _withdraw(amount);
     }
+
+    function updateRoyalelp(address _addr) external {
+        require(msg.sender == owner);
+        LPaddr = _addr;
+    }
 }

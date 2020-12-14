@@ -338,23 +338,23 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             // });
 
             it('Add first Signee', async() => {
-                await multiSig.addSignee(signeeOne);
+                await rLoan.addSignee(signeeOne);
 
-                result = await multiSig.signees(0);
+                result = await rLoan.signees(0);
                 assert.equal(result, signeeOne);
             });
 
             it('Add second Signee', async() => {
-                await multiSig.addSignee(signeeTwo);
+                await rLoan.addSignee(signeeTwo);
 
-                result = await multiSig.signees(1);
+                result = await rLoan.signees(1);
                 assert.equal(result, signeeTwo);
             });
 
             it('set required signee', async() => {
-                await multiSig.setRequiredSignee(2);
+                await rLoan.setRequiredSignee(2);
 
-                result = await multiSig.required();
+                result = await rLoan.required();
                 assert.equal(result, 2);
             });
         });
