@@ -12,8 +12,8 @@ contract rCurve {
     
     Erc20[N_COINS] tokens;
     Erc20 PoolToken;
-    curvePool public Pool = curvePool(0x5B2A3246d70ABB9121EA532a9Ac6f77D45366643);
-
+    curvePool public Pool; 
+//= curvePool(0x5B2A3246d70ABB9121EA532a9Ac6f77D45366643);
     address LPaddr;
 
     constructor(

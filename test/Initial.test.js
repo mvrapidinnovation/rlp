@@ -6,10 +6,16 @@ const UsdtToken = artifacts.require('UsdtToken');
 const CrvToken = artifacts.require('PoolToken');
 const RpToken = artifacts.require('RPToken');
 
+const Controller=artifacts.require('Controller');
+const Pool3DAI=artifacts.require('Pool3DAI');
+const Pool3USDC=artifacts.require('Pool3USDC');
+const Pool3USDt=artifacts.require('Pool3USDT');
+
 const CrvPool = artifacts.require('StableSwap3Pool');
 const RoyaleLP = artifacts.require('RoyaleLP');
 
 const RCurve = artifacts.require('rCurve');
+
 
 const MRoya = artifacts.require('MRoya');
 const MRoyaFarm = artifacts.require('MRoyaFarm');
@@ -28,13 +34,14 @@ function toUsd(n) {
 contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investorTwo]) => {
 
     let daiToken, usdcToken, usdtToken, crvToken, crvPool;
-    let royaleLP, rpToken, rCurve, mRoya, mRoyaFarm, rLoan;
+    let royaleLP, rpToken, rCurve, mRoya, mRoyaFarm, rLoan,controller1,usdcpool,usdtpool,daipool;
 
     before(async() => {
         // Deploying Tokens
         daiToken = await DaiToken.new();
         usdcToken = await UsdcToken.new();
         usdtToken = await UsdtToken.new();
+        controller=await Controller.new();
         crvToken = await CrvToken.new("Curve Token", "CRV", 18, 0);
         rpToken = await RpToken.new();
         mRoya = await MRoya.new();
@@ -55,6 +62,32 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             [daiToken.address, usdcToken.address, usdtToken.address],
             // crvToken.address,
             rpToken.address
+        );
+
+        
+
+        daipool=await Pool3DAI.new(
+            crvToken.address,
+            daiToken.address,
+            royaleLP.address,
+            crvPool.address
+
+        );
+
+        usdcpool=await Pool3USDC.new(
+            crvToken.address,
+            usdcToken.address,
+            royaleLP.address,
+            crvPool.address
+
+        );
+
+        usdtpool=await Pool3USDt.new(
+            crvToken.address,
+            usdtToken.address,
+            royaleLP.address,
+            crvPool.address
+
         );
 
         rCurve = await RCurve.new(
@@ -125,6 +158,8 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 assert.equal(mintAmount.toString(), supply.toString());
             });
         })
+
+       
         
         describe('RPToken deployment', async() => {
             it('has a name', async() => {
@@ -152,6 +187,14 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 result = await mRoya.minter(mRoyaFarm.address);
                 assert(result, false);
             });
+        });
+    });
+
+    describe('Setting up Controller', async() => {
+        it('has set strategies for all 3 tokens', async() => {
+            controller.setStrategy(daipool.address,0);
+            controller.setStrategy(usdcpool.address,1);
+            controller.setStrategy(usdtpool.address,2);
         });
     });
 
@@ -207,13 +250,14 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 await rpToken.mint(royaleLP.address, toDai('300'));
         })
             
-        it('set up curve address in rCurve', async() => {
+       /*  it('set up curve address in rCurve', async() => {
             await rCurve.setPool(crvPool.address);
+        }); */
+
+        it('set up Controller in RoyaleLP', async() => {
+            await royaleLP.setController(controller.address);
         });
 
-        it('set up yield optimizer in RoyaleLP', async() => {
-            await royaleLP.setYieldOpt(rCurve.address);
-        });
     });
 
     describe('RoyaleLP Testing', async() => {
@@ -327,7 +371,11 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 result = await usdtToken.balanceOf(royaleLP.address);
                 assert.equal(result.toString(), toUsd('75'));
                 
-                lpCRV = await crvToken.balanceOf(rCurve.address);
+                lpCRV = await crvToken.balanceOf(daipool.address);
+                console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
+                lpCRV = await crvToken.balanceOf(usdcpool.address);
+                console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
+                lpCRV = await crvToken.balanceOf(usdtpool.address);
                 console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
             });
         });
@@ -428,7 +476,7 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                     royaleLP.address, toUsd('50'), { from: gamer }); 
 
                 amountToRepay = [toDai('50'), toUsd('50'), toUsd('50')];
-                // id = await rLoan.transactionCount();
+                 id = await rLoan.transactionCount();
                 rLoan.repayLoan(amountToRepay, id.toString(), { from: gamer });
 
                 result = await daiToken.balanceOf(gamer);
@@ -492,7 +540,11 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 result = await usdtToken.balanceOf(royaleLP.address);
                 assert.equal(result.toString(), toUsd('125'));
 
-                lpCRV = await crvToken.balanceOf(rCurve.address);
+                lpCRV = await crvToken.balanceOf(daipool.address);
+                console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
+                lpCRV = await crvToken.balanceOf(usdcpool.address);
+                console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
+                lpCRV = await crvToken.balanceOf(usdtpool.address);
                 console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
             });
        
@@ -542,7 +594,11 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 result = await usdtToken.balanceOf(royaleLP.address);
                 assert.equal(result.toString(), toUsd('125'));
 
-                lpCRV = await crvToken.balanceOf(rCurve.address);
+               lpCRV = await crvToken.balanceOf(daipool.address);
+                console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
+                lpCRV = await crvToken.balanceOf(usdcpool.address);
+                console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
+                lpCRV = await crvToken.balanceOf(usdtpool.address);
                 console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
             });
        

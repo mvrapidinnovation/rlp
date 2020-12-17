@@ -21,4 +21,10 @@ abstract contract curvePool {
         uint256[3] calldata,
         uint256
     ) virtual external;
+
+    function remove_liquidity_one_coin(
+        uint256 ,
+        int128,
+        uint256
+    )virtual external;
 }

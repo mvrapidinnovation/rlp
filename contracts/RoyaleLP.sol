@@ -6,6 +6,7 @@ import './MathLib.sol';
 import './RoyaleLPstorage.sol';
 
 
+
 contract RoyaleLP is RoyaleLPstorage, rNum {
 
     modifier onlyOwner {
@@ -16,10 +17,11 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     constructor(
         address[N_COINS] memory _tokens,
         address _rpToken
+       
     ) public {
         // Set owner
         owner = msg.sender;
-
+       
         for(uint8 i=0; i<N_COINS; i++) {
             tokens[i] = Erc20(_tokens[i]);
         }
@@ -84,7 +86,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     // This function deposits the fund to Yield Optimizer
     function _deposit(uint256[N_COINS] memory amounts) internal {
-        yldOpt.deposit(amounts);
+        controller.deposit(amounts);
         
         for(uint8 i=0; i<N_COINS; i++) {
             YieldPoolBalance[i] += amounts[i];
@@ -197,7 +199,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     // this will withdraw from Yield Optimizer into this contract
     function _withdraw(uint256[N_COINS] memory amounts) internal {
-        yldOpt.withdraw(amounts);
+        controller.withdraw(amounts);
 
         for(uint8 i=0; i<N_COINS; i++) {
             YieldPoolBalance[i] -= amounts[i];
@@ -357,13 +359,15 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         uint256[N_COINS] memory amounts = _getBalances();
         uint256 decimal;
 
+        Strategy[3] memory s=controller.getCurrentStrategy(); 
+
         for(uint8 i=0; i<N_COINS; i++) {
             decimal = tokens[i].decimals();
             if(amounts[i] > thresholdTokenAmount*10**decimal) {
                 amounts[i] += YieldPoolBalance[i];
                 amounts[i] = (amounts[i] * poolPart) / 100;
                 amounts[i] = amounts[i] - YieldPoolBalance[i];
-                tokens[i].transfer(address(yldOpt), amounts[i]);
+                tokens[i].transfer(address(s[i]), amounts[i]);
             }
             else {
                 amounts[i] = 0;
@@ -415,10 +419,9 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         selfBalance = _getBalances();
         return true;
     }
-
-    function setYieldOpt(IYieldOpt _yldOpt) onlyOwner external returns(bool) {
-        yldOpt = _yldOpt;
-        return true;
+    
+    function setController(address _controller)onlyOwner external {
+         controller=Controller1(_controller);
     }
 
     function setLockPeriod(uint128 lockperiod) onlyOwner external returns(bool) {

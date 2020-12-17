@@ -2,7 +2,9 @@
 pragma solidity ^0.6.0;
 
 import './Interfaces/Erc20Interface.sol';
-import './Interfaces/YieldOptInterface.sol';
+
+import './Interfaces/ControllerInterface.sol';
+import './Interfaces/StrategyInterface.sol';
 
 contract WithdrawQueue {
     mapping(uint256 => address) withdrawQ;
@@ -29,6 +31,8 @@ contract WithdrawQueue {
 
 contract RoyaleLPstorage  is WithdrawQueue {
 
+
+
     uint128 constant N_COINS = 3;
 
     uint128 public fees = 25;
@@ -37,13 +41,15 @@ contract RoyaleLPstorage  is WithdrawQueue {
 
     uint256[N_COINS] public selfBalance;
 
-    IYieldOpt yldOpt;
+  
 
     address public owner;
     // curvePool Pool;
     Erc20[N_COINS] tokens;
     // Erc20 PoolToken;
     Erc20 rpToken;
+
+    Controller1 controller;
 
     uint[N_COINS] public YieldPoolBalance;
 
