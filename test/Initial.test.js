@@ -14,9 +14,6 @@ const Pool3USDt=artifacts.require('rUSDT3Pool');
 const CrvPool = artifacts.require('StableSwap3Pool');
 const RoyaleLP = artifacts.require('RoyaleLP');
 
-const RCurve = artifacts.require('rCurve');
-
-
 const MRoya = artifacts.require('MRoya');
 const MRoyaFarm = artifacts.require('MRoyaFarm');
 
@@ -34,7 +31,7 @@ function toUsd(n) {
 contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investorTwo]) => {
 
     let daiToken, usdcToken, usdtToken, crvToken, crvPool;
-    let royaleLP, rpToken, rCurve;
+    let royaleLP, rpToken;
     let mRoya, mRoyaFarm, rLoan;
     let controller, usdcpool, usdtpool, daipool, daipool2;
 
@@ -183,6 +180,13 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
 
                 result = await rpToken.caller();
                 assert(result, royaleLP.address);
+            });
+        });
+
+        describe('Set Loan Contract in RoyaleLP', async() => {
+            it(' set loan contract', async() => {
+                await royaleLP.setLoanContract(rLoan.address);
+               
             });
         });
 
@@ -479,7 +483,7 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
 
             it('loan withdrawn', async() => {
                 amtToWithdraw = [toDai('50'), toUsd('50'), toUsd('50')];
-                // id = await rLoan.transactionCount();
+                 //id = await rLoan.transactionCount();
                 await rLoan.withdrawLoan(amtToWithdraw, id.toString(), { from: gamer });
 
                 result = await daiToken.balanceOf(gamer);
@@ -628,6 +632,56 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 lpCRV = await crvToken.balanceOf(usdtpool.address);
                 console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
             });
+            it('Rebalancing Of Tokens', async() => {
+
+                console.log("\nTotal balance of pool\n");
+
+                result=await royaleLP.selfBalance(0);
+                console.log(result.toString());
+
+                result=await royaleLP.selfBalance(1);
+                console.log(result.toString());
+
+                result=await royaleLP.selfBalance(2);
+                console.log(result.toString());
+
+                console.log("\nCurrent balance of royalepool\n");
+
+                result = await daiToken.balanceOf(royaleLP.address);
+                console.log(result.toString());
+        
+                result = await usdcToken.balanceOf(royaleLP.address);
+                console.log(result.toString());
+        
+                result = await usdtToken.balanceOf(royaleLP.address);
+                console.log(result.toString());
+
+                console.log("\n balance given to yield pool\n");
+
+                result=await royaleLP.YieldPoolBalance(0);
+                console.log(result.toString());
+
+                result=await royaleLP.YieldPoolBalance(1);
+                console.log(result.toString());
+
+                result=await royaleLP.YieldPoolBalance(2);
+                console.log(result.toString());
+        
+                
+                await royaleLP.rebalance({ from: owner });
+                    
+                console.log("\n balance After balancing of royalepool\n");
+                
+        
+                result = await daiToken.balanceOf(royaleLP.address);
+                console.log(result.toString());
+        
+                result = await usdcToken.balanceOf(royaleLP.address);
+                console.log(result.toString());
+        
+                result = await usdtToken.balanceOf(royaleLP.address);
+                console.log(result.toString());
+            });
        
         });
 
@@ -648,6 +702,8 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             console.log((result / 1e18).toString());
         });
     });
+
+   
 
 });
 

@@ -30,6 +30,9 @@ contract WithdrawQueue {
 
 contract RoyaleLPstorage  is WithdrawQueue {
 
+
+    //varaible for pool features
+
     uint128 constant N_COINS = 3;
 
     uint128 public fees = 25;
@@ -38,17 +41,22 @@ contract RoyaleLPstorage  is WithdrawQueue {
 
     uint256[N_COINS] public selfBalance;
 
-    rControllerI controller;
-
     address public owner;
+
     Erc20[N_COINS] tokens;
+
     Erc20 rpToken;
+
+    //varaible for Yield Optimization
+
+    rControllerI controller;
 
     uint[N_COINS] public YieldPoolBalance;
 
     uint256 public thresholdTokenAmount = 500;
 
-    // Lock period in days
+
+   //Varaible for user related to supply and withdraw
     uint128 public lock_period;
 
     struct depositDetails {
@@ -65,5 +73,13 @@ contract RoyaleLPstorage  is WithdrawQueue {
     mapping(address => bool) public isInQ;
     uint32 recipientCount;
     uint256[N_COINS] public totalWithdraw;
+
+
+    //Varaible to store total loan given
     uint256[N_COINS] public loanGiven;  
+
+
+    //varaible realated to loan contract
+
+     address public loanContract;
 }

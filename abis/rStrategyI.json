@@ -35,27 +35,27 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdrawAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/rStrategyInterface.sol\":\"rStrategyI\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/rStrategyInterface.sol\":{\"keccak256\":\"0x9ae49cf0c82c49511b989936d982985c6e7cf344596abf44256c7009abc95429\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://f07dc414555d75cf9e793c9a64b07614eb104e2ff7fda6335762ab240a1d24d7\",\"dweb:/ipfs/QmNetZ3nkSBsoBQkunmuw382mNxraiMQYeSY6GNRLZuwSX\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdrawAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/rStrategyInterface.sol\":\"rStrategyI\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/rStrategyInterface.sol\":{\"keccak256\":\"0x9ae49cf0c82c49511b989936d982985c6e7cf344596abf44256c7009abc95429\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://f07dc414555d75cf9e793c9a64b07614eb104e2ff7fda6335762ab240a1d24d7\",\"dweb:/ipfs/QmNetZ3nkSBsoBQkunmuw382mNxraiMQYeSY6GNRLZuwSX\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\n\r\nabstract contract rStrategyI {\r\n    function deposit(uint) virtual external;\r\n    function withdraw(uint) virtual external;\r\n    function withdrawAll() virtual external;\r\n}",
-  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\royale-contracts\\Interfaces\\rStrategyInterface.sol",
+  "sourcePath": "C:\\Users\\vishn\\OneDrive\\Desktop\\TempRoyakle\\rlp\\Interfaces\\rStrategyInterface.sol",
   "ast": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/rStrategyInterface.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/rStrategyInterface.sol",
     "exportedSymbols": {
       "rStrategyI": [
-        286
+        294
       ]
     },
-    "id": 287,
+    "id": 295,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 272,
+        "id": 280,
         "literals": [
           "solidity",
           "^",
@@ -72,9 +72,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 286,
+        "id": 294,
         "linearizedBaseContracts": [
-          286
+          294
         ],
         "name": "rStrategyI",
         "nodeType": "ContractDefinition",
@@ -83,7 +83,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "b6b55f25",
-            "id": 277,
+            "id": 285,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -91,17 +91,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 275,
+              "id": 283,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 274,
+                  "id": 282,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 277,
+                  "scope": 285,
                   "src": "120:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -110,7 +110,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 273,
+                    "id": 281,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "120:4:5",
@@ -126,12 +126,12 @@
               "src": "119:6:5"
             },
             "returnParameters": {
-              "id": 276,
+              "id": 284,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "142:0:5"
             },
-            "scope": 286,
+            "scope": 294,
             "src": "103:40:5",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -141,7 +141,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "2e1a7d4d",
-            "id": 282,
+            "id": 290,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -149,17 +149,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 280,
+              "id": 288,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 279,
+                  "id": 287,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 282,
+                  "scope": 290,
                   "src": "167:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -168,7 +168,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 278,
+                    "id": 286,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "167:4:5",
@@ -184,12 +184,12 @@
               "src": "166:6:5"
             },
             "returnParameters": {
-              "id": 281,
+              "id": 289,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "189:0:5"
             },
-            "scope": 286,
+            "scope": 294,
             "src": "149:41:5",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -199,7 +199,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "853828b6",
-            "id": 285,
+            "id": 293,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -207,43 +207,43 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 283,
+              "id": 291,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "216:2:5"
             },
             "returnParameters": {
-              "id": 284,
+              "id": 292,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "235:0:5"
             },
-            "scope": 286,
+            "scope": 294,
             "src": "196:40:5",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "external"
           }
         ],
-        "scope": 287,
+        "scope": 295,
         "src": "67:172:5"
       }
     ],
     "src": "40:199:5"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/rStrategyInterface.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/rStrategyInterface.sol",
     "exportedSymbols": {
       "rStrategyI": [
-        286
+        294
       ]
     },
-    "id": 287,
+    "id": 295,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 272,
+        "id": 280,
         "literals": [
           "solidity",
           "^",
@@ -260,9 +260,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 286,
+        "id": 294,
         "linearizedBaseContracts": [
-          286
+          294
         ],
         "name": "rStrategyI",
         "nodeType": "ContractDefinition",
@@ -271,7 +271,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "b6b55f25",
-            "id": 277,
+            "id": 285,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -279,17 +279,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 275,
+              "id": 283,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 274,
+                  "id": 282,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 277,
+                  "scope": 285,
                   "src": "120:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -298,7 +298,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 273,
+                    "id": 281,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "120:4:5",
@@ -314,12 +314,12 @@
               "src": "119:6:5"
             },
             "returnParameters": {
-              "id": 276,
+              "id": 284,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "142:0:5"
             },
-            "scope": 286,
+            "scope": 294,
             "src": "103:40:5",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -329,7 +329,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "2e1a7d4d",
-            "id": 282,
+            "id": 290,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -337,17 +337,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 280,
+              "id": 288,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 279,
+                  "id": 287,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 282,
+                  "scope": 290,
                   "src": "167:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -356,7 +356,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 278,
+                    "id": 286,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "167:4:5",
@@ -372,12 +372,12 @@
               "src": "166:6:5"
             },
             "returnParameters": {
-              "id": 281,
+              "id": 289,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "189:0:5"
             },
-            "scope": 286,
+            "scope": 294,
             "src": "149:41:5",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -387,7 +387,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "853828b6",
-            "id": 285,
+            "id": 293,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -395,25 +395,25 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 283,
+              "id": 291,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "216:2:5"
             },
             "returnParameters": {
-              "id": 284,
+              "id": 292,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "235:0:5"
             },
-            "scope": 286,
+            "scope": 294,
             "src": "196:40:5",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "external"
           }
         ],
-        "scope": 287,
+        "scope": 295,
         "src": "67:172:5"
       }
     ],
@@ -425,7 +425,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-17T12:52:11.646Z",
+  "updatedAt": "2020-12-21T07:35:43.607Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
