@@ -22,9 +22,30 @@ abstract contract curvePool {
         uint256
     ) virtual external;
 
+    function calc_token_amount(
+        uint256[4] calldata, 
+        bool
+    ) virtual external view returns(uint256);
+
+    function add_liquidity(
+        uint256[4] calldata,
+        uint256
+    ) virtual external;
+
+    function remove_liquidity(
+        uint256,
+        uint256[4] calldata
+    ) virtual external;
+
+    function remove_liquidity_imbalance(
+        uint256[4] calldata,
+        uint256
+    ) virtual external;
+
+
     function remove_liquidity_one_coin(
-        uint256 ,
+        uint256,
         int128,
         uint256
-    )virtual external;
+    ) virtual external;
 }

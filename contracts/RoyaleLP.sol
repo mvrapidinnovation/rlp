@@ -6,7 +6,6 @@ import './MathLib.sol';
 import './RoyaleLPstorage.sol';
 
 
-
 contract RoyaleLP is RoyaleLPstorage, rNum {
 
     modifier onlyOwner {
@@ -17,11 +16,10 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     constructor(
         address[N_COINS] memory _tokens,
         address _rpToken
-       
     ) public {
         // Set owner
         owner = msg.sender;
-       
+
         for(uint8 i=0; i<N_COINS; i++) {
             tokens[i] = Erc20(_tokens[i]);
         }
@@ -359,7 +357,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         uint256[N_COINS] memory amounts = _getBalances();
         uint256 decimal;
 
-        Strategy[3] memory s=controller.getCurrentStrategy(); 
+        rStrategyI[3] memory strat = controller.getStrategies();
 
         for(uint8 i=0; i<N_COINS; i++) {
             decimal = tokens[i].decimals();
@@ -367,7 +365,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                 amounts[i] += YieldPoolBalance[i];
                 amounts[i] = (amounts[i] * poolPart) / 100;
                 amounts[i] = amounts[i] - YieldPoolBalance[i];
-                tokens[i].transfer(address(s[i]), amounts[i]);
+                tokens[i].transfer(address(strat[i]), amounts[i]);
             }
             else {
                 amounts[i] = 0;
@@ -419,9 +417,10 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         selfBalance = _getBalances();
         return true;
     }
-    
-    function setController(address _controller)onlyOwner external {
-         controller=Controller1(_controller);
+
+    function setController(rControllerI _controller) onlyOwner external returns(bool) {
+        controller = _controller;
+        return true;
     }
 
     function setLockPeriod(uint128 lockperiod) onlyOwner external returns(bool) {

@@ -1,5 +1,5 @@
 {
-  "contractName": "Strategy",
+  "contractName": "rStrategyI",
   "abi": [
     {
       "inputs": [
@@ -35,27 +35,27 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdrawAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/Interfaces/StrategyInterface.sol\":\"Strategy\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/Interfaces/StrategyInterface.sol\":{\"keccak256\":\"0xc890f35e926ded3ddbd9800d3d0725ba1cad1d79824db78406d2b24bff950a64\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://2b9e75d8f1b7a1a92bd5ab58a49f4ea69d5c8f59f72dffb5745ab26c621794b3\",\"dweb:/ipfs/QmWh9R11kXiNECgJhJEGtrGaPSSxH1p3AfzmuQM9ZQU5aK\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdrawAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/rStrategyInterface.sol\":\"rStrategyI\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/rStrategyInterface.sol\":{\"keccak256\":\"0x9ae49cf0c82c49511b989936d982985c6e7cf344596abf44256c7009abc95429\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://f07dc414555d75cf9e793c9a64b07614eb104e2ff7fda6335762ab240a1d24d7\",\"dweb:/ipfs/QmNetZ3nkSBsoBQkunmuw382mNxraiMQYeSY6GNRLZuwSX\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\n\r\n\r\nabstract contract Strategy{\r\n    function deposit(uint256 ) virtual external;\r\n     function withdraw(uint256) virtual external;\r\n     function withdrawAll() virtual external; \r\n\r\n}",
-  "sourcePath": "C:\\Users\\vishn\\OneDrive\\Desktop\\TempRoyakle\\rlp\\contracts\\Interfaces\\StrategyInterface.sol",
+  "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\n\r\nabstract contract rStrategyI {\r\n    function deposit(uint) virtual external;\r\n    function withdraw(uint) virtual external;\r\n    function withdrawAll() virtual external;\r\n}",
+  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\royale-contracts\\Interfaces\\rStrategyInterface.sol",
   "ast": {
-    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/Interfaces/StrategyInterface.sol",
+    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/rStrategyInterface.sol",
     "exportedSymbols": {
-      "Strategy": [
-        408
+      "rStrategyI": [
+        286
       ]
     },
-    "id": 409,
+    "id": 287,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 394,
+        "id": 272,
         "literals": [
           "solidity",
           "^",
@@ -63,7 +63,7 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "40:23:6"
+        "src": "40:23:5"
       },
       {
         "abstract": true,
@@ -72,18 +72,18 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 408,
+        "id": 286,
         "linearizedBaseContracts": [
-          408
+          286
         ],
-        "name": "Strategy",
+        "name": "rStrategyI",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": null,
             "documentation": null,
             "functionSelector": "b6b55f25",
-            "id": 399,
+            "id": 277,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -91,18 +91,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 397,
+              "id": 275,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 396,
+                  "id": 274,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 399,
-                  "src": "119:7:6",
+                  "scope": 277,
+                  "src": "120:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -110,10 +110,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 395,
-                    "name": "uint256",
+                    "id": 273,
+                    "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "119:7:6",
+                    "src": "120:4:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -123,16 +123,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "118:10:6"
+              "src": "119:6:5"
             },
             "returnParameters": {
-              "id": 398,
+              "id": 276,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "145:0:6"
+              "src": "142:0:5"
             },
-            "scope": 408,
-            "src": "102:44:6",
+            "scope": 286,
+            "src": "103:40:5",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "external"
@@ -141,7 +141,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "2e1a7d4d",
-            "id": 404,
+            "id": 282,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -149,18 +149,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 402,
+              "id": 280,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 401,
+                  "id": 279,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 404,
-                  "src": "171:7:6",
+                  "scope": 282,
+                  "src": "167:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -168,10 +168,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 400,
-                    "name": "uint256",
+                    "id": 278,
+                    "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "171:7:6",
+                    "src": "167:4:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -181,16 +181,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "170:9:6"
+              "src": "166:6:5"
             },
             "returnParameters": {
-              "id": 403,
+              "id": 281,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "196:0:6"
+              "src": "189:0:5"
             },
-            "scope": 408,
-            "src": "153:44:6",
+            "scope": 286,
+            "src": "149:41:5",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "external"
@@ -199,7 +199,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "853828b6",
-            "id": 407,
+            "id": 285,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -207,43 +207,43 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 405,
+              "id": 283,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "224:2:6"
+              "src": "216:2:5"
             },
             "returnParameters": {
-              "id": 406,
+              "id": 284,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "243:0:6"
+              "src": "235:0:5"
             },
-            "scope": 408,
-            "src": "204:40:6",
+            "scope": 286,
+            "src": "196:40:5",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "external"
           }
         ],
-        "scope": 409,
-        "src": "69:181:6"
+        "scope": 287,
+        "src": "67:172:5"
       }
     ],
-    "src": "40:210:6"
+    "src": "40:199:5"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/Interfaces/StrategyInterface.sol",
+    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/rStrategyInterface.sol",
     "exportedSymbols": {
-      "Strategy": [
-        408
+      "rStrategyI": [
+        286
       ]
     },
-    "id": 409,
+    "id": 287,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 394,
+        "id": 272,
         "literals": [
           "solidity",
           "^",
@@ -251,7 +251,7 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "40:23:6"
+        "src": "40:23:5"
       },
       {
         "abstract": true,
@@ -260,18 +260,18 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 408,
+        "id": 286,
         "linearizedBaseContracts": [
-          408
+          286
         ],
-        "name": "Strategy",
+        "name": "rStrategyI",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": null,
             "documentation": null,
             "functionSelector": "b6b55f25",
-            "id": 399,
+            "id": 277,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -279,18 +279,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 397,
+              "id": 275,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 396,
+                  "id": 274,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 399,
-                  "src": "119:7:6",
+                  "scope": 277,
+                  "src": "120:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -298,10 +298,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 395,
-                    "name": "uint256",
+                    "id": 273,
+                    "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "119:7:6",
+                    "src": "120:4:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -311,16 +311,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "118:10:6"
+              "src": "119:6:5"
             },
             "returnParameters": {
-              "id": 398,
+              "id": 276,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "145:0:6"
+              "src": "142:0:5"
             },
-            "scope": 408,
-            "src": "102:44:6",
+            "scope": 286,
+            "src": "103:40:5",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "external"
@@ -329,7 +329,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "2e1a7d4d",
-            "id": 404,
+            "id": 282,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -337,18 +337,18 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 402,
+              "id": 280,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 401,
+                  "id": 279,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 404,
-                  "src": "171:7:6",
+                  "scope": 282,
+                  "src": "167:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -356,10 +356,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 400,
-                    "name": "uint256",
+                    "id": 278,
+                    "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "171:7:6",
+                    "src": "167:4:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -369,16 +369,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "170:9:6"
+              "src": "166:6:5"
             },
             "returnParameters": {
-              "id": 403,
+              "id": 281,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "196:0:6"
+              "src": "189:0:5"
             },
-            "scope": 408,
-            "src": "153:44:6",
+            "scope": 286,
+            "src": "149:41:5",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "external"
@@ -387,7 +387,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "853828b6",
-            "id": 407,
+            "id": 285,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -395,29 +395,29 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 405,
+              "id": 283,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "224:2:6"
+              "src": "216:2:5"
             },
             "returnParameters": {
-              "id": 406,
+              "id": 284,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "243:0:6"
+              "src": "235:0:5"
             },
-            "scope": 408,
-            "src": "204:40:6",
+            "scope": 286,
+            "src": "196:40:5",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "external"
           }
         ],
-        "scope": 409,
-        "src": "69:181:6"
+        "scope": 287,
+        "src": "67:172:5"
       }
     ],
-    "src": "40:210:6"
+    "src": "40:199:5"
   },
   "compiler": {
     "name": "solc",
@@ -425,7 +425,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-17T06:05:04.470Z",
+  "updatedAt": "2020-12-17T12:52:11.646Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

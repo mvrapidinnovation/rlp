@@ -28,8 +28,8 @@ module.exports = async function (deployer, network, accounts) {
   // await deployer.deploy(CrvToken, "Curve Token", "CRV", 18, 0);
   // const crvToken = await CrvToken.deployed();
 
-  await deployer.deploy(RpToken);
-  const rpToken = await RpToken.deployed();  
+  // await deployer.deploy(RpToken);
+  // const rpToken = await RpToken.deployed();  
 
   // await deployer.deploy(CrvPool,
   //   accounts[0],

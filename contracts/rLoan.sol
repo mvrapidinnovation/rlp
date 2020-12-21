@@ -2,8 +2,8 @@
 pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
-import './Interfaces/Erc20Interface.sol';
-import './Interfaces/RoyaleInterface.sol';
+import '../Interfaces/Erc20Interface.sol';
+import '../Interfaces/RoyaleInterface.sol';
 
 
 contract rLoan {

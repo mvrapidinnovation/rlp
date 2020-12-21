@@ -28,27 +28,27 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amount\",\"type\":\"uint256[3]\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amount\",\"type\":\"uint256[3]\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/Interfaces/YieldOptInterface.sol\":\"IYieldOpt\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/Interfaces/YieldOptInterface.sol\":{\"keccak256\":\"0x6e71eaf9a22ea321c5f21b6c0e49932c364b9f903b56f8ff54678214da589948\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://4c9a065efd3b878fea729bf847a7f5b18f6ee5eec9dbb5f452485f1f5a0cef22\",\"dweb:/ipfs/QmWGfq6eHj9TmemruFqeWQ4YfBUFEzNZjDCxDRF645QRDJ\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amount\",\"type\":\"uint256[3]\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amount\",\"type\":\"uint256[3]\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/YieldOptInterface.sol\":\"IYieldOpt\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/YieldOptInterface.sol\":{\"keccak256\":\"0x6e71eaf9a22ea321c5f21b6c0e49932c364b9f903b56f8ff54678214da589948\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://4c9a065efd3b878fea729bf847a7f5b18f6ee5eec9dbb5f452485f1f5a0cef22\",\"dweb:/ipfs/QmWGfq6eHj9TmemruFqeWQ4YfBUFEzNZjDCxDRF645QRDJ\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\n\r\nabstract contract IYieldOpt {\r\n    function deposit(uint256[3] calldata amount) virtual external;\r\n\r\n    function withdraw(uint256[3] calldata amount) virtual external;\r\n}",
-  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\rlp\\contracts\\Interfaces\\YieldOptInterface.sol",
+  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\royale-contracts\\Interfaces\\YieldOptInterface.sol",
   "ast": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/Interfaces/YieldOptInterface.sol",
+    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/YieldOptInterface.sol",
     "exportedSymbols": {
       "IYieldOpt": [
-        223
+        270
       ]
     },
-    "id": 224,
+    "id": 271,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 208,
+        "id": 255,
         "literals": [
           "solidity",
           "^",
@@ -65,9 +65,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 223,
+        "id": 270,
         "linearizedBaseContracts": [
-          223
+          270
         ],
         "name": "IYieldOpt",
         "nodeType": "ContractDefinition",
@@ -76,7 +76,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "d4e20b01",
-            "id": 215,
+            "id": 262,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -84,17 +84,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 213,
+              "id": 260,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 212,
+                  "id": 259,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 215,
+                  "scope": 262,
                   "src": "119:26:4",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -104,7 +104,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 209,
+                      "id": 256,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "119:7:4",
@@ -113,11 +113,11 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 211,
+                    "id": 258,
                     "length": {
                       "argumentTypes": null,
                       "hexValue": "33",
-                      "id": 210,
+                      "id": 257,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -146,12 +146,12 @@
               "src": "118:28:4"
             },
             "returnParameters": {
-              "id": 214,
+              "id": 261,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "163:0:4"
             },
-            "scope": 223,
+            "scope": 270,
             "src": "102:62:4",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -161,7 +161,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "b1b8f1be",
-            "id": 222,
+            "id": 269,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -169,17 +169,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 220,
+              "id": 267,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 219,
+                  "id": 266,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 222,
+                  "scope": 269,
                   "src": "190:26:4",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -189,7 +189,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 216,
+                      "id": 263,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "190:7:4",
@@ -198,11 +198,11 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 218,
+                    "id": 265,
                     "length": {
                       "argumentTypes": null,
                       "hexValue": "33",
-                      "id": 217,
+                      "id": 264,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -231,37 +231,37 @@
               "src": "189:28:4"
             },
             "returnParameters": {
-              "id": 221,
+              "id": 268,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "234:0:4"
             },
-            "scope": 223,
+            "scope": 270,
             "src": "172:63:4",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "external"
           }
         ],
-        "scope": 224,
+        "scope": 271,
         "src": "67:171:4"
       }
     ],
     "src": "40:198:4"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/Interfaces/YieldOptInterface.sol",
+    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/royale-contracts/Interfaces/YieldOptInterface.sol",
     "exportedSymbols": {
       "IYieldOpt": [
-        223
+        270
       ]
     },
-    "id": 224,
+    "id": 271,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 208,
+        "id": 255,
         "literals": [
           "solidity",
           "^",
@@ -278,9 +278,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 223,
+        "id": 270,
         "linearizedBaseContracts": [
-          223
+          270
         ],
         "name": "IYieldOpt",
         "nodeType": "ContractDefinition",
@@ -289,7 +289,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "d4e20b01",
-            "id": 215,
+            "id": 262,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -297,17 +297,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 213,
+              "id": 260,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 212,
+                  "id": 259,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 215,
+                  "scope": 262,
                   "src": "119:26:4",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -317,7 +317,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 209,
+                      "id": 256,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "119:7:4",
@@ -326,11 +326,11 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 211,
+                    "id": 258,
                     "length": {
                       "argumentTypes": null,
                       "hexValue": "33",
-                      "id": 210,
+                      "id": 257,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -359,12 +359,12 @@
               "src": "118:28:4"
             },
             "returnParameters": {
-              "id": 214,
+              "id": 261,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "163:0:4"
             },
-            "scope": 223,
+            "scope": 270,
             "src": "102:62:4",
             "stateMutability": "nonpayable",
             "virtual": true,
@@ -374,7 +374,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "b1b8f1be",
-            "id": 222,
+            "id": 269,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -382,17 +382,17 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 220,
+              "id": 267,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 219,
+                  "id": 266,
                   "mutability": "mutable",
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 222,
+                  "scope": 269,
                   "src": "190:26:4",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -402,7 +402,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 216,
+                      "id": 263,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "190:7:4",
@@ -411,11 +411,11 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 218,
+                    "id": 265,
                     "length": {
                       "argumentTypes": null,
                       "hexValue": "33",
-                      "id": 217,
+                      "id": 264,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -444,19 +444,19 @@
               "src": "189:28:4"
             },
             "returnParameters": {
-              "id": 221,
+              "id": 268,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "234:0:4"
             },
-            "scope": 223,
+            "scope": 270,
             "src": "172:63:4",
             "stateMutability": "nonpayable",
             "virtual": true,
             "visibility": "external"
           }
         ],
-        "scope": 224,
+        "scope": 271,
         "src": "67:171:4"
       }
     ],
@@ -468,7 +468,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-14T11:26:53.243Z",
+  "updatedAt": "2020-12-17T12:52:11.644Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

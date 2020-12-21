@@ -1,20 +1,21 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
-import './Interfaces/CurveInterface.sol';
-import './Interfaces/ERC20Interface.sol';
+import '../Interfaces/CurveInterface.sol';
+import '../Interfaces/ERC20Interface.sol';
 
 contract rCurve {
 
     uint128 constant N_COINS = 3;
-
     address owner;
     
     Erc20[N_COINS] tokens;
     Erc20 PoolToken;
-    curvePool public Pool; 
-//= curvePool(0x5B2A3246d70ABB9121EA532a9Ac6f77D45366643);
+    curvePool public Pool = curvePool(0x5B2A3246d70ABB9121EA532a9Ac6f77D45366643); // This address is on ropsten
+
     address LPaddr;
+
+    uint256[N_COINS] poolBalance;
 
     constructor(
         Erc20 _poolToken,
@@ -49,6 +50,10 @@ contract rCurve {
         uint mintAmount = Pool.calc_token_amount(amounts, true);
         mintAmount = (99 * mintAmount) / 100;
         Pool.add_liquidity(amounts, mintAmount);
+
+        for(uint8 i=0; i<N_COINS; i++){
+            poolBalance[i] += amounts[i];
+        }
     }
 
     // Withdraw
@@ -69,23 +74,43 @@ contract rCurve {
 
         Pool.remove_liquidity_imbalance(amounts, max_burn);
 
-        for(uint8 i=0; i<N_COINS; i++) {
-            if(amounts[i] > 0) {
-                tokens[i].transfer(LPaddr, amounts[i]);
-            }
+        for(uint8 i=0; i<N_COINS; i++){
+            poolBalance[i] -= amounts[i];
         }
     }
 
+    /* Functions for royaleLP */
     function deposit(uint256[N_COINS] calldata amount) external {
+        require(msg.sender == LPaddr, "not authorized");
         _deposit(amount);
     }
 
     function withdraw(uint256[N_COINS] calldata amount) external {
+        require(msg.sender == LPaddr, "not authorized");
         _withdraw(amount);
+
+        for(uint8 i=0; i<N_COINS; i++) {
+            if(amount[i] > 0) {
+                tokens[i].transfer(LPaddr, amount[i]);
+            }
+        }
     }
 
-    function updateRoyalelp(address _addr) external {
-        require(msg.sender == owner);
-        LPaddr = _addr;
+    function _withdrawAll() internal {
+        uint crvBal = PoolToken.balanceOf(address(this));
+        Pool.remove_liquidity(crvBal, [poolBalance[0], poolBalance[1], poolBalance[2]]);
+    }
+
+    function changePool(address _to) external {
+        require(msg.sender == owner, "not authorized");
+
+        _withdrawAll();
+
+        for(uint8 i=0; i<3; i++) {
+            uint amt = tokens[i].balanceOf(address(this));
+            if(amt > 0) {
+                tokens[i].transfer(_to, amt);
+            }
+        }
     }
 }
