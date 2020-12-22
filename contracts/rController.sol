@@ -75,4 +75,12 @@ contract rController {
         rStrategy[coin].stakeLP(_perc);
     }
 
+    function unstakeLPtokens(uint8 coin) external onlyAuthorized {
+        rStrategy[coin].unstakeLP();
+    }
+
+    function claimCRVreward(uint8 coin) external onlyAuthorized {
+        rStrategy[coin].claimCRV();
+    }
+
 }

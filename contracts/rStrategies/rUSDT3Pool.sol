@@ -10,6 +10,7 @@ contract rUSDT3Pool {
     Erc20 PoolToken;
     curvePool public Pool;
     PoolGauge public gauge;
+    Minter public minter;
 
     address rControllerAddress;
     address RoyaleLPaddr;
@@ -20,7 +21,9 @@ contract rUSDT3Pool {
 
     address public owner;
 
-     modifier onlyAuthorized {
+    uint256 public stakedAmt;
+
+    modifier onlyAuthorized {
         require(msg.sender == owner || msg.sender == rControllerAddress,"not authorized");
         _;
     }
@@ -83,8 +86,19 @@ contract rUSDT3Pool {
 
     function stakeLP(uint _perc) external onlyAuthorized {
         uint depositAmt = (PoolToken.balanceOf(address(this)) * _perc) / 100;
+        stakedAmt += depositAmt;
         PoolToken.approve(address(gauge), depositAmt);
         gauge.deposit(depositAmt);
+    }
+
+    function unstakeLP() external onlyAuthorized {
+        uint withdrawAmt = stakedAmt;
+        stakedAmt = 0;
+        gauge.withdraw(withdrawAmt);
+    }
+
+    function claimCRV() external onlyAuthorized {
+        minter.mint(address(gauge));
     }
 
     function calculateProfit() external view onlyAuthorized returns(uint256) {
