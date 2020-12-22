@@ -71,8 +71,8 @@ contract rController {
          return totalProfit;
     }
 
-    function stakeLPtokens(uint8 coin, uint _perc) external onlyAuthorized {
-        rStrategy[coin].stakeLP(_perc);
+    function stakeLPtokens(uint8 coin) external onlyAuthorized {
+        rStrategy[coin].stakeLP();
     }
 
 }

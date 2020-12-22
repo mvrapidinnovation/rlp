@@ -20,6 +20,9 @@ contract rUSDT3Pool {
 
     address public owner;
 
+    uint8 public _perc=75;
+    uint256 public deposited3CRV;
+
      modifier onlyAuthorized {
         require(msg.sender == owner || msg.sender == rControllerAddress,"not authorized");
         _;
@@ -40,6 +43,10 @@ contract rUSDT3Pool {
         PoolToken = Erc20(_crvtoken);
         RoyaleLPaddr = _royaLP;
         gauge = PoolGauge(_gauge);
+    }
+
+    function set3CRVPercentage(uint8 _percentage3CRV)external onlyAuthorized{
+        _perc=_percentage3CRV;
     }
 
 
@@ -81,10 +88,14 @@ contract rUSDT3Pool {
         Coin.transfer(rControllerAddress, Coin.balanceOf(address(this)));
     }
 
-    function stakeLP(uint _perc) external onlyAuthorized {
-        uint depositAmt = (PoolToken.balanceOf(address(this)) * _perc) / 100;
-        PoolToken.approve(address(gauge), depositAmt);
-        gauge.deposit(depositAmt);
+    function stakeLP() external onlyAuthorized {
+        uint depositAmt = ((PoolToken.balanceOf(address(this))+deposited3CRV) * _perc) / 100;
+        depositAmt-=deposited3CRV;
+         if(depositAmt!=0){
+           PoolToken.approve(address(gauge), depositAmt);
+           gauge.deposit(depositAmt);
+           deposited3CRV+=depositAmt;
+        }
     }
 
     function calculateProfit() external view onlyAuthorized returns(uint256) {

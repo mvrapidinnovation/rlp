@@ -767,7 +767,12 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 lpCRV = await crvToken.balanceOf(usdcpool.address);
                 console.log(`USDCPool CRV balance: ${lpCRV / 1e18}`);
 
-                await controller.stakeLPtokens(1, 75);
+                await controller.stakeLPtokens(1);
+
+                lpCRV = await crvToken.balanceOf(usdcpool.address);
+                console.log(`USDCPool CRV balance: ${lpCRV / 1e18}`);
+
+                await controller.stakeLPtokens(1);
 
                 lpCRV = await crvToken.balanceOf(usdcpool.address);
                 console.log(`USDCPool CRV balance: ${lpCRV / 1e18}`);
