@@ -41,7 +41,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getStrategies\",\"outputs\":[{\"internalType\":\"contract rStrategyI[3]\",\"name\":\"\",\"type\":\"address[3]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol\":\"rControllerI\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol\":{\"keccak256\":\"0xcd105b7f046efda7802c03911a1510820cbad33ab7a55b49679c8fd95b0b72de\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://9e70f7d69b33d86c463a64d28d2e00e52fbe47bdc1c86a6277e88b28a2abc5a9\",\"dweb:/ipfs/QmYKEVWnC2yeBEBmkRB4kEMtuvaZXjYvW2ThCgCwY3r1VF\"]},\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/rStrategyInterface.sol\":{\"keccak256\":\"0x9ae49cf0c82c49511b989936d982985c6e7cf344596abf44256c7009abc95429\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://f07dc414555d75cf9e793c9a64b07614eb104e2ff7fda6335762ab240a1d24d7\",\"dweb:/ipfs/QmNetZ3nkSBsoBQkunmuw382mNxraiMQYeSY6GNRLZuwSX\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getStrategies\",\"outputs\":[{\"internalType\":\"contract rStrategyI[3]\",\"name\":\"\",\"type\":\"address[3]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol\":\"rControllerI\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol\":{\"keccak256\":\"0xcd105b7f046efda7802c03911a1510820cbad33ab7a55b49679c8fd95b0b72de\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://9e70f7d69b33d86c463a64d28d2e00e52fbe47bdc1c86a6277e88b28a2abc5a9\",\"dweb:/ipfs/QmYKEVWnC2yeBEBmkRB4kEMtuvaZXjYvW2ThCgCwY3r1VF\"]},\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/rStrategyInterface.sol\":{\"keccak256\":\"0x3ee589812f27affd0f2b31e42d44a1ecaf712fb7fc610398189adcbecc32217f\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://3c8a32dad054d78a550c65e46d060d4ca4885511d71e0e8ee73be68ac0dd9d63\",\"dweb:/ipfs/QmRchUFLEjDo6HDjFDv8muTHb8jXHb4Dmr7ejjFVzPKtvx\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -77,7 +77,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 25,
-        "sourceUnit": 295,
+        "sourceUnit": 306,
         "src": "67:46:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -129,7 +129,7 @@
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_contract$_rStrategyI_$294_$3_memory_ptr",
+                    "typeIdentifier": "t_array$_t_contract$_rStrategyI_$305_$3_memory_ptr",
                     "typeString": "contract rStrategyI[3]"
                   },
                   "typeName": {
@@ -138,10 +138,10 @@
                       "id": 4,
                       "name": "rStrategyI",
                       "nodeType": "UserDefinedTypeName",
-                      "referencedDeclaration": 294,
+                      "referencedDeclaration": 305,
                       "src": "206:10:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_rStrategyI_$294",
+                        "typeIdentifier": "t_contract$_rStrategyI_$305",
                         "typeString": "contract rStrategyI"
                       }
                     },
@@ -167,7 +167,7 @@
                     "nodeType": "ArrayTypeName",
                     "src": "206:13:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_contract$_rStrategyI_$294_$3_storage_ptr",
+                      "typeIdentifier": "t_array$_t_contract$_rStrategyI_$305_$3_storage_ptr",
                       "typeString": "contract rStrategyI[3]"
                     }
                   },
@@ -388,7 +388,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 25,
-        "sourceUnit": 295,
+        "sourceUnit": 306,
         "src": "67:46:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -440,7 +440,7 @@
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_contract$_rStrategyI_$294_$3_memory_ptr",
+                    "typeIdentifier": "t_array$_t_contract$_rStrategyI_$305_$3_memory_ptr",
                     "typeString": "contract rStrategyI[3]"
                   },
                   "typeName": {
@@ -449,10 +449,10 @@
                       "id": 4,
                       "name": "rStrategyI",
                       "nodeType": "UserDefinedTypeName",
-                      "referencedDeclaration": 294,
+                      "referencedDeclaration": 305,
                       "src": "206:10:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_rStrategyI_$294",
+                        "typeIdentifier": "t_contract$_rStrategyI_$305",
                         "typeString": "contract rStrategyI"
                       }
                     },
@@ -478,7 +478,7 @@
                     "nodeType": "ArrayTypeName",
                     "src": "206:13:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_contract$_rStrategyI_$294_$3_storage_ptr",
+                      "typeIdentifier": "t_array$_t_contract$_rStrategyI_$305_$3_storage_ptr",
                       "typeString": "contract rStrategyI[3]"
                     }
                   },
@@ -677,7 +677,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-22T05:29:03.750Z",
+  "updatedAt": "2020-12-22T07:22:06.363Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

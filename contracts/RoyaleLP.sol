@@ -13,18 +13,20 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         _;
     }
 
+     modifier onlyAuthorized {
+        require(msg.sender == owner || msg.sender==loanContract,"Not Authorized to call");
+        _;
+    }
+
     constructor(
         address[N_COINS] memory _tokens,
         address _rpToken
     ) public {
-        // Set owner
         owner = msg.sender;
 
         for(uint8 i=0; i<N_COINS; i++) {
             tokens[i] = Erc20(_tokens[i]);
         }
-
-        // Set RPT
         rpToken = Erc20(_rpToken);
     }
     
@@ -56,31 +58,12 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         return balances;
     }
 
-    function calcRptAmount(uint256[N_COINS] memory amounts, bool burn) public view returns(uint256) {
-        uint256 rptAmt;
-        uint256 total = 0;
-        uint256 decimal = 0;
-        uint256 totalSuppliedTokens;
-        uint256 totalRPTSupply;
 
-        totalRPTSupply = bdiv(rpToken.totalSupply(), 10**18);
-        
-        for(uint8 i=0; i<N_COINS; i++) {
-            decimal = tokens[i].decimals();
-            total += bdiv(selfBalance[i]+loanGiven[i], 10**decimal);
-            totalSuppliedTokens += bdiv(amounts[i], 10**decimal);
-        }
-
-        rptAmt = bmul(bdiv(totalSuppliedTokens, total), totalRPTSupply);
-
-        if(burn == true) {
-            rptAmt = rptAmt + (rptAmt * fees) / 10000;
-        }
-
-        return rptAmt;
-    }
 
     // functions related to deposit and supply
+
+
+
 
     // This function deposits the fund to Yield Optimizer
     function _deposit(uint256[N_COINS] memory amounts) internal {
@@ -90,6 +73,10 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
             YieldPoolBalance[i] += amounts[i];
         }
     }
+
+
+
+    //Internal Calculation For User Supply 
 
     function _supply(uint256[N_COINS] memory amounts) internal {
         uint256 mintTokens;        
@@ -108,17 +95,15 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                 amountSupplied[msg.sender][i] += amounts[i];
             }
         }
-    
-        // rpToken.mint(msg.sender, mintTokens * 10**10);
         rpToken.mint(msg.sender, mintTokens);
-
         bool[N_COINS] memory falseArray;
         depositDetails memory d = depositDetails(amounts, amounts, now, falseArray);
         supplyTime[msg.sender].push(d);
     }
 
-    // functions related to withdraw, withdraw queue and withdraw from Yield Optimizer
 
+
+    // functions related to withdraw, withdraw queue and withdraw from Yield Optimizer
     function _takeBack(address recipient) internal {
         bool result;
 
@@ -166,6 +151,9 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         }
     }
 
+
+
+
     // this will fulfill withdraw requests from the queue
     function _giveBack() internal {
         
@@ -176,6 +164,10 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         }
 
     }
+
+
+
+
 
     // this will add unfulfilled withdraw requests to the queue
     function _takeBackQ(uint256[N_COINS] memory amounts) internal {
@@ -195,6 +187,9 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     }
 
+
+
+
     // this will withdraw from Yield Optimizer into this contract
     function _withdraw(uint256[N_COINS] memory amounts) internal {
         controller.withdraw(amounts);
@@ -204,6 +199,42 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         }
     }
 
+
+
+
+    //public function  for utilities
+
+
+   //This function calculate RPT to be mint or burn
+    function calcRptAmount(uint256[N_COINS] memory amounts, bool burn) public view returns(uint256) {
+        uint256 rptAmt;
+        uint256 total = 0;
+        uint256 decimal = 0;
+        uint256 totalSuppliedTokens;
+        uint256 totalRPTSupply;
+
+        totalRPTSupply = bdiv(rpToken.totalSupply(), 10**18);
+        
+        for(uint8 i=0; i<N_COINS; i++) {
+            decimal = tokens[i].decimals();
+            total += bdiv(selfBalance[i]+loanGiven[i], 10**decimal);
+            totalSuppliedTokens += bdiv(amounts[i], 10**decimal);
+        }
+
+        rptAmt = bmul(bdiv(totalSuppliedTokens, total), totalRPTSupply);
+
+        if(burn == true) {
+            rptAmt = rptAmt + (rptAmt * fees) / 10000;
+        }
+
+        return rptAmt;
+    }
+
+
+
+
+
+    //function to check available amount to withdraw for user
     function availableWithdraw(address addr, uint coin) public view returns(uint256) {
 
         uint256 amount=0;
@@ -222,6 +253,9 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         return amount;
     }
 
+
+
+
     /* USER FUNCTIONS (exposed to frontend) */
 
     function supply(uint256[N_COINS] calldata amounts) external {
@@ -234,6 +268,10 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
         emit userSupplied(msg.sender, amounts);
     }
+
+
+
+
 
     function requestWithdraw(uint256[N_COINS] calldata amounts) external {
         require(
@@ -306,9 +344,12 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
             emit userAddedToQ(msg.sender, amounts);
         }
     }
+
+
+
     
     // Following two functions are called by rLoan Only
-    function _loanWithdraw(uint256[N_COINS] memory amounts, address _loanSeeker) public returns(bool) {
+    function _loanWithdraw(uint256[N_COINS] memory amounts, address _loanSeeker) public onlyAuthorized returns(bool) {
         _withdraw(amounts);
 
         for(uint8 i=0; i<N_COINS; i++) {
@@ -321,7 +362,13 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         return true;
     }
 
-    function _loanRepayment(uint256[N_COINS] memory amounts, address _loanSeeker) public returns(bool) {
+
+
+
+
+
+    //Function only called by multisig contract for transfering tokens
+    function _loanRepayment(uint256[N_COINS] memory amounts, address _loanSeeker) public onlyAuthorized returns(bool) {
         for(uint8 i=0; i<N_COINS; i++) {
             if(amounts[i] > 0) {
                 loanGiven[i] -= amounts[i];
@@ -332,15 +379,13 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         return true;
     }
 
-    function getCurrentPoolBalance() external view returns(uint256[3] memory) {
-        return selfBalance;
-    }
 
-    function getTotalLoanGiven() external view returns(uint256[3] memory) {
-        return loanGiven;
-    }
 
-    // this function deposits without minting 
+
+
+
+
+    // this function deposits without minting RPT
     function depsoitInRoyale(uint256[N_COINS] calldata amounts) external {
         for(uint8 i=0;i<N_COINS;i++){
             if(amounts[i]!=0){
@@ -351,8 +396,14 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     }
 
 
+
+
+
     /* CORE FUNCTIONS (also exposed to frontend but to be called by owner only) */
 
+
+
+   //function for deposit in pool for yield
     function deposit() onlyOwner external {
         uint256[N_COINS] memory amounts = _getBalances();
         uint256 decimal;
@@ -385,6 +436,10 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         }
     }
 
+
+
+
+    //Function available in ui for owner , withdrawing from Pool(curve or any other)
     function withdraw() onlyOwner external {
 
         uint8 counter = 0;
@@ -401,12 +456,81 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         _giveBack();
     }
 
+
+    //function for rebalancing pool(ratio)
+      
+    function rebalance() onlyOwner external{
+        uint256[N_COINS] memory currentAmount = _getBalances();
+        uint256[N_COINS] memory amountToWithdraw;
+        uint256[N_COINS] memory amountToDeposit;
+        rStrategyI[3] memory strat = controller.getStrategies();
+
+        for(uint8 i=0;i<N_COINS;i++){
+           uint256 a= (selfBalance[i]*(100-poolPart))/100;
+           if(a>currentAmount[i]){
+              amountToWithdraw[i] = a-currentAmount[i];
+           }
+           else if(a<currentAmount[i]){
+               amountToDeposit[i]=currentAmount[i]-a;
+               tokens[i].transfer(address(strat[i]), amountToDeposit[i]);
+           }
+           else{
+               amountToWithdraw[i]=0;
+               amountToDeposit[i]=0;
+           }
+        }
+        bool check=false;
+        for(uint8 i=0;i<N_COINS;i++){
+            if(amountToDeposit[i]>0){
+                  check=true;
+                  break;
+            }
+        }
+        if(check){
+             _deposit(amountToDeposit);
+             check=false;
+        }
+        for(uint8 i=0;i<N_COINS;i++){
+            if(amountToWithdraw[i]>0){
+                  check=true;
+                  break;
+            }
+        }
+        if(check){
+            _withdraw(amountToWithdraw);
+             check=false;
+        }
+
+    }
+
+
+
+
+
+
     /* ADMIN FUNCTIONS */
+
+    
+    function getCurrentPoolBalance() external view returns(uint256[3] memory) {
+        return selfBalance;
+    }
+
+
+    function getTotalLoanGiven() external view returns(uint256[3] memory) {
+        return loanGiven;
+    }
+
+    function setLoanContract(address _loanContract)external onlyOwner returns(bool){
+        loanContract=_loanContract;
+    }
+
 
     function changePoolPart(uint128 _newPoolPart) external onlyOwner returns(bool) {
         poolPart = _newPoolPart;
         return true;
     }
+
+    
 
     function setThresholdTokenAmount(uint256 _newThreshold) external onlyOwner returns(bool) {
         thresholdTokenAmount = _newThreshold;
