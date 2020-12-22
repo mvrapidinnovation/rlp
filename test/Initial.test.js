@@ -761,7 +761,7 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
        
         });
 
-        describe('LP tokens staking', async() => {
+        describe('LP tokens staking/unstaking', async() => {
 
             it('has staked 3CRV', async() => {
                 lpCRV = await crvToken.balanceOf(usdcpool.address);
@@ -773,6 +773,13 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 console.log(`USDCPool CRV balance: ${lpCRV / 1e18}`);
 
                 await controller.stakeLPtokens(1);
+
+                lpCRV = await crvToken.balanceOf(usdcpool.address);
+                console.log(`USDCPool CRV balance: ${lpCRV / 1e18}`);
+            });
+
+            it('has unstaked 3CRV', async() => {
+                await controller.unstakeLPtokens(1,toDai('200'));
 
                 lpCRV = await crvToken.balanceOf(usdcpool.address);
                 console.log(`USDCPool CRV balance: ${lpCRV / 1e18}`);

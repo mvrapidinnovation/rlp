@@ -10,6 +10,7 @@ contract rDAI3Pool {
     Erc20 PoolToken;
     curvePool public Pool;
     PoolGauge public gauge;
+    Minter public minter;
 
     address rControllerAddress;
     address RoyaleLPaddr;
@@ -24,7 +25,7 @@ contract rDAI3Pool {
     uint256 public deposited3CRV;
 
 
-     modifier onlyAuthorized {
+    modifier onlyAuthorized {
         require(msg.sender == owner || msg.sender == rControllerAddress,"not authorized");
         _;
     }
@@ -95,6 +96,17 @@ contract rDAI3Pool {
            gauge.deposit(depositAmt);
            deposited3CRV+=depositAmt;
         }
+    }
+
+    function unstakeLP(uint _amount) external onlyAuthorized {
+        require(deposited3CRV>=_amount,"You have not staked that amount");
+       
+        gauge.withdraw(_amount);
+         deposited3CRV -=_amount;
+    }
+
+    function claimCRV() external onlyAuthorized {
+        minter.mint(address(gauge));
     }
 
     function calculateProfit() external view onlyAuthorized returns(uint256) {

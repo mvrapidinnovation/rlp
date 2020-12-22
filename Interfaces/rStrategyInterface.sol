@@ -6,5 +6,7 @@ abstract contract rStrategyI {
     function withdraw(uint) virtual external;
     function withdrawAll() virtual external;
     function stakeLP() virtual external;
+    function unstakeLP(uint) virtual external;
+    function claimCRV() virtual external;
     function calculateProfit()virtual external returns(uint256);
 }
