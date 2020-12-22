@@ -80,6 +80,7 @@ contract rUSDC3Pool {
 
     function stakeLP(uint _perc) external onlyAuthorized {
         uint depositAmt = (PoolToken.balanceOf(address(this)) * _perc) / 100;
+        PoolToken.approve(address(gauge), depositAmt);
         gauge.deposit(depositAmt);
     }
 
