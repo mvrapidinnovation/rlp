@@ -7,7 +7,7 @@ const RpToken = artifacts.require('RPToken');
 const CrvPool = artifacts.require('StableSwap3Pool');
 const RoyaleLP = artifacts.require('RoyaleLP');
 
-const RCurve = artifacts.require('rCurve');
+// const RCurve = artifacts.require('rCurve');
 
 const MRoya = artifacts.require('MRoya');
 const MRoyaFarm = artifacts.require('MRoyaFarm');

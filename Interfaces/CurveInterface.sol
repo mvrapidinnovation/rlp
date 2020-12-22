@@ -49,3 +49,7 @@ abstract contract curvePool {
         uint256
     ) virtual external;
 }
+
+abstract contract PoolGauge {
+    function deposit(uint256) virtual external;
+}

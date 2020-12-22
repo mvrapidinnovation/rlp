@@ -3,7 +3,7 @@ const { assert } = require('chai');
 const DaiToken = artifacts.require('DaiToken');
 const UsdcToken = artifacts.require('UsdcToken');
 const UsdtToken = artifacts.require('UsdtToken');
-const CrvToken = artifacts.require('PoolToken');
+const Crv3Token = artifacts.require('PoolToken');
 const RpToken = artifacts.require('RPToken');
 
 const Controller=artifacts.require('rController');
@@ -14,13 +14,20 @@ const Pool3USDt=artifacts.require('rUSDT3Pool');
 const CrvPool = artifacts.require('StableSwap3Pool');
 const RoyaleLP = artifacts.require('RoyaleLP');
 
-const RCurve = artifacts.require('rCurve');
+// const RCurve = artifacts.require('rCurve');
 
 
 const MRoya = artifacts.require('MRoya');
 const MRoyaFarm = artifacts.require('MRoyaFarm');
 
 const RLoan = artifacts.require('rLoan');
+
+const CRVToken = artifacts.require('CRVToken');
+const VotingEscrow = artifacts.require('VotingEscrow');
+const GaugeController = artifacts.require('Pool3GuageController');
+const Minter = artifacts.require('Minter');
+const Gauge = artifacts.require('Pool3Gauge');
+
 
 function toDai(n) {
     return web3.utils.toWei(n, 'ether');
@@ -37,18 +44,25 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
     let royaleLP, rpToken, rCurve;
     let mRoya, mRoyaFarm, rLoan;
     let controller, usdcpool, usdtpool, daipool, daipool2;
+    let CRVtoken, veCRV, gaugeController, minter, gauge;
 
     before(async() => {
         // Deploying Tokens
         daiToken = await DaiToken.new();
         usdcToken = await UsdcToken.new();
         usdtToken = await UsdtToken.new();
+
+        crvToken = await Crv3Token.new("Curve Token", "CRV", 18, 0);
+        CRVtoken = await CRVToken.new("Curve DAO Token", "CRV", 18);
+        veCRV = await VotingEscrow.new(CRVtoken.address, "Vote-escrowed CRV", "veCRV", "veCRV_1.0.0");
+
+        rpToken = await RpToken.new();
+        mRoya = await MRoya.new();
+
+        // rController
         controller=await Controller.new(
             [daiToken.address, usdcToken.address, usdtToken.address]
         );
-        crvToken = await CrvToken.new("Curve Token", "CRV", 18, 0);
-        rpToken = await RpToken.new();
-        mRoya = await MRoya.new();
 
         // Deploying Curve 3Pool
         crvPool = await CrvPool.new(
@@ -59,6 +73,10 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             4000000, 
             5000000000, 
         );
+
+        gaugeController = await GaugeController.new(CRVtoken.address, veCRV.address);
+        minter = await Minter.new(CRVtoken.address, gaugeController.address);
+        gauge = await Gauge.new(crvToken.address, minter.address);
 
         // Deploying RoyaleLP contract
         royaleLP = await RoyaleLP.new(
@@ -75,7 +93,8 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             crvPool.address,
             daiToken.address,
             crvToken.address,
-            royaleLP.address
+            royaleLP.address,
+            gauge.address
         );
 
         daipool2=await Pool3DAI.new(
@@ -83,7 +102,8 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             crvPool.address,
             daiToken.address,
             crvToken.address,
-            royaleLP.address
+            royaleLP.address,
+            gauge.address
         );
 
         usdcpool=await Pool3USDC.new(
@@ -91,7 +111,8 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             crvPool.address,
             usdcToken.address,
             crvToken.address,
-            royaleLP.address
+            royaleLP.address,
+            gauge.address
         );
 
         usdtpool=await Pool3USDt.new(
@@ -99,8 +120,8 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             crvPool.address,
             usdtToken.address,
             crvToken.address,
-            royaleLP.address
-
+            royaleLP.address,
+            gauge.address
         );
 
         // rCurve = await RCurve.new(
@@ -123,29 +144,29 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
     describe('Setting Up Pool and tokens', async() => {
         describe('DaiToken deployment', async() => {
             it('has a name', async() => {
-                let name = await daiToken.name();
-                assert.equal(name, "Mock DAI Token");
+                result= await daiToken.name();
+                assert.equal(result, "Mock DAI Token");
             });
         });
     
         describe('UsdcToken deployment', async() => {
             it('has a name', async() => {
-                let name = await usdcToken.name();
-                assert.equal(name, "Mock USDC Token");
+                result= await usdcToken.name();
+                assert.equal(result, "Mock USDC Token");
             });
         });
     
         describe('UsdtToken deployment', async() => {
             it('has a name', async() => {
-                let name = await usdtToken.name();
-                assert.equal(name, "Mock USDT Token");
+                result= await usdtToken.name();
+                assert.equal(result, "Mock USDT Token");
             });
         });
     
-        describe('CrvToken deployment', async() => {
-            it('has a name', async() => {
-                let name = await crvToken.name();
-                assert.equal(name, "Curve Token");
+        describe('Curve Tokens deployment', async() => {
+            it('3CRV', async() => {
+                result= await crvToken.name();
+                assert.equal(result, "Curve Token");
             });
     
             it('has set minter', async() => {
@@ -153,9 +174,20 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
     
                 result = await crvToken.minter();
                 assert.equal(result.toString(), crvPool.address);
-            })
+            });
+
+            it('CRV', async() => {
+                result= await CRVtoken.name();
+                assert.equal(result, "Curve DAO Token");
+            });
+
+            it('veCRV', async() => {
+                result= await veCRV.name();
+                assert.equal(result, "Vote-escrowed CRV");
+            });
+
         });
-    
+        
         describe('CrvPool deployment', async() => {
             it('has initial liquidity', async() => {
                 await daiToken.approve(crvPool.address, toDai('50000'));
@@ -172,10 +204,45 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             });
         })
 
+        describe('Guage Controller deployment', async() => {
+            it('has CRV address', async() => {
+                result = await gaugeController.token();
+                assert.equal(result, CRVtoken.address);
+            });
+        });
+
+        describe('Minter Deployment', async() => {
+            it('has CRV address', async() => {
+                result = await minter.token();
+                assert.equal(result, CRVtoken.address);
+            });
+
+            it('has controller address', async() => {
+                result = await minter.controller();
+                assert.equal(result, gaugeController.address);
+            });
+        });
+
+        describe('Guage Deployment', async() => {
+            it('has curvePool address', async() => {
+                result = await gauge.lp_token();
+                assert.equal(result, crvToken.address);
+            });
+
+            it('has controller address', async() => {
+                result = await gauge.minter();
+                assert.equal(result, minter.address);
+            });
+
+            it('add guage', async() => {
+                gaugeController.add_gauge(gauge.address, 1);
+            });
+        });
+
         describe('RPToken deployment', async() => {
             it('has a name', async() => {
-                let name = await rpToken.name();
-                assert.equal(name, "Royale Protocol");
+                let result= await rpToken.name();
+                assert.equal(result, "Royale Protocol");
             });
 
             it('has set minter', async() => {
@@ -188,8 +255,8 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
 
         describe('MRoya deployment', async() => {
             it('has a name', async() => {
-                let name = await mRoya.name();
-                assert.equal(name, "mRoya Token");
+                let result= await mRoya.name();
+                assert.equal(result, "mRoya Token");
             });
 
             it('has set minter', async() => {
@@ -628,7 +695,6 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 lpCRV = await crvToken.balanceOf(usdtpool.address);
                 console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
             });
-       
         });
 
     });

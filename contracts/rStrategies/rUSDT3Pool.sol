@@ -9,6 +9,7 @@ contract rUSDT3Pool {
     Erc20 Coin;
     Erc20 PoolToken;
     curvePool public Pool;
+    PoolGauge public gauge;
 
     address rControllerAddress;
     address RoyaleLPaddr;
@@ -20,15 +21,16 @@ contract rUSDT3Pool {
         address _crvpool,
         address _coin,
         address _crvtoken,
-        address _royaLP
+        address _royaLP,
+        address _gauge
     ) public {
         rControllerAddress = _controller;
-        RoyaleLPaddr = _royaLP;
         Pool = curvePool(_crvpool);
         Coin = Erc20(_coin);
         PoolToken = Erc20(_crvtoken);
+        RoyaleLPaddr = _royaLP;
+        gauge = PoolGauge(_gauge);
     }
-
 
     function deposit(uint amount) external {
         require(msg.sender == rControllerAddress, "not authorized");
@@ -63,12 +65,19 @@ contract rUSDT3Pool {
     }
 
     function withdrawAll() external {
-        
+        require(msg.sender == rControllerAddress, "not authorized");
         uint bal = PoolToken.balanceOf(address(this));
 
         uint min_amount = depositBal - (depositBal / 10);
         Pool.remove_liquidity_one_coin(bal, 2, min_amount);
         Coin.transfer(rControllerAddress, Coin.balanceOf(address(this)));
+    }
+
+    function stakeLP(uint _perc) external {
+        require(msg.sender == rControllerAddress, "not authorized");
+
+        uint depositAmt = (PoolToken.balanceOf(address(this)) * _perc) / 100;
+        gauge.deposit(depositAmt);
     }
 
 }
