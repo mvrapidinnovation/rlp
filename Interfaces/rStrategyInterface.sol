@@ -5,4 +5,5 @@ abstract contract rStrategyI {
     function deposit(uint) virtual external;
     function withdraw(uint) virtual external;
     function withdrawAll() virtual external;
+    function calculateProfit()virtual external returns(uint256);
 }

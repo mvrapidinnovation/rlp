@@ -55,6 +55,8 @@ contract RoyaleLPstorage  is WithdrawQueue {
 
     uint256 public thresholdTokenAmount = 500;
 
+    uint256[N_COINS] public profitFromYield;
+
 
    //Varaible for user related to supply and withdraw
     uint128 public lock_period;

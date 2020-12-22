@@ -7,4 +7,5 @@ abstract contract rControllerI {
     function getStrategies() virtual external  returns(rStrategyI[3] memory);
     function deposit(uint256[3] calldata) virtual external;
     function withdraw(uint256[3] calldata) virtual external;
+    function getTotalProfit()virtual external returns(uint256[3] memory);
 }

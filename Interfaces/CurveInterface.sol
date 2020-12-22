@@ -2,6 +2,9 @@
 pragma solidity ^0.6.0;
 
 abstract contract curvePool {
+
+    function get_virtual_price()virtual external view returns(uint256);
+
     function calc_token_amount(
         uint256[3] calldata, 
         bool

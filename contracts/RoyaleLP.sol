@@ -214,14 +214,15 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         uint256 totalRPTSupply;
 
         totalRPTSupply = bdiv(rpToken.totalSupply(), 10**18);
-        
+      
         for(uint8 i=0; i<N_COINS; i++) {
+            
             decimal = tokens[i].decimals();
             total += bdiv(selfBalance[i]+loanGiven[i], 10**decimal);
             totalSuppliedTokens += bdiv(amounts[i], 10**decimal);
         }
-
-        rptAmt = bmul(bdiv(totalSuppliedTokens, total), totalRPTSupply);
+     
+        rptAmt = bmul(bdiv(totalSuppliedTokens, total), totalRPTSupply);        
 
         if(burn == true) {
             rptAmt = rptAmt + (rptAmt * fees) / 10000;
@@ -229,8 +230,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
         return rptAmt;
     }
-
-
 
 
 
@@ -530,7 +529,12 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         return true;
     }
 
-    
+    funtion getYieldProfit()external onlyOwner {
+        profitFromYield=controller.getTotalProfit();
+        for(uint8 i=0;i<N_COINS;i++){
+            selfBalance[i]+=profitFromYield[i];
+        }
+    }
 
     function setThresholdTokenAmount(uint256 _newThreshold) external onlyOwner returns(bool) {
         thresholdTokenAmount = _newThreshold;

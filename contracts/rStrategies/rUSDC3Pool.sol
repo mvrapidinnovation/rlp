@@ -14,6 +14,14 @@ contract rUSDC3Pool {
     address RoyaleLPaddr;
 
     uint256 depositBal;
+     uint256 virtual_price;
+
+    address public owner;
+
+     modifier onlyAuthorized {
+        require(msg.sender == owner || msg.sender==rControllerAddress,"Not Authorized to call");
+        _;
+    }
 
     constructor(
         address _controller, 
@@ -22,6 +30,7 @@ contract rUSDC3Pool {
         address _crvtoken,
         address _royaLP
     ) public {
+        owner=msg.sender;
         rControllerAddress = _controller;
         RoyaleLPaddr = _royaLP;
         Pool = curvePool(_crvpool);
@@ -30,20 +39,20 @@ contract rUSDC3Pool {
     }
 
 
-    function deposit(uint amount) external {
-        require(msg.sender == rControllerAddress, "not authorized");
+    function deposit(uint amount) external onlyAuthorized{
+       
 
         Coin.approve(address(Pool), amount);
         
         uint mintAmount = Pool.calc_token_amount([0, amount, 0], true);
         mintAmount = (99 * mintAmount) / 100;
         Pool.add_liquidity([0, amount, 0], mintAmount);
-
+         virtual_price=Pool.get_virtual_price();
         depositBal += amount;
     }
 
-    function withdraw(uint amount) external {
-        require(msg.sender == rControllerAddress, "not authorized");
+    function withdraw(uint amount) external onlyAuthorized{
+       
 
         uint256 max_burn = 0;
         uint256 decimal = 0;
@@ -62,13 +71,19 @@ contract rUSDC3Pool {
         depositBal -= amount;
     }
 
-    function withdrawAll() external {
+    function withdrawAll() external onlyAuthorized{
         
         uint bal = PoolToken.balanceOf(address(this));
 
         uint min_amount = depositBal - (depositBal / 10);
         Pool.remove_liquidity_one_coin(bal, 1, min_amount);
         Coin.transfer(rControllerAddress, Coin.balanceOf(address(this)));
+    }
+
+    function calculateProfit()external view onlyAuthorized returns(uint256){
+         uint current_virtual_price=Pool.get_virtual_price();
+         uint profit=(PoolToken.balanceOf(address(this))*(current_virtual_price-virtual_price))/(10**18);
+         return profit;
     }
 
 }
