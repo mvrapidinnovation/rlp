@@ -16,6 +16,16 @@ contract rDAI3Pool {
 
     uint256 depositBal;
 
+    uint256 virtual_price;
+
+    address public owner;
+
+
+     modifier onlyAuthorized {
+        require(msg.sender == owner || msg.sender == rControllerAddress,"not authorized");
+        _;
+    }
+
     constructor(
         address _controller, 
         address _crvpool,
@@ -24,6 +34,7 @@ contract rDAI3Pool {
         address _royaLP,
         address _gauge
     ) public {
+        owner=msg.sender;
         rControllerAddress = _controller;
         Pool = curvePool(_crvpool);
         Coin = Erc20(_coin);
@@ -33,20 +44,16 @@ contract rDAI3Pool {
     }
 
 
-    function deposit(uint amount) external {
-        require(msg.sender == rControllerAddress, "not authorized");
-
+    function deposit(uint amount) external onlyAuthorized {
         Coin.approve(address(Pool), amount);
-        
         uint mintAmount = Pool.calc_token_amount([amount, 0, 0], true);
         mintAmount = (99 * mintAmount) / 100;
         Pool.add_liquidity([amount, 0, 0], mintAmount);
-
+        virtual_price=Pool.get_virtual_price();
         depositBal += amount;
     }
 
-    function withdraw(uint amount) external {
-        require(msg.sender == rControllerAddress, "not authorized");
+    function withdraw(uint amount) external onlyAuthorized {
 
         uint256 max_burn = 0;
         uint256 decimal = 0;
@@ -65,8 +72,8 @@ contract rDAI3Pool {
         depositBal -= amount;
     }
 
-    function withdrawAll() external {
-        require(msg.sender == rControllerAddress, "not authorized");
+    function withdrawAll() external onlyAuthorized {
+        
         uint bal = PoolToken.balanceOf(address(this));
 
         uint min_amount = depositBal - (depositBal / 10);
@@ -74,11 +81,16 @@ contract rDAI3Pool {
         Coin.transfer(rControllerAddress, Coin.balanceOf(address(this)));
     }
 
-    function stakeLP(uint _perc) external {
-        require(msg.sender == rControllerAddress, "not authorized");
-
+    function stakeLP(uint _perc) external onlyAuthorized {
         uint depositAmt = (PoolToken.balanceOf(address(this)) * _perc) / 100;
         gauge.deposit(depositAmt);
     }
+
+    function calculateProfit() external view onlyAuthorized returns(uint256) {
+         uint current_virtual_price=Pool.get_virtual_price();
+         uint profit=(PoolToken.balanceOf(address(this))*(current_virtual_price-virtual_price))/(10**18);
+         return profit;
+    }
+
 
 }

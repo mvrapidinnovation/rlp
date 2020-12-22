@@ -13,8 +13,8 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         _;
     }
 
-     modifier onlyAuthorized {
-        require(msg.sender == owner || msg.sender==loanContract,"Not Authorized to call");
+    modifier onlyAuthorized {
+        require(msg.sender == owner || msg.sender == loanContract,"not authorized");
         _;
     }
 
@@ -61,9 +61,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
 
     // functions related to deposit and supply
-
-
-
 
     // This function deposits the fund to Yield Optimizer
     function _deposit(uint256[N_COINS] memory amounts) internal {
@@ -214,14 +211,15 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         uint256 totalRPTSupply;
 
         totalRPTSupply = bdiv(rpToken.totalSupply(), 10**18);
-        
+      
         for(uint8 i=0; i<N_COINS; i++) {
+            
             decimal = tokens[i].decimals();
             total += bdiv(selfBalance[i]+loanGiven[i], 10**decimal);
             totalSuppliedTokens += bdiv(amounts[i], 10**decimal);
         }
-
-        rptAmt = bmul(bdiv(totalSuppliedTokens, total), totalRPTSupply);
+     
+        rptAmt = bmul(bdiv(totalSuppliedTokens, total), totalRPTSupply);        
 
         if(burn == true) {
             rptAmt = rptAmt + (rptAmt * fees) / 10000;
@@ -229,8 +227,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
         return rptAmt;
     }
-
-
 
 
 
@@ -268,10 +264,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
         emit userSupplied(msg.sender, amounts);
     }
-
-
-
-
 
     function requestWithdraw(uint256[N_COINS] calldata amounts) external {
         require(
@@ -344,10 +336,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
             emit userAddedToQ(msg.sender, amounts);
         }
     }
-
-
-
-    
+ 
     // Following two functions are called by rLoan Only
     function _loanWithdraw(uint256[N_COINS] memory amounts, address _loanSeeker) public onlyAuthorized returns(bool) {
         _withdraw(amounts);
@@ -362,11 +351,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         return true;
     }
 
-
-
-
-
-
     //Function only called by multisig contract for transfering tokens
     function _loanRepayment(uint256[N_COINS] memory amounts, address _loanSeeker) public onlyAuthorized returns(bool) {
         for(uint8 i=0; i<N_COINS; i++) {
@@ -379,12 +363,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         return true;
     }
 
-
-
-
-
-
-
     // this function deposits without minting RPT
     function depsoitInRoyale(uint256[N_COINS] calldata amounts) external {
         for(uint8 i=0;i<N_COINS;i++){
@@ -396,12 +374,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     }
 
 
-
-
-
     /* CORE FUNCTIONS (also exposed to frontend but to be called by owner only) */
-
-
 
    //function for deposit in pool for yield
     function deposit() onlyOwner external {
@@ -436,9 +409,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         }
     }
 
-
-
-
     //Function available in ui for owner , withdrawing from Pool(curve or any other)
     function withdraw() onlyOwner external {
 
@@ -456,56 +426,54 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         _giveBack();
     }
 
-
-    //function for rebalancing pool(ratio)
-      
+    //function for rebalancing pool(ratio)      
     function rebalance() onlyOwner external{
         uint256[N_COINS] memory currentAmount = _getBalances();
         uint256[N_COINS] memory amountToWithdraw;
         uint256[N_COINS] memory amountToDeposit;
         rStrategyI[3] memory strat = controller.getStrategies();
 
-        for(uint8 i=0;i<N_COINS;i++){
-           uint256 a= (selfBalance[i]*(100-poolPart))/100;
-           if(a>currentAmount[i]){
-              amountToWithdraw[i] = a-currentAmount[i];
+        for(uint8 i=0;i<N_COINS;i++) {
+           uint256 a = (selfBalance[i] * (100 - poolPart)) / 100;
+           if(a > currentAmount[i]) {
+              amountToWithdraw[i] = a - currentAmount[i];
            }
-           else if(a<currentAmount[i]){
-               amountToDeposit[i]=currentAmount[i]-a;
+           else if(a < currentAmount[i]) {
+               amountToDeposit[i] = currentAmount[i] - a;
                tokens[i].transfer(address(strat[i]), amountToDeposit[i]);
            }
-           else{
-               amountToWithdraw[i]=0;
-               amountToDeposit[i]=0;
+           else {
+               amountToWithdraw[i] = 0;
+               amountToDeposit[i] = 0;
            }
         }
+
         bool check=false;
-        for(uint8 i=0;i<N_COINS;i++){
-            if(amountToDeposit[i]>0){
-                  check=true;
+        for(uint8 i=0; i<N_COINS; i++) {
+            if(amountToDeposit[i] > 0) {
+                  check = true;
                   break;
             }
         }
+
         if(check){
              _deposit(amountToDeposit);
-             check=false;
+             check = false;
         }
-        for(uint8 i=0;i<N_COINS;i++){
-            if(amountToWithdraw[i]>0){
-                  check=true;
+
+        for(uint8 i=0; i<N_COINS; i++) {
+            if(amountToWithdraw[i] > 0) {
+                  check = true;
                   break;
             }
         }
-        if(check){
+        
+        if(check) {
             _withdraw(amountToWithdraw);
-             check=false;
+             check = false;
         }
 
     }
-
-
-
-
 
 
     /* ADMIN FUNCTIONS */
@@ -530,7 +498,12 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         return true;
     }
 
-    
+    function getYieldProfit() external onlyOwner {
+        profitFromYield=controller.getTotalProfit();
+        for(uint8 i=0;i<N_COINS;i++){
+            selfBalance[i]+=profitFromYield[i];
+        }
+    }
 
     function setThresholdTokenAmount(uint256 _newThreshold) external onlyOwner returns(bool) {
         thresholdTokenAmount = _newThreshold;

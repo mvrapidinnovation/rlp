@@ -59,11 +59,6 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
         rpToken = await RpToken.new();
         mRoya = await MRoya.new();
 
-        // rController
-        controller=await Controller.new(
-            [daiToken.address, usdcToken.address, usdtToken.address]
-        );
-
         // Deploying Curve 3Pool
         crvPool = await CrvPool.new(
             owner,
@@ -78,12 +73,20 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
         minter = await Minter.new(CRVtoken.address, gaugeController.address);
         gauge = await Gauge.new(crvToken.address, minter.address);
 
+
+
         // Deploying RoyaleLP contract
         royaleLP = await RoyaleLP.new(
             // crvPool.address, 
             [daiToken.address, usdcToken.address, usdtToken.address],
             // crvToken.address,
             rpToken.address
+        );
+
+        // rController
+        controller=await Controller.new(
+            [daiToken.address, usdcToken.address, usdtToken.address],
+            royaleLP.address
         );
         
         // Deploying Strategies
@@ -284,7 +287,7 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
     });
 
     describe('Initial Set Up', async() => {
-        
+
         it('Supply each of 1000 tokens to investorOne', async() => {
             await daiToken.transfer(investorOne, toDai('1000'), { from: owner });
             await usdcToken.transfer(investorOne, toUsd('1000'), { from: owner });
@@ -756,6 +759,20 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 console.log(result.toString());
             });
        
+        });
+
+        describe('LP tokens staking', async() => {
+
+            it('has staked 3CRV', async() => {
+                lpCRV = await crvToken.balanceOf(usdcpool.address);
+                console.log(`USDCPool CRV balance: ${lpCRV / 1e18}`);
+
+                await controller.stakeLPtokens(1, 75);
+
+                lpCRV = await crvToken.balanceOf(usdcpool.address);
+                console.log(`USDCPool CRV balance: ${lpCRV / 1e18}`);
+            });
+
         });
 
     });
