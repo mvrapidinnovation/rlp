@@ -144,7 +144,7 @@ contract rUSDT3Pool {
             now + 1800
         );
         uint256 postCoin=Coin.balanceOf(address(this));
-        //Coin.transfer(RoyaleLPaddr,postCoin-prevCoin);
+        Coin.approve(rControllerAddress,postCoin-prevCoin);
         return (postCoin-prevCoin);
     }
 
