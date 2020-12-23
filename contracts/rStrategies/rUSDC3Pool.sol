@@ -19,11 +19,7 @@ contract rUSDC3Pool {
     uint256 virtual_price;
     uint8 public _perc=75;
     uint256 public deposited3CRV;
-
-
     address public owner;
-
-
 
     modifier onlyAuthorized {
         require(msg.sender == owner || msg.sender == rControllerAddress,"not authorized");
@@ -52,7 +48,6 @@ contract rUSDC3Pool {
     function set3CRVPercentage(uint8 _percentage3CRV)external onlyAuthorized{
         _perc=_percentage3CRV;
     }
-
 
     function deposit(uint amount) external onlyAuthorized {
         Coin.approve(address(Pool), amount);

@@ -479,7 +479,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     /* ADMIN FUNCTIONS */
 
     
-    function getCurrentPoolBalance() external view returns(uint256[3] memory) {
+    function getTotalPoolBalance() external view returns(uint256[3] memory) {
         return selfBalance;
     }
 

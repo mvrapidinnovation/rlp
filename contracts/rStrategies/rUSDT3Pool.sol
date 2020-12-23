@@ -101,9 +101,8 @@ contract rUSDT3Pool {
 
     function unstakeLP(uint _amount) external onlyAuthorized {
         require(deposited3CRV>=_amount,"You have not staked that amount");
-       
         gauge.withdraw(_amount);
-         deposited3CRV -=_amount;
+        deposited3CRV -=_amount;
     }
 
     function claimCRV() external onlyAuthorized {

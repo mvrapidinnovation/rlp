@@ -200,7 +200,7 @@ contract rLoan {
     // Gaming platforms withdraw using this
     function requestLoan(
         uint256[N_COINS] calldata amounts
-    ) external returns(uint256) {
+    ) external  {
        require(signees.length >= required, "insufficient signees");
        _addTransaction(amounts);
 
