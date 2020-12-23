@@ -74,14 +74,14 @@ contract rController {
 
     }
 
-    function getTotalProfit() external onlyAuthorized view returns(uint256[3] memory) {
-              for(uint8 coin=0;coin<3;coin++){
-                  totalProfit[coin]+=rStrategy[coin].sellCRV();
+    function getTotalProfit() external onlyAuthorized returns(uint256[3] memory) {
+              for(uint8 coin=0; coin<3; coin++){
+                  totalProfit[coin] += rStrategy[coin].sellCRV();
               }
               uint256[3] memory royaleLPProfit;
-              for(uint8 coin=0;coin<3;coin++){
-                  royaleLPProfit[coin]=(totalProfit[coin]*profitBreak)/100;
-                  totalProfit[coin]-=royaleLPProfit[coin];
+              for(uint8 coin=0; coin<3; coin++){
+                  royaleLPProfit[coin] = (totalProfit[coin] * profitBreak) / 100;
+                  totalProfit[coin] -= royaleLPProfit[coin];
               }
               return royaleLPProfit;
     }
