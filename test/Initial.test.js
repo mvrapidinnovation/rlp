@@ -244,15 +244,15 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
 
         describe('RPToken deployment', async() => {
             it('has a name', async() => {
-                result= await rpToken.name();
-                console.log(result.toString());
+                x = await rpToken.name();
+                assert.equal(x, "Royale Protocol");
             });
 
             it('has set minter', async() => {
-                await rpToken.setCaller(royaleLP.address,{from:owner});
-                result = await rpToken.caller();
-                //assert(result, royaleLP.address);
-                console.log(result.toString());
+                await rpToken.setCaller(royaleLP.address);
+
+                x = await rpToken.caller();
+                assert(x, royaleLP.address);
             });
         });
 

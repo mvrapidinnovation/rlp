@@ -6,6 +6,7 @@ import '../Interfaces/rStrategyInterface.sol';
 
 contract rController {
 
+
     address public owner;
 
     address royaleAddress;
@@ -13,6 +14,8 @@ contract rController {
     rStrategyI[3] rStrategy;
 
     uint256[3] totalProfit;
+
+    uint256 profitBreak=75;
 
     Erc20[3] Coins;
 
@@ -31,6 +34,10 @@ contract rController {
 
     function setStrategy(address _addr, uint8 coin) public onlyAuthorized {
         rStrategy[coin] = rStrategyI(_addr);
+    }
+
+     function setProfitBreak(uint8 _profitBreak) public onlyAuthorized {
+        profitBreak=_profitBreak;
     }
 
     function getStrategies() external view returns(rStrategyI[3] memory) {
@@ -68,7 +75,15 @@ contract rController {
     }
 
     function getTotalProfit() external onlyAuthorized view returns(uint256[3] memory) {
-         return totalProfit;
+              for(uint8 coin=0;coin<3;coin++){
+                  totalProfit[coin]+=rStrategy[coin].sellCRV();
+              }
+              uint256[3] memory royaleLPProfit;
+              for(uint8 coin=0;coin<3;coin++){
+                  royaleLPProfit[coin]=(totalProfit[coin]*profitBreak)/100;
+                  totalProfit[coin]-=royaleLPProfit[coin];
+              }
+              return royaleLPProfit;
     }
 
     function stakeLPtokens(uint8 coin) external onlyAuthorized {
@@ -77,10 +92,6 @@ contract rController {
 
     function unstakeLPtokens(uint8 coin,uint256 _amount) external onlyAuthorized {
         rStrategy[coin].unstakeLP(_amount);
-    }
-
-    function claimCRVreward(uint8 coin) external onlyAuthorized {
-        rStrategy[coin].claimCRV();
     }
 
 }
