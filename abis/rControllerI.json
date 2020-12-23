@@ -54,16 +54,16 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getStrategies\",\"outputs\":[{\"internalType\":\"contract rStrategyI[3]\",\"name\":\"\",\"type\":\"address[3]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalProfit\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol\":\"rControllerI\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol\":{\"keccak256\":\"0xea95aabd5275fb87d6256049a9d14e2b076f574e519c3eacac55aa8b42df11c3\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://29d22673e45057c96842a8a6d0004809f7c8e351c8884fc4482f92afbb148fcf\",\"dweb:/ipfs/QmS18FqQXZW1YzMkiVnH4yUCg9MKfuPUjKffF9RR7BvCqM\"]},\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/rStrategyInterface.sol\":{\"keccak256\":\"0x375d198f8e715534b84f6aabbcc4a2715784739b60c287e94a39ab12686f7766\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://cec02ff44f4ed92e63acc2a6253c6cbb9d2c9fb0424d5f63c1c2e5f0d5bfc1d7\",\"dweb:/ipfs/QmeQkzAGK7cQdezJRr8dF87DXutfRuRVd8FQf8ouE38mhf\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getStrategies\",\"outputs\":[{\"internalType\":\"contract rStrategyI[3]\",\"name\":\"\",\"type\":\"address[3]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalProfit\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/ControllerInterface.sol\":\"rControllerI\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/ControllerInterface.sol\":{\"keccak256\":\"0xea95aabd5275fb87d6256049a9d14e2b076f574e519c3eacac55aa8b42df11c3\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://29d22673e45057c96842a8a6d0004809f7c8e351c8884fc4482f92afbb148fcf\",\"dweb:/ipfs/QmS18FqQXZW1YzMkiVnH4yUCg9MKfuPUjKffF9RR7BvCqM\"]},\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/rStrategyInterface.sol\":{\"keccak256\":\"0x6bd751d7fbabb00d87a4e187b67f10f138b4d123006abcd81fc29cdcf1981af5\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://de6804159f13de1ce1263b9589f5a2d134069349eb7746a3bd0808d414aeb5b1\",\"dweb:/ipfs/QmbkCMkcG7QnjNcgk8BWNz36PzGQUwikQR4VWt9AD1URfP\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\n\r\nimport '../Interfaces/rStrategyInterface.sol';\r\n\r\nabstract contract rControllerI {\r\n    function getStrategies() virtual external  returns(rStrategyI[3] memory);\r\n    function deposit(uint256[3] calldata) virtual external;\r\n    function withdraw(uint256[3] calldata) virtual external;\r\n    function getTotalProfit()virtual external returns(uint256[3] memory);\r\n}",
-  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\rlp\\Interfaces\\ControllerInterface.sol",
+  "sourcePath": "C:\\Users\\vishn\\OneDrive\\Desktop\\TempRoyakle\\rlp\\Interfaces\\ControllerInterface.sol",
   "ast": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/ControllerInterface.sol",
     "exportedSymbols": {
       "rControllerI": [
         31
@@ -85,12 +85,12 @@
         "src": "40:23:0"
       },
       {
-        "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/rStrategyInterface.sol",
+        "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/rStrategyInterface.sol",
         "file": "../Interfaces/rStrategyInterface.sol",
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 32,
-        "sourceUnit": 340,
+        "sourceUnit": 359,
         "src": "67:46:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -142,7 +142,7 @@
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_contract$_rStrategyI_$339_$3_memory_ptr",
+                    "typeIdentifier": "t_array$_t_contract$_rStrategyI_$358_$3_memory_ptr",
                     "typeString": "contract rStrategyI[3]"
                   },
                   "typeName": {
@@ -151,10 +151,10 @@
                       "id": 4,
                       "name": "rStrategyI",
                       "nodeType": "UserDefinedTypeName",
-                      "referencedDeclaration": 339,
+                      "referencedDeclaration": 358,
                       "src": "206:10:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_rStrategyI_$339",
+                        "typeIdentifier": "t_contract$_rStrategyI_$358",
                         "typeString": "contract rStrategyI"
                       }
                     },
@@ -180,7 +180,7 @@
                     "nodeType": "ArrayTypeName",
                     "src": "206:13:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_contract$_rStrategyI_$339_$3_storage_ptr",
+                      "typeIdentifier": "t_array$_t_contract$_rStrategyI_$358_$3_storage_ptr",
                       "typeString": "contract rStrategyI[3]"
                     }
                   },
@@ -459,7 +459,7 @@
     "src": "40:389:0"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/ControllerInterface.sol",
     "exportedSymbols": {
       "rControllerI": [
         31
@@ -481,12 +481,12 @@
         "src": "40:23:0"
       },
       {
-        "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/rStrategyInterface.sol",
+        "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/rStrategyInterface.sol",
         "file": "../Interfaces/rStrategyInterface.sol",
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 32,
-        "sourceUnit": 340,
+        "sourceUnit": 359,
         "src": "67:46:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -538,7 +538,7 @@
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_contract$_rStrategyI_$339_$3_memory_ptr",
+                    "typeIdentifier": "t_array$_t_contract$_rStrategyI_$358_$3_memory_ptr",
                     "typeString": "contract rStrategyI[3]"
                   },
                   "typeName": {
@@ -547,10 +547,10 @@
                       "id": 4,
                       "name": "rStrategyI",
                       "nodeType": "UserDefinedTypeName",
-                      "referencedDeclaration": 339,
+                      "referencedDeclaration": 358,
                       "src": "206:10:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_rStrategyI_$339",
+                        "typeIdentifier": "t_contract$_rStrategyI_$358",
                         "typeString": "contract rStrategyI"
                       }
                     },
@@ -576,7 +576,7 @@
                     "nodeType": "ArrayTypeName",
                     "src": "206:13:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_contract$_rStrategyI_$339_$3_storage_ptr",
+                      "typeIdentifier": "t_array$_t_contract$_rStrategyI_$358_$3_storage_ptr",
                       "typeString": "contract rStrategyI[3]"
                     }
                   },
@@ -860,7 +860,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-22T12:23:57.963Z",
+  "updatedAt": "2020-12-23T09:17:52.464Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

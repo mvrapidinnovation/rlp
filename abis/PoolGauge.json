@@ -28,16 +28,16 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/CurveInterface.sol\":\"PoolGauge\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/CurveInterface.sol\":{\"keccak256\":\"0x8a6953ca7cf41656d8ed1afd107036af27c90b2d24d53cd652fbb89206357a48\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://b9d62d955d278eea50855e31ada4c16befc6020b19c5697ab800a3fbfecaa5b6\",\"dweb:/ipfs/Qmd3KrQNT4oBmgnYNJ99zdxX6TsSFhYQ8rTG8iQWKe1iFY\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/CurveInterface.sol\":\"PoolGauge\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/CurveInterface.sol\":{\"keccak256\":\"0x8a6953ca7cf41656d8ed1afd107036af27c90b2d24d53cd652fbb89206357a48\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://b9d62d955d278eea50855e31ada4c16befc6020b19c5697ab800a3fbfecaa5b6\",\"dweb:/ipfs/Qmd3KrQNT4oBmgnYNJ99zdxX6TsSFhYQ8rTG8iQWKe1iFY\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\n\r\nabstract contract curvePool {\r\n\r\n    function get_virtual_price()virtual external view returns(uint256);\r\n\r\n    function calc_token_amount(\r\n        uint256[3] calldata, \r\n        bool\r\n    ) virtual external view returns(uint256);\r\n\r\n    function add_liquidity(\r\n        uint256[3] calldata,\r\n        uint256\r\n    ) virtual external;\r\n\r\n    function remove_liquidity(\r\n        uint256,\r\n        uint256[3] calldata\r\n    ) virtual external;\r\n\r\n    function remove_liquidity_imbalance(\r\n        uint256[3] calldata,\r\n        uint256\r\n    ) virtual external;\r\n\r\n    function calc_token_amount(\r\n        uint256[4] calldata, \r\n        bool\r\n    ) virtual external view returns(uint256);\r\n\r\n    function add_liquidity(\r\n        uint256[4] calldata,\r\n        uint256\r\n    ) virtual external;\r\n\r\n    function remove_liquidity(\r\n        uint256,\r\n        uint256[4] calldata\r\n    ) virtual external;\r\n\r\n    function remove_liquidity_imbalance(\r\n        uint256[4] calldata,\r\n        uint256\r\n    ) virtual external;\r\n\r\n\r\n    function remove_liquidity_one_coin(\r\n        uint256,\r\n        int128,\r\n        uint256\r\n    ) virtual external;\r\n}\r\n\r\nabstract contract PoolGauge {\r\n    function deposit(uint256) virtual external;\r\n    function withdraw(uint256) virtual external;\r\n}\r\n\r\nabstract contract Minter {\r\n    function mint(address) virtual external;\r\n}",
-  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\rlp\\Interfaces\\CurveInterface.sol",
+  "sourcePath": "C:\\Users\\vishn\\OneDrive\\Desktop\\TempRoyakle\\rlp\\Interfaces\\CurveInterface.sol",
   "ast": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/CurveInterface.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/CurveInterface.sol",
     "exportedSymbols": {
       "Minter": [
         141
@@ -1431,7 +1431,7 @@
     "src": "40:1374:1"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/CurveInterface.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/CurveInterface.sol",
     "exportedSymbols": {
       "Minter": [
         141
@@ -2830,7 +2830,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-22T12:23:57.972Z",
+  "updatedAt": "2020-12-23T09:17:52.472Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

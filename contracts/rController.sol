@@ -74,7 +74,7 @@ contract rController {
 
     }
 
-    function getTotalProfit() external onlyAuthorized view returns(uint256[3] memory) {
+    function getTotalProfit() external onlyAuthorized  returns(uint256[3] memory) {
               for(uint8 coin=0;coin<3;coin++){
                   totalProfit[coin]+=rStrategy[coin].sellCRV();
               }

@@ -122,8 +122,8 @@ contract rUSDT3Pool {
          return profit;
     }
 
-    function sellCRV() external onlyAuthorized {
-        claimCRV();
+    function sellCRV() external onlyAuthorized returns(uint256){
+        _claimCRV();
         uint256 crvAmt = Erc20(crvAddr).balanceOf(address(this));
         uint256 prevCoin=Coin.balanceOf(address(this));
 
@@ -145,7 +145,7 @@ contract rUSDT3Pool {
         );
         uint256 postCoin=Coin.balanceOf(address(this));
         //Coin.transfer(RoyaleLPaddr,postCoin-prevCoin);
-        return postCoin-prevCoin;
+        return (postCoin-prevCoin);
     }
 
 }
