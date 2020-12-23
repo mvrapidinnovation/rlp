@@ -3,6 +3,7 @@ pragma solidity ^0.6.0;
 
 import '../../Interfaces/CurveInterface.sol';
 import '../../Interfaces/ERC20Interface.sol';
+import '../../Interfaces/UniswapInterface.sol';
 
 contract rDAI3Pool {
 
@@ -22,7 +23,11 @@ contract rDAI3Pool {
     address public owner;
 
     uint8 public _perc=75;
-    uint256 public deposited3CRV;
+    uint256 public stakedAmt;
+
+    address public uniAddr;
+    address public crvAddr;
+    address public wethAddr;
 
 
     modifier onlyAuthorized {
@@ -89,20 +94,20 @@ contract rDAI3Pool {
     }
 
     function stakeLP() external onlyAuthorized {
-       uint depositAmt = ((PoolToken.balanceOf(address(this))+deposited3CRV) * _perc) / 100;
-        depositAmt-=deposited3CRV;
+       uint depositAmt = ((PoolToken.balanceOf(address(this)) + stakedAmt) * _perc) / 100;
+        depositAmt -= stakedAmt;
         if(depositAmt!=0){
            PoolToken.approve(address(gauge), depositAmt);
            gauge.deposit(depositAmt);
-           deposited3CRV+=depositAmt;
+           stakedAmt += depositAmt;
         }
     }
 
     function unstakeLP(uint _amount) external onlyAuthorized {
-        require(deposited3CRV>=_amount,"You have not staked that amount");
+        require(stakedAmt >= _amount,"You have not staked that amount");
        
         gauge.withdraw(_amount);
-         deposited3CRV -=_amount;
+        stakedAmt -=_amount;
     }
 
     function claimCRV() external onlyAuthorized {
@@ -115,5 +120,26 @@ contract rDAI3Pool {
          return profit;
     }
 
+    function sellCRV() external onlyAuthorized {
+
+        uint256 crvAmt = Erc20(crvAddr).balanceOf(address(this));
+
+        require(crvAmt > 0, "insufficient CRV");
+
+        Erc20(crvAddr).approve(uniAddr, crvAmt);
+
+        address[] memory path = new address[](3);
+        path[0] = crvAddr;
+        path[1] = wethAddr;
+        path[2] = address(Coin);
+
+        UniswapI(uniAddr).swapExactTokensForTokens(
+            crvAmt, 
+            uint256(0), 
+            path, 
+            address(this), 
+            now + 1800
+        );
+    }
 
 }
