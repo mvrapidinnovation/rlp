@@ -51,7 +51,7 @@
     },
     {
       "inputs": [],
-      "name": "getCurrentPoolBalance",
+      "name": "getTotalPoolBalance",
       "outputs": [
         {
           "internalType": "uint256[3]",
@@ -76,13 +76,13 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amounts\",\"type\":\"uint256[3]\"},{\"internalType\":\"address\",\"name\":\"_loanSeeker\",\"type\":\"address\"}],\"name\":\"_loanRepayment\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amounts\",\"type\":\"uint256[3]\"},{\"internalType\":\"address\",\"name\":\"_loanSeeker\",\"type\":\"address\"}],\"name\":\"_loanWithdraw\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentPoolBalance\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalLoanGiven\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/RoyaleInterface.sol\":\"RoyaleInterface\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/RoyaleInterface.sol\":{\"keccak256\":\"0xa2f17ca4796183810057ff149825d6ecb892a98f6caa2d999633a42afd256a6d\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://584083c2113735cff9bf7eacd43e544b00d3493fa67c4be909e62806a2961514\",\"dweb:/ipfs/QmTNS4G8SZLupV1H3G2pPs5dNNmpvWR4CvQCdZy86Z7R1E\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amounts\",\"type\":\"uint256[3]\"},{\"internalType\":\"address\",\"name\":\"_loanSeeker\",\"type\":\"address\"}],\"name\":\"_loanRepayment\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amounts\",\"type\":\"uint256[3]\"},{\"internalType\":\"address\",\"name\":\"_loanSeeker\",\"type\":\"address\"}],\"name\":\"_loanWithdraw\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalLoanGiven\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalPoolBalance\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/RoyaleInterface.sol\":\"RoyaleInterface\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/RoyaleInterface.sol\":{\"keccak256\":\"0xfac17d6f21e85dcb3be02859ab90a09037cc0c4c874d193fe5abf4f486635b62\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://2d26119a1845ccbb73226b3d9703368c511b5c7c275e7edfc3e7578d53f7af99\",\"dweb:/ipfs/QmVaUpwTfqyG8NxqX91NSEBzVpNDfXYeAshC3WWP6HneCi\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\npragma experimental ABIEncoderV2;\r\n\r\nabstract contract RoyaleInterface {\r\n    function _loanWithdraw(uint256[3] calldata amounts,address _loanSeeker) virtual  external returns(bool);\r\n    function _loanRepayment(uint256[3] calldata amounts,address _loanSeeker) virtual  external returns(bool);\r\n    function getCurrentPoolBalance() virtual external view returns(uint256[3] memory);\r\n    function getTotalLoanGiven() virtual external view returns(uint256[3] memory);\r\n}",
+  "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\npragma experimental ABIEncoderV2;\r\n\r\nabstract contract RoyaleInterface {\r\n    function _loanWithdraw(uint256[3] calldata amounts,address _loanSeeker) virtual  external returns(bool);\r\n    function _loanRepayment(uint256[3] calldata amounts,address _loanSeeker) virtual  external returns(bool);\r\n    function getTotalPoolBalance() virtual external view returns(uint256[3] memory);\r\n    function getTotalLoanGiven() virtual external view returns(uint256[3] memory);\r\n}",
   "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\rlp\\Interfaces\\RoyaleInterface.sol",
   "ast": {
     "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/RoyaleInterface.sol",
@@ -418,19 +418,19 @@
           {
             "body": null,
             "documentation": null,
-            "functionSelector": "11e87188",
+            "functionSelector": "233fc9a2",
             "id": 299,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "getCurrentPoolBalance",
+            "name": "getTotalPoolBalance",
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
               "id": 293,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "394:2:4"
+              "src": "392:2:4"
             },
             "returnParameters": {
               "id": 298,
@@ -444,7 +444,7 @@
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
                   "scope": 299,
-                  "src": "427:17:4",
+                  "src": "425:17:4",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -456,7 +456,7 @@
                       "id": 294,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "427:7:4",
+                      "src": "425:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -473,7 +473,7 @@
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "435:1:4",
+                      "src": "433:1:4",
                       "subdenomination": null,
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_3_by_1",
@@ -482,7 +482,7 @@
                       "value": "3"
                     },
                     "nodeType": "ArrayTypeName",
-                    "src": "427:10:4",
+                    "src": "425:10:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$3_storage_ptr",
                       "typeString": "uint256[3]"
@@ -492,10 +492,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "426:19:4"
+              "src": "424:19:4"
             },
             "scope": 307,
-            "src": "364:82:4",
+            "src": "364:80:4",
             "stateMutability": "view",
             "virtual": true,
             "visibility": "external"
@@ -515,7 +515,7 @@
               "id": 300,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "478:2:4"
+              "src": "476:2:4"
             },
             "returnParameters": {
               "id": 305,
@@ -529,7 +529,7 @@
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
                   "scope": 306,
-                  "src": "511:17:4",
+                  "src": "509:17:4",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -541,7 +541,7 @@
                       "id": 301,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "511:7:4",
+                      "src": "509:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -558,7 +558,7 @@
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "519:1:4",
+                      "src": "517:1:4",
                       "subdenomination": null,
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_3_by_1",
@@ -567,7 +567,7 @@
                       "value": "3"
                     },
                     "nodeType": "ArrayTypeName",
-                    "src": "511:10:4",
+                    "src": "509:10:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$3_storage_ptr",
                       "typeString": "uint256[3]"
@@ -577,20 +577,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "510:19:4"
+              "src": "508:19:4"
             },
             "scope": 307,
-            "src": "452:78:4",
+            "src": "450:78:4",
             "stateMutability": "view",
             "virtual": true,
             "visibility": "external"
           }
         ],
         "scope": 308,
-        "src": "102:431:4"
+        "src": "102:429:4"
       }
     ],
-    "src": "40:493:4"
+    "src": "40:491:4"
   },
   "legacyAST": {
     "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/RoyaleInterface.sol",
@@ -926,19 +926,19 @@
           {
             "body": null,
             "documentation": null,
-            "functionSelector": "11e87188",
+            "functionSelector": "233fc9a2",
             "id": 299,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "getCurrentPoolBalance",
+            "name": "getTotalPoolBalance",
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
               "id": 293,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "394:2:4"
+              "src": "392:2:4"
             },
             "returnParameters": {
               "id": 298,
@@ -952,7 +952,7 @@
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
                   "scope": 299,
-                  "src": "427:17:4",
+                  "src": "425:17:4",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -964,7 +964,7 @@
                       "id": 294,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "427:7:4",
+                      "src": "425:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -981,7 +981,7 @@
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "435:1:4",
+                      "src": "433:1:4",
                       "subdenomination": null,
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_3_by_1",
@@ -990,7 +990,7 @@
                       "value": "3"
                     },
                     "nodeType": "ArrayTypeName",
-                    "src": "427:10:4",
+                    "src": "425:10:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$3_storage_ptr",
                       "typeString": "uint256[3]"
@@ -1000,10 +1000,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "426:19:4"
+              "src": "424:19:4"
             },
             "scope": 307,
-            "src": "364:82:4",
+            "src": "364:80:4",
             "stateMutability": "view",
             "virtual": true,
             "visibility": "external"
@@ -1023,7 +1023,7 @@
               "id": 300,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "478:2:4"
+              "src": "476:2:4"
             },
             "returnParameters": {
               "id": 305,
@@ -1037,7 +1037,7 @@
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
                   "scope": 306,
-                  "src": "511:17:4",
+                  "src": "509:17:4",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -1049,7 +1049,7 @@
                       "id": 301,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "511:7:4",
+                      "src": "509:7:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1066,7 +1066,7 @@
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "519:1:4",
+                      "src": "517:1:4",
                       "subdenomination": null,
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_3_by_1",
@@ -1075,7 +1075,7 @@
                       "value": "3"
                     },
                     "nodeType": "ArrayTypeName",
-                    "src": "511:10:4",
+                    "src": "509:10:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$3_storage_ptr",
                       "typeString": "uint256[3]"
@@ -1085,20 +1085,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "510:19:4"
+              "src": "508:19:4"
             },
             "scope": 307,
-            "src": "452:78:4",
+            "src": "450:78:4",
             "stateMutability": "view",
             "virtual": true,
             "visibility": "external"
           }
         ],
         "scope": 308,
-        "src": "102:431:4"
+        "src": "102:429:4"
       }
     ],
-    "src": "40:493:4"
+    "src": "40:491:4"
   },
   "compiler": {
     "name": "solc",
@@ -1106,7 +1106,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-22T12:23:57.994Z",
+  "updatedAt": "2020-12-24T14:00:15.127Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

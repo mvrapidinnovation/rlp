@@ -77,7 +77,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     function _supply(uint256[N_COINS] memory amounts) internal {
         uint256 mintTokens;        
-        mintTokens = calcRptAmount(amounts, false);    
+        mintTokens = calcRptAmount(amounts);    
         
         bool result;
         for(uint8 i=0; i<N_COINS; i++) {
@@ -106,7 +106,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
         uint256 burnAmt;
 
-        burnAmt = calcRptAmount(amountWithdraw[recipient], true);
+        burnAmt = calcRptAmount(amountWithdraw[recipient]);
         rpToken.burn(recipient, burnAmt);
 
         for(uint8 i=0; i<N_COINS; i++) {
@@ -115,9 +115,10 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                 && 
                 amountSupplied[recipient][i] > 0
             ) {
+                uint temp = amountWithdraw[recipient][i] + (amountWithdraw[recipient][i] * fees) / 10000;
                 result = tokens[i].transfer(
                     recipient,  
-                    amountWithdraw[recipient][i]
+                    temp
                 );
                 require(result);
 
@@ -203,7 +204,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
 
    //This function calculate RPT to be mint or burn
-    function calcRptAmount(uint256[N_COINS] memory amounts, bool burn) public view returns(uint256) {
+    function calcRptAmount(uint256[N_COINS] memory amounts) public view returns(uint256) {
         uint256 rptAmt;
         uint256 total = 0;
         uint256 decimal = 0;
@@ -221,9 +222,9 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
      
         rptAmt = bmul(bdiv(totalSuppliedTokens, total), totalRPTSupply);        
 
-        if(burn == true) {
-            rptAmt = rptAmt + (rptAmt * fees) / 10000;
-        }
+        // if(burn == true) {
+        //     rptAmt = rptAmt + (rptAmt * fees) / 10000;
+        // }
 
         return rptAmt;
     }
@@ -256,7 +257,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     function supply(uint256[N_COINS] calldata amounts) external {
         require(
-            calcRptAmount(amounts, false) > 0,
+            calcRptAmount(amounts) > 0,
             "zero tokens supply"
         );
         
@@ -267,12 +268,12 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     function requestWithdraw(uint256[N_COINS] calldata amounts) external {
         require(
-            calcRptAmount(amounts, false) > 0,
+            calcRptAmount(amounts) > 0,
             "zero tokens supply"
         );
 
         uint256 burnAmt;
-        burnAmt = calcRptAmount(amounts, true);
+        burnAmt = calcRptAmount(amounts);
         require(
             rpToken.balanceOf(msg.sender) >= burnAmt, 
             "low RPT"
@@ -306,7 +307,8 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
             bool result;
             for(uint8 i=0; i<N_COINS; i++) {
                 if(amounts[i] > 0) {
-                    result = tokens[i].transfer(msg.sender, amounts[i]);
+                    uint temp = amounts[i] + (amounts[i] * fees) / 10000;
+                    result = tokens[i].transfer(msg.sender, temp);
                     require(result);
                     amountSupplied[msg.sender][i] -= amounts[i];
                     selfBalance[i] -= amounts[i];

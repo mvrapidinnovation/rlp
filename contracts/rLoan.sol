@@ -168,7 +168,7 @@ contract rLoan {
     }
 
     function _approveLoan(uint _loanID) internal {
-        uint256[N_COINS] memory am=royale.getCurrentPoolBalance();
+        uint256[N_COINS] memory am=royale.getTotalPoolBalance();
         for(uint8 i=0;i<N_COINS;i++) {
             require(totalApprovedLoan[i]+transactions[_loanID].tokenAmounts[i]<am[i],"Can not approve that much amount");
         }

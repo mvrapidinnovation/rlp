@@ -141,9 +141,9 @@ contract rDAI3Pool {
             address(this), 
             now + 1800
         );
-        uint256 postCoin = Coin.balanceOf(address(this));
-        //Coin.transfer(RoyaleLPaddr,postCoin-prevCoin);
-        return postCoin - prevCoin;
+        uint256 postCoin=Coin.balanceOf(address(this));
+        Coin.approve(rControllerAddress,postCoin-prevCoin);
+        return (postCoin-prevCoin);
     }
 
 }

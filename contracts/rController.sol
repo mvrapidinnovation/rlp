@@ -75,15 +75,22 @@ contract rController {
     }
 
     function getTotalProfit() external onlyAuthorized returns(uint256[3] memory) {
-              for(uint8 coin=0; coin<3; coin++){
-                  totalProfit[coin] += rStrategy[coin].sellCRV();
-              }
-              uint256[3] memory royaleLPProfit;
-              for(uint8 coin=0; coin<3; coin++){
-                  royaleLPProfit[coin] = (totalProfit[coin] * profitBreak) / 100;
-                  totalProfit[coin] -= royaleLPProfit[coin];
-              }
-              return royaleLPProfit;
+        for(uint8 coin=0; coin<3; coin++){
+            totalProfit[coin] += rStrategy[coin].sellCRV();
+        }
+
+        uint256[3] memory royaleLPProfit;
+        for(uint8 coin=0; coin<3; coin++){
+            royaleLPProfit[coin] = (totalProfit[coin]*profitBreak)/100;
+            totalProfit[coin] -= royaleLPProfit[coin];
+            Coins[coin].transferFrom(
+                address(rStrategy[coin]),
+                royaleAddress,
+                royaleLPProfit[coin]
+            );
+        }
+
+        return royaleLPProfit;
     }
 
     function stakeLPtokens(uint8 coin) external onlyAuthorized {
