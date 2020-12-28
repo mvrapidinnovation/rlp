@@ -1,16 +1,16 @@
 {
   "contractName": "WithdrawQueue",
   "abi": [],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/RoyaleLPstorage.sol\":\"WithdrawQueue\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol\":{\"keccak256\":\"0xea95aabd5275fb87d6256049a9d14e2b076f574e519c3eacac55aa8b42df11c3\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://29d22673e45057c96842a8a6d0004809f7c8e351c8884fc4482f92afbb148fcf\",\"dweb:/ipfs/QmS18FqQXZW1YzMkiVnH4yUCg9MKfuPUjKffF9RR7BvCqM\"]},\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/Erc20Interface.sol\":{\"keccak256\":\"0xd0097139517a94b978d443e8f4f5f9e64fe2136358afbfea949ec7cb98dfdadd\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://2e65455a460c3946a068c76e65b3dde41464d4e17f2385fd48ecfbdf04d851d1\",\"dweb:/ipfs/QmSeJfHX46Cc9ggGy1M12MxsNTXPTTewyr1EGdi3Z3TD7D\"]},\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/rStrategyInterface.sol\":{\"keccak256\":\"0x6bd751d7fbabb00d87a4e187b67f10f138b4d123006abcd81fc29cdcf1981af5\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://de6804159f13de1ce1263b9589f5a2d134069349eb7746a3bd0808d414aeb5b1\",\"dweb:/ipfs/QmbkCMkcG7QnjNcgk8BWNz36PzGQUwikQR4VWt9AD1URfP\"]},\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/RoyaleLPstorage.sol\":{\"keccak256\":\"0xa4b302b4d32f682c64dc8f92aa94be42cd930c93e26d32389288501ed77df4e8\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://aaf56c0d51a02b1216ce2347e17a52f5099c8e43dd7ae3a0ad92ce3355fee78c\",\"dweb:/ipfs/QmUc6stQ937dBiYw6vKgP2pAJMKRSdEHfYY7p3wnEtgJdn\"]}},\"version\":1}",
-  "bytecode": "0x6080604052600180556000600255348015601857600080fd5b50603f8060266000396000f3fe6080604052600080fdfea26469706673582212203b6100c8e01ac4c8f470f80d9fd5f4739af79425d8e39b2521110347d176780264736f6c634300060c0033",
-  "deployedBytecode": "0x6080604052600080fdfea26469706673582212203b6100c8e01ac4c8f470f80d9fd5f4739af79425d8e39b2521110347d176780264736f6c634300060c0033",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/RoyaleLPstorage.sol\":\"WithdrawQueue\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/ControllerInterface.sol\":{\"keccak256\":\"0xea95aabd5275fb87d6256049a9d14e2b076f574e519c3eacac55aa8b42df11c3\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://29d22673e45057c96842a8a6d0004809f7c8e351c8884fc4482f92afbb148fcf\",\"dweb:/ipfs/QmS18FqQXZW1YzMkiVnH4yUCg9MKfuPUjKffF9RR7BvCqM\"]},\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/Erc20Interface.sol\":{\"keccak256\":\"0xd0097139517a94b978d443e8f4f5f9e64fe2136358afbfea949ec7cb98dfdadd\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://2e65455a460c3946a068c76e65b3dde41464d4e17f2385fd48ecfbdf04d851d1\",\"dweb:/ipfs/QmSeJfHX46Cc9ggGy1M12MxsNTXPTTewyr1EGdi3Z3TD7D\"]},\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/rStrategyInterface.sol\":{\"keccak256\":\"0x6bd751d7fbabb00d87a4e187b67f10f138b4d123006abcd81fc29cdcf1981af5\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://de6804159f13de1ce1263b9589f5a2d134069349eb7746a3bd0808d414aeb5b1\",\"dweb:/ipfs/QmbkCMkcG7QnjNcgk8BWNz36PzGQUwikQR4VWt9AD1URfP\"]},\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/RoyaleLPstorage.sol\":{\"keccak256\":\"0xa4b302b4d32f682c64dc8f92aa94be42cd930c93e26d32389288501ed77df4e8\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://aaf56c0d51a02b1216ce2347e17a52f5099c8e43dd7ae3a0ad92ce3355fee78c\",\"dweb:/ipfs/QmUc6stQ937dBiYw6vKgP2pAJMKRSdEHfYY7p3wnEtgJdn\"]}},\"version\":1}",
+  "bytecode": "0x6080604052600180556000600255348015601857600080fd5b50603f8060266000396000f3fe6080604052600080fdfea2646970667358221220ce90eb731900ce7c00c76ffb69fae8b21abf53a49bd04fc270130dea0a68ad9e64736f6c634300060c0033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220ce90eb731900ce7c00c76ffb69fae8b21abf53a49bd04fc270130dea0a68ad9e64736f6c634300060c0033",
   "immutableReferences": {},
   "sourceMap": "210:457:11:-:0;;;300:1;284:17;;323:1;308:16;;210:457;;;;;;;;;;;;;;;;",
   "deployedSourceMap": "210:457:11:-:0;;;;;",
   "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\n\r\nimport '../Interfaces/Erc20Interface.sol';\r\nimport '../Interfaces/ControllerInterface.sol';\r\nimport '../Interfaces/rStrategyInterface.sol';\r\n\r\ncontract WithdrawQueue {\r\n    mapping(uint256 => address) withdrawQ;\r\n    uint256 first = 1;\r\n    uint256 last = 0;\r\n    address data;\r\n\r\n    function addToQ(address addr) internal {\r\n        last += 1;\r\n        withdrawQ[last] = addr;\r\n    }\r\n\r\n    function getFromQ() internal returns(address) {\r\n        require(last >= first);\r\n\r\n        data = withdrawQ[first];\r\n\r\n        delete withdrawQ[first];\r\n        first += 1;\r\n\r\n        return data;\r\n    }\r\n}\r\n\r\ncontract RoyaleLPstorage  is WithdrawQueue {\r\n\r\n\r\n    //varaible for pool features\r\n\r\n    uint128 constant N_COINS = 3;\r\n\r\n    uint128 public fees = 25;\r\n\r\n    uint128 public poolPart = 95;\r\n\r\n    uint256[N_COINS] public selfBalance;\r\n\r\n    address public owner;\r\n\r\n    Erc20[N_COINS] tokens;\r\n\r\n    Erc20 rpToken;\r\n\r\n    //varaible for Yield Optimization\r\n\r\n    rControllerI controller;\r\n\r\n    uint[N_COINS] public YieldPoolBalance;\r\n\r\n    uint256 public thresholdTokenAmount = 500;\r\n\r\n    uint256[N_COINS] public profitFromYield;\r\n\r\n\r\n   //Varaible for user related to supply and withdraw\r\n    uint128 public lock_period;\r\n\r\n    struct depositDetails {\r\n        uint256[N_COINS] amount;\r\n        uint256[N_COINS] remAmt;\r\n        uint256 time;\r\n        bool[N_COINS] withdrawn;\r\n    }\r\n\r\n    mapping(address => uint256[N_COINS]) public amountSupplied;\r\n    mapping(address => depositDetails[]) supplyTime;\r\n\r\n    mapping(address => uint256[N_COINS]) amountWithdraw;\r\n    mapping(address => bool) public isInQ;\r\n    uint32 recipientCount;\r\n    uint256[N_COINS] public totalWithdraw;\r\n\r\n\r\n    //Varaible to store total loan given\r\n    uint256[N_COINS] public loanGiven;  \r\n\r\n\r\n    //varaible realated to loan contract\r\n\r\n     address public loanContract;\r\n}",
-  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\rlp\\contracts\\RoyaleLPstorage.sol",
+  "sourcePath": "C:\\Users\\vishn\\OneDrive\\Desktop\\TempRoyakle\\rlp\\contracts\\RoyaleLPstorage.sol",
   "ast": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/RoyaleLPstorage.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/RoyaleLPstorage.sol",
     "exportedSymbols": {
       "RoyaleLPstorage": [
         2786
@@ -35,7 +35,7 @@
         "src": "40:23:11"
       },
       {
-        "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/Erc20Interface.sol",
+        "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/Erc20Interface.sol",
         "file": "../Interfaces/Erc20Interface.sol",
         "id": 2639,
         "nodeType": "ImportDirective",
@@ -46,7 +46,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol",
+        "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/ControllerInterface.sol",
         "file": "../Interfaces/ControllerInterface.sol",
         "id": 2640,
         "nodeType": "ImportDirective",
@@ -57,7 +57,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/rStrategyInterface.sol",
+        "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/rStrategyInterface.sol",
         "file": "../Interfaces/rStrategyInterface.sol",
         "id": 2641,
         "nodeType": "ImportDirective",
@@ -1944,7 +1944,7 @@
     "src": "40:1888:11"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/RoyaleLPstorage.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/RoyaleLPstorage.sol",
     "exportedSymbols": {
       "RoyaleLPstorage": [
         2786
@@ -1969,7 +1969,7 @@
         "src": "40:23:11"
       },
       {
-        "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/Erc20Interface.sol",
+        "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/Erc20Interface.sol",
         "file": "../Interfaces/Erc20Interface.sol",
         "id": 2639,
         "nodeType": "ImportDirective",
@@ -1980,7 +1980,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/ControllerInterface.sol",
+        "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/ControllerInterface.sol",
         "file": "../Interfaces/ControllerInterface.sol",
         "id": 2640,
         "nodeType": "ImportDirective",
@@ -1991,7 +1991,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/rStrategyInterface.sol",
+        "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/rStrategyInterface.sol",
         "file": "../Interfaces/rStrategyInterface.sol",
         "id": 2641,
         "nodeType": "ImportDirective",
@@ -3883,7 +3883,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-24T14:00:15.433Z",
+  "updatedAt": "2020-12-28T06:02:46.826Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

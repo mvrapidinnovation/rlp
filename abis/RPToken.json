@@ -135,16 +135,16 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"delegate\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"delegate\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"numTokens\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenOwner\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"receiver\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"numTokens\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"buyer\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"numTokens\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/mRoyaFarm.sol\":\"RPToken\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/mRoyaFarm.sol\":{\"keccak256\":\"0x8284d477c2a3eae36e7d3991244f4c6bff651d828bead4253b027d1931c6b8ce\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://616d79fbfeefdffe0aa2e61dafc2ac13fb1c38e3c8d5c19de462cd3a43c4504c\",\"dweb:/ipfs/QmS4G8W5NdQuMTwmrL2HovKmthmWpyxQ1PtandAGfLC6Kr\"]},\"@openzeppelin/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x3b21f2c8d626de3b9925ae33e972d8bf5c8b1bffb3f4ee94daeed7d0679036e6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7f8d45329fecbf0836ad7543330c3ecd0f8d0ffa42d4016278c3eb2215fdcdfe\",\"dweb:/ipfs/QmXWLT7GcnHtA5NiD6MFi2CV3EWJY4wv5mLNnypqYDrxL3\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"delegate\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"delegate\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"numTokens\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenOwner\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"receiver\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"numTokens\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"buyer\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"numTokens\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/mRoyaFarm.sol\":\"RPToken\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/mRoyaFarm.sol\":{\"keccak256\":\"0x8284d477c2a3eae36e7d3991244f4c6bff651d828bead4253b027d1931c6b8ce\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://616d79fbfeefdffe0aa2e61dafc2ac13fb1c38e3c8d5c19de462cd3a43c4504c\",\"dweb:/ipfs/QmS4G8W5NdQuMTwmrL2HovKmthmWpyxQ1PtandAGfLC6Kr\"]},\"@openzeppelin/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x3b21f2c8d626de3b9925ae33e972d8bf5c8b1bffb3f4ee94daeed7d0679036e6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7f8d45329fecbf0836ad7543330c3ecd0f8d0ffa42d4016278c3eb2215fdcdfe\",\"dweb:/ipfs/QmXWLT7GcnHtA5NiD6MFi2CV3EWJY4wv5mLNnypqYDrxL3\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\n\r\nimport '@openzeppelin/contracts/math/SafeMath.sol';\r\n\r\ninterface MRoya {\r\n\r\n    function totalSupply() external view  returns (uint256);\r\n    \r\n    function balanceOf(address tokenOwner) external view returns (uint);\r\n\r\n    function transfer(address receiver, uint numTokens) external returns (bool);\r\n\r\n    function approve(address delegate, uint numTokens) external returns (bool);\r\n\r\n    function allowance(address owner, address delegate) external view returns (uint);\r\n    \r\n    function transferFrom(address owner, address buyer, uint numTokens) external returns (bool);\r\n    \r\n    function mint(address account, uint256 amount) external;\r\n    \r\n    function _burn(address account, uint256 amount) external;\r\n    \r\n    function burn(uint256 amount) external;\r\n}\r\n\r\ninterface RPToken {\r\n\r\n    function totalSupply() external view returns (uint256);\r\n    \r\n    function balanceOf(address tokenOwner) external view returns (uint);\r\n\r\n    function transfer(address receiver, uint numTokens) external returns (bool);\r\n\r\n    function approve(address delegate, uint numTokens) external returns (bool);\r\n\r\n    function allowance(address owner, address delegate) external view returns (uint);\r\n    \r\n    function transferFrom(address owner, address buyer, uint numTokens) external returns (bool);\r\n}\r\n\r\n\r\ncontract MRoyaFarm {\r\n    address public owner;\r\n\r\n    MRoya public mRoya;\r\n    RPToken public rpToken;\r\n\r\n    address[] public stakers;\r\n    mapping(address => bool) hasStaked;\r\n    mapping(address => bool) isStaking;\r\n    uint256 mRoyaPerBlock = 1*10**18;\r\n    \r\n    struct stakerData {\r\n        uint256 stakedRPT;\r\n        uint256 startTimestamp;\r\n        uint256 blockNumber;\r\n    }\r\n    \r\n    mapping(address => stakerData) public staker;\r\n\r\n    using SafeMath for uint256;\r\n\r\n    constructor(RPToken _rpToken, MRoya _mRoya) public {\r\n        rpToken = _rpToken;\r\n        mRoya = _mRoya;\r\n        owner = msg.sender;\r\n    }\r\n    \r\n    modifier onlyOwner() {\r\n        require(msg.sender == owner, \"only owner can call this function\");\r\n        _;\r\n    }\r\n    \r\n    // function to get the mRoya of the staker\r\n    function calculateMRoya(address recipient) public view returns (uint){\r\n        uint256 stakedRPTAmount = staker[recipient].stakedRPT;\r\n        uint256 duration = block.number.sub(staker[recipient].blockNumber);\r\n        uint256 totalRPT = rpToken.totalSupply();\r\n        \r\n        require(totalRPT > 0, 'No RPT available');\r\n    \r\n        uint256 mRoyaAmount = duration * stakedRPTAmount * 10**18 / totalRPT;\r\n        return (mRoyaAmount * mRoyaPerBlock) / 10 ** 18;\r\n    }\r\n    \r\n    // function to stake tokens\r\n    function stakeTokens(uint _amount) public {\r\n        require(_amount > 0, \"amount can not be 0\");\r\n\r\n        rpToken.transferFrom(msg.sender, address(this), _amount);\r\n\r\n        staker[msg.sender].stakedRPT += _amount;\r\n        staker[msg.sender].startTimestamp = now;\r\n        staker[msg.sender].blockNumber = block.number;\r\n\r\n        if(!hasStaked[msg.sender]) {\r\n            stakers.push(msg.sender);\r\n        }\r\n\r\n        hasStaked[msg.sender] = true;\r\n        isStaking[msg.sender] = true;\r\n    }\r\n\r\n    // function to distribute mRoya\r\n    function issueTokens() public onlyOwner {\r\n        for(uint i=0; i<stakers.length; i++) {\r\n            address recipient = stakers[i];\r\n            uint256 balance = calculateMRoya(recipient);\r\n            \r\n\r\n            if(balance > 0) {\r\n                mRoya.mint(recipient, balance);\r\n                staker[recipient].startTimestamp = now;\r\n                staker[recipient].blockNumber = block.number;\r\n            }\r\n        }\r\n    }\r\n\r\n    // function to clain rewards\r\n    function claimRewards() public returns (bool) {\r\n        uint256 balance = staker[msg.sender].stakedRPT;\r\n        \r\n        require(balance > 0, 'Staking balance cannot be 0');\r\n\r\n        uint256 rewards = calculateMRoya(msg.sender);\r\n            \r\n\r\n        if(rewards > 0) {\r\n\r\n                mRoya.mint(msg.sender, rewards);\r\n\r\n                //staker[msg.sender].stakedRPT = balance;\r\n                staker[msg.sender].startTimestamp = now;\r\n                staker[msg.sender].blockNumber = block.number;\r\n                return true;\r\n            }\r\n        \r\n        return false;\r\n\r\n    }\r\n\r\n    // function to unstake tokens\r\n    function unstakeTokens() public {\r\n        uint256 balance = staker[msg.sender].stakedRPT;\r\n        \r\n        //require (isStaking[msg.sender],'Not staking any RPT');\r\n\r\n        require(balance > 0, 'Staking balance cannot be 0');\r\n\r\n        rpToken.transfer(msg.sender, balance);\r\n        \r\n        uint256 rewards = calculateMRoya(msg.sender);\r\n            \r\n\r\n        if(rewards > 0) {\r\n                mRoya.mint(msg.sender, rewards);\r\n            }\r\n\r\n        staker[msg.sender].stakedRPT = 0;\r\n        staker[msg.sender].startTimestamp = 0;\r\n        staker[msg.sender].blockNumber = 0;\r\n\r\n        isStaking[msg.sender] = false;\r\n    }\r\n\r\n    /* Admin Functions */\r\n\r\n    function updateMRoyaPerBlock(uint256 _mRoyaPerBlock) public onlyOwner {\r\n        mRoyaPerBlock = _mRoyaPerBlock*10**18;\r\n    }\r\n\r\n    function updateMRoyaAddress(MRoya _mRoya) public onlyOwner returns (bool){\r\n        mRoya = _mRoya;\r\n        return true;\r\n    }\r\n      \r\n    function updateRPTAddress(RPToken _rpToken) public onlyOwner returns (bool){\r\n        rpToken = _rpToken;\r\n        return true;\r\n    }\r\n\r\n}",
-  "sourcePath": "C:/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/mRoyaFarm.sol",
+  "sourcePath": "C:/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/mRoyaFarm.sol",
   "ast": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/mRoyaFarm.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/mRoyaFarm.sol",
     "exportedSymbols": {
       "MRoya": [
         2972
@@ -177,7 +177,7 @@
         "id": 2902,
         "nodeType": "ImportDirective",
         "scope": 3480,
-        "sourceUnit": 7362,
+        "sourceUnit": 7381,
         "src": "67:51:13",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2241,10 +2241,10 @@
               "id": 3059,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7361,
+              "referencedDeclaration": 7380,
               "src": "1826:8:13",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$7361",
+                "typeIdentifier": "t_contract$_SafeMath_$7380",
                 "typeString": "library SafeMath"
               }
             },
@@ -2904,7 +2904,7 @@
                       "lValueRequested": false,
                       "memberName": "sub",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 7211,
+                      "referencedDeclaration": 7230,
                       "src": "2349:16:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -7800,7 +7800,7 @@
     "src": "40:5427:13"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/mRoyaFarm.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/mRoyaFarm.sol",
     "exportedSymbols": {
       "MRoya": [
         2972
@@ -7833,7 +7833,7 @@
         "id": 2902,
         "nodeType": "ImportDirective",
         "scope": 3480,
-        "sourceUnit": 7362,
+        "sourceUnit": 7381,
         "src": "67:51:13",
         "symbolAliases": [],
         "unitAlias": ""
@@ -9897,10 +9897,10 @@
               "id": 3059,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7361,
+              "referencedDeclaration": 7380,
               "src": "1826:8:13",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$7361",
+                "typeIdentifier": "t_contract$_SafeMath_$7380",
                 "typeString": "library SafeMath"
               }
             },
@@ -10560,7 +10560,7 @@
                       "lValueRequested": false,
                       "memberName": "sub",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 7211,
+                      "referencedDeclaration": 7230,
                       "src": "2349:16:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -15461,7 +15461,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-24T14:00:15.178Z",
+  "updatedAt": "2020-12-28T06:02:46.745Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

@@ -568,20 +568,41 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
 
                 result = await usdtToken.balanceOf(gamer);
                 assert.equal(result.toString(), toUsd('50'));
+                result=await rLoan.transactions(id.toString());
+                console.log(result);
+
+                result=await rLoan.gamingCompanyRepayment(id.toString());
+                console.log(result);
+
             });
 
             it('Loan repayed', async() => {
                 await daiToken.approve(
-                    royaleLP.address, toDai('50'), { from: gamer });
+                    royaleLP.address, toDai('100'), { from: gamer });
                 await usdcToken.approve(
-                    royaleLP.address, toUsd('50'), { from: gamer });
+                    royaleLP.address, toUsd('100'), { from: gamer });
                 await usdtToken.approve(
-                    royaleLP.address, toUsd('50'), { from: gamer }); 
+                    royaleLP.address, toUsd('100'), { from: gamer }); 
+                    console.log("\nBalance Before repayment\n");
+                    result = await daiToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdcToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdtToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    
 
                 amountToRepay = [toDai('50'), toUsd('50'), toUsd('50')];
                  id = await rLoan.transactionCount();
                 rLoan.repayLoan(amountToRepay, id.toString(), { from: gamer });
-
+ 
+                console.log("\nBalance After repayment\n");
+                    result = await daiToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdcToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdtToken.balanceOf(gamer);
+                    console.log(result.toString());
                 result = await daiToken.balanceOf(gamer);
                 assert.equal(result.toString(), toDai('0'));
 
@@ -591,6 +612,64 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 result = await usdtToken.balanceOf(gamer);
                 assert.equal(result.toString(), toUsd('0'));
             });
+            it("Withdraw Loan again",async()=>{
+                amtToWithdraw = [toDai('50'), toUsd('50'), toUsd('50')];
+                id = await rLoan.transactionCount();
+                await rLoan.withdrawLoan(amtToWithdraw, id.toString(), { from: gamer });
+
+                result = await daiToken.balanceOf(gamer);
+                assert.equal(result.toString(), toDai('50'));
+
+                result = await usdcToken.balanceOf(gamer);
+                assert.equal(result.toString(), toUsd('50'));
+
+                result = await usdtToken.balanceOf(gamer);
+                assert.equal(result.toString(), toUsd('50'));
+
+                result=await rLoan.transactions(id.toString());
+                console.log(result);
+
+                result=await rLoan.gamingCompanyRepayment(id.toString());
+                console.log(result);
+            });
+            it('Loan repayed again', async() => {
+                await daiToken.approve(
+                    royaleLP.address, toDai('100'), { from: gamer });
+                await usdcToken.approve(
+                    royaleLP.address, toUsd('100'), { from: gamer });
+                await usdtToken.approve(
+                    royaleLP.address, toUsd('100'), { from: gamer }); 
+                    console.log("\nBalance Before repayment\n");
+                    result = await daiToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdcToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdtToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    
+
+                amountToRepay = [toDai('50'), toUsd('50'), toUsd('50')];
+                 id = await rLoan.transactionCount();
+                rLoan.repayLoan(amountToRepay, id.toString(), { from: gamer });
+ 
+                console.log("\nBalance After repayment\n");
+                    result = await daiToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdcToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdtToken.balanceOf(gamer);
+                    console.log(result.toString());
+                result = await daiToken.balanceOf(gamer);
+                assert.equal(result.toString(), toDai('0'));
+
+                result = await usdcToken.balanceOf(gamer);
+                assert.equal(result.toString(), toUsd('0'));
+
+                result = await usdtToken.balanceOf(gamer);
+                assert.equal(result.toString(), toUsd('0'));
+            });
+            
+           
         });
 
         describe('Withdraw Test', async() => {
@@ -636,13 +715,13 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 console.log(result.toString());
 
                 result = await daiToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toDai('135'));
+                assert.equal(result.toString(), toDai('184'));
 
                 result = await usdcToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('125'));
+                assert.equal(result.toString(), toUsd('174'));
 
                 result = await usdtToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('125'));
+                assert.equal(result.toString(), toUsd('174'));
 
                 lpCRV = await crvToken.balanceOf(daipool.address);
                 console.log(`DaiPool CRV balance: ${lpCRV / 1e18}`);

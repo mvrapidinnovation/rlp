@@ -76,16 +76,16 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amounts\",\"type\":\"uint256[3]\"},{\"internalType\":\"address\",\"name\":\"_loanSeeker\",\"type\":\"address\"}],\"name\":\"_loanRepayment\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amounts\",\"type\":\"uint256[3]\"},{\"internalType\":\"address\",\"name\":\"_loanSeeker\",\"type\":\"address\"}],\"name\":\"_loanWithdraw\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalLoanGiven\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalPoolBalance\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/RoyaleInterface.sol\":\"RoyaleInterface\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/RoyaleInterface.sol\":{\"keccak256\":\"0xfac17d6f21e85dcb3be02859ab90a09037cc0c4c874d193fe5abf4f486635b62\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://2d26119a1845ccbb73226b3d9703368c511b5c7c275e7edfc3e7578d53f7af99\",\"dweb:/ipfs/QmVaUpwTfqyG8NxqX91NSEBzVpNDfXYeAshC3WWP6HneCi\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amounts\",\"type\":\"uint256[3]\"},{\"internalType\":\"address\",\"name\":\"_loanSeeker\",\"type\":\"address\"}],\"name\":\"_loanRepayment\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"amounts\",\"type\":\"uint256[3]\"},{\"internalType\":\"address\",\"name\":\"_loanSeeker\",\"type\":\"address\"}],\"name\":\"_loanWithdraw\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalLoanGiven\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalPoolBalance\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/RoyaleInterface.sol\":\"RoyaleInterface\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/RoyaleInterface.sol\":{\"keccak256\":\"0xfac17d6f21e85dcb3be02859ab90a09037cc0c4c874d193fe5abf4f486635b62\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://2d26119a1845ccbb73226b3d9703368c511b5c7c275e7edfc3e7578d53f7af99\",\"dweb:/ipfs/QmVaUpwTfqyG8NxqX91NSEBzVpNDfXYeAshC3WWP6HneCi\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\npragma experimental ABIEncoderV2;\r\n\r\nabstract contract RoyaleInterface {\r\n    function _loanWithdraw(uint256[3] calldata amounts,address _loanSeeker) virtual  external returns(bool);\r\n    function _loanRepayment(uint256[3] calldata amounts,address _loanSeeker) virtual  external returns(bool);\r\n    function getTotalPoolBalance() virtual external view returns(uint256[3] memory);\r\n    function getTotalLoanGiven() virtual external view returns(uint256[3] memory);\r\n}",
-  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\rlp\\Interfaces\\RoyaleInterface.sol",
+  "sourcePath": "C:\\Users\\vishn\\OneDrive\\Desktop\\TempRoyakle\\rlp\\Interfaces\\RoyaleInterface.sol",
   "ast": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/RoyaleInterface.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/RoyaleInterface.sol",
     "exportedSymbols": {
       "RoyaleInterface": [
         307
@@ -593,7 +593,7 @@
     "src": "40:491:4"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/RoyaleInterface.sol",
+    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/RoyaleInterface.sol",
     "exportedSymbols": {
       "RoyaleInterface": [
         307
@@ -1106,7 +1106,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-24T14:00:15.127Z",
+  "updatedAt": "2020-12-28T06:02:46.727Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
