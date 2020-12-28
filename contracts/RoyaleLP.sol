@@ -115,7 +115,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                 && 
                 amountSupplied[recipient][i] > 0
             ) {
-                uint temp = amountWithdraw[recipient][i] + (amountWithdraw[recipient][i] * fees) / 10000;
+                uint temp = amountWithdraw[recipient][i] - (amountWithdraw[recipient][i] * fees) / 10000;
                 result = tokens[i].transfer(
                     recipient,  
                     temp
@@ -214,7 +214,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         totalRPTSupply = bdiv(rpToken.totalSupply(), 10**18);
       
         for(uint8 i=0; i<N_COINS; i++) {
-            
             decimal = tokens[i].decimals();
             total += bdiv(selfBalance[i]+loanGiven[i], 10**decimal);
             totalSuppliedTokens += bdiv(amounts[i], 10**decimal);
@@ -225,6 +224,8 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         // if(burn == true) {
         //     rptAmt = rptAmt + (rptAmt * fees) / 10000;
         // }
+
+        // rptAmt = ((rptAmt + 10**(18 - 1) / 10**18) * 10**18;
 
         return rptAmt;
     }
@@ -293,7 +294,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                 }
             }
         }
-        require(checkTime, "lock period");
+        require(checkTime, "lock period | not supplied");
 
         // check if instant withdraw
         for(uint8 i=0; i<N_COINS; i++) {
@@ -307,7 +308,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
             bool result;
             for(uint8 i=0; i<N_COINS; i++) {
                 if(amounts[i] > 0) {
-                    uint temp = amounts[i] + (amounts[i] * fees) / 10000;
+                    uint temp = amounts[i] - (amounts[i] * fees) / 10000;
                     result = tokens[i].transfer(msg.sender, temp);
                     require(result);
                     amountSupplied[msg.sender][i] -= amounts[i];

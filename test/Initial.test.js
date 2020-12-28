@@ -622,9 +622,38 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 assert.equal(result.toString(), toUsd('400'));
             });
 
+            it('Again Drop a withdraw request', async() => {
+                amounts = [toDai('150'), toUsd('0'), toUsd('0')];
+
+                result = await royaleLP.calcRptAmount(amounts);
+                console.log("Again: ", result.toString());
+
+                await royaleLP.requestWithdraw(amounts, { from: investorTwo });
+
+                result = await royaleLP.isInQ(investorTwo);
+                assert.equal(result, true);
+
+                result = await daiToken.balanceOf(investorTwo);
+                console.log(result.toString());
+                result = await usdcToken.balanceOf(investorTwo);
+                console.log(result.toString());
+                result = await usdtToken.balanceOf(investorTwo);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(0);
+                assert.equal(result.toString(), toDai('550'));
+
+                result = await royaleLP.totalWithdraw(1);
+                assert.equal(result.toString(), toUsd('400'));
+
+                result = await royaleLP.totalWithdraw(2);
+                assert.equal(result.toString(), toUsd('400'));
+            });
+
             it('Withdraw from 3pool and fulfill withdraw request', async() => {
                 await royaleLP.withdraw();
 
+                console.log("Investor One: \n");
                 result = await daiToken.balanceOf(investorOne);
                 console.log(result.toString());
                 result = await usdcToken.balanceOf(investorOne);
@@ -634,6 +663,19 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
 
                 result = await rpToken.balanceOf(investorOne);
                 console.log(result.toString());
+
+                console.log("Investor Two: \n");
+                result = await daiToken.balanceOf(investorTwo);
+                console.log(result.toString());
+                result = await usdcToken.balanceOf(investorTwo);
+                console.log(result.toString());
+                result = await usdtToken.balanceOf(investorTwo);
+                console.log(result.toString());
+
+                result = await rpToken.balanceOf(investorTwo);
+                console.log(result.toString());
+
+                
 
                 result = await daiToken.balanceOf(royaleLP.address);
                 assert.equal(result.toString(), toDai('135'));
@@ -652,30 +694,6 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 console.log(`USDTPool CRV balance: ${lpCRV / 1e18}`);
                 lpCRV = await crvToken.balanceOf(daipool2.address);
                 console.log(`DaiPool2 CRV balance: ${lpCRV / 1e18}`);
-            });
-       
-            it('Again Drop a withdraw request', async() => {
-                amounts = [toDai('90'), toUsd('90'), toUsd('90')];
-                await royaleLP.requestWithdraw(amounts, { from: investorOne });
-
-                // result = await royaleLP.isInQ(investorOne);
-                // assert.equal(result, true);
-
-                result = await daiToken.balanceOf(investorOne);
-                console.log(result.toString());
-                result = await usdcToken.balanceOf(investorOne);
-                console.log(result.toString());
-                result = await usdtToken.balanceOf(investorOne);
-                console.log(result.toString());
-
-                // result = await royaleLP.totalWithdraw(0);
-                // assert.equal(result.toString(), toDai('400'));
-
-                // result = await royaleLP.totalWithdraw(1);
-                // assert.equal(result.toString(), toUsd('400'));
-
-                // result = await royaleLP.totalWithdraw(2);
-                // assert.equal(result.toString(), toUsd('400'));
             });
 
             it('Again Withdraw from 3pool and fulfill withdraw request', async() => {
