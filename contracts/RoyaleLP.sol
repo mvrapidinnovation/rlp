@@ -115,17 +115,15 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                 && 
                 amountSupplied[recipient][i] > 0
             ) {
-                uint temp = amountWithdraw[recipient][i] + (amountWithdraw[recipient][i] * fees) / 10000;
+                uint temp = amountWithdraw[recipient][i] - (amountWithdraw[recipient][i] * fees) / 10000;
                 result = tokens[i].transfer(
                     recipient,  
                     temp
                 );
                 require(result);
-
                 amountSupplied[recipient][i] -= amountWithdraw[recipient][i];
                 totalWithdraw[i] -= amountWithdraw[recipient][i];
-                selfBalance[i] -= amountWithdraw[recipient][i];
-
+                selfBalance[i] -= temp;
                 uint x = amountWithdraw[recipient][i];
                 for(uint8 j=0; j<supplyTime[recipient].length; j++) {
                     if(supplyTime[recipient][j].withdrawn[i] != true && x > 0) {
@@ -142,11 +140,11 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                 }
 
                 amountWithdraw[recipient][i] = 0;
-
-                isInQ[recipient] = false;
-                recipientCount -= 1;
+   
             }
         }
+        isInQ[recipient] = false;
+        recipientCount -= 1;
     }
 
 
@@ -307,7 +305,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
             bool result;
             for(uint8 i=0; i<N_COINS; i++) {
                 if(amounts[i] > 0) {
-                    uint temp = amounts[i] + (amounts[i] * fees) / 10000;
+                    uint temp = amounts[i] - (amounts[i] * fees) / 10000;
                     result = tokens[i].transfer(msg.sender, temp);
                     require(result);
                     amountSupplied[msg.sender][i] -= amounts[i];
@@ -426,6 +424,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
         _withdraw(totalWithdraw);
         _giveBack();
+        resetQueue();
     }
 
     //function for rebalancing pool(ratio)      
@@ -436,13 +435,22 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         rStrategyI[3] memory strat = controller.getStrategies();
 
         for(uint8 i=0;i<N_COINS;i++) {
+           uint256 decimal=tokens[i].decimals();
            uint256 a = (selfBalance[i] * (100 - poolPart)) / 100;
            if(a > currentAmount[i]) {
               amountToWithdraw[i] = a - currentAmount[i];
+              if(amountToWithdraw[i]<(50*(10**decimal))){
+                  amountToWithdraw[i]=0;
+              }
            }
            else if(a < currentAmount[i]) {
                amountToDeposit[i] = currentAmount[i] - a;
-               tokens[i].transfer(address(strat[i]), amountToDeposit[i]);
+               if(amountToDeposit[i]<(50*(10**decimal))){
+                   amountToDeposit[i]=0;
+               }
+               else{
+                  tokens[i].transfer(address(strat[i]), amountToDeposit[i]);
+               }
            }
            else {
                amountToWithdraw[i] = 0;

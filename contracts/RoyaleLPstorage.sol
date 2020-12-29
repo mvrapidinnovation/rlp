@@ -26,6 +26,10 @@ contract WithdrawQueue {
 
         return data;
     }
+    function resetQueue()internal{
+        first=1;
+        last=0;
+    }
 }
 
 contract RoyaleLPstorage  is WithdrawQueue {
