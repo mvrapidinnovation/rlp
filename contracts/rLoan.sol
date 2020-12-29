@@ -4,9 +4,10 @@ pragma experimental ABIEncoderV2;
 
 import '../Interfaces/Erc20Interface.sol';
 import '../Interfaces/RoyaleInterface.sol';
+import './MathLib.sol';
 
 
-contract rLoan {
+contract rLoan is rNum{
     uint8 constant N_COINS = 3;
     
     Erc20[N_COINS] tokens;
@@ -15,10 +16,10 @@ contract rLoan {
     
     mapping(uint256 => Transaction) public transactions;
     mapping(address => mapping (uint256 => bool)) public confirmations;
-    mapping(uint256 => Repayment) gamingCompanyRepayment;
+    mapping(uint256 => Repayment) public gamingCompanyRepayment;
     mapping(address => bool) public isSignee;
   
-    mapping(address => uint[]) takenLoan;
+    mapping(address => uint[])public takenLoan;
     address[] public signees;
     uint256 public transactionCount = 0;
    
@@ -238,14 +239,99 @@ contract rLoan {
         }
     }
 
-    function getTransactionDetail(
-        uint _loanID
-    ) public view returns(Transaction memory){
-        return transactions[_loanID];
-    }
 
-    function checkLoanApproved(uint _loanID) external view returns(bool) {
-        return transactions[_loanID].approved;
+    function withdrawLoan( 
+        uint256[N_COINS] calldata amounts,
+        uint _loanID
+    ) external {
+
+        require(transactions[_loanID].iGamingCompany == msg.sender, "company not-exist");
+        require(transactions[_loanID].approved, "not approved for loan");
+
+        uint256[N_COINS] memory loanAmount;
+
+        for(uint8 i=0; i<N_COINS; i++) {
+            require(
+                transactions[_loanID].remAmt[i] >= amounts[i], 
+                "amount requested exceeds amount approved"
+            );
+        }
+
+        bool b = royale._loanWithdraw(amounts,transactions[_loanID].iGamingCompany);
+        require(b, "Loan Withdraw not succesfull");
+
+        uint8 check = 0;
+        for(uint8 i=0; i<N_COINS; i++) {
+            if(amounts[i] > 0) {
+                totalLoanTaken[i] += amounts[i];
+                transactions[_loanID].remAmt[i] =bsub(transactions[_loanID].remAmt[i], amounts[i]);
+                loanAmount[i]=badd(gamingCompanyRepayment[_loanID].remainingTokenAmounts[i],amounts[i]);
+            }
+            if(transactions[_loanID].remAmt[i] == 0) {
+                check++;
+            }
+        }
+
+        gamingCompanyRepayment[_loanID] = Repayment({
+                  transactionID: _loanID,
+                  isRepaymentDone: false,
+                  remainingTokenAmounts: loanAmount
+        });
+
+
+        emit loanWithdrawn(msg.sender, amounts, transactions[_loanID].remAmt, _loanID);
+
+        if(check == 3) {
+            // Loan fulfilled, company used all its loan
+            transactions[_loanID].executed = true;
+        }
+    } 
+    
+    
+    function repayLoan(
+        uint256[N_COINS] calldata _amounts, 
+        uint _loanId
+    ) external {
+        require(_loanId <= transactionCount, "invalid loan id");
+        require(transactions[_loanId].iGamingCompany == msg.sender, "company not-exist");
+        require(!gamingCompanyRepayment[_loanId].isRepaymentDone, "already repaid");
+
+        for(uint8 i=0;i<N_COINS;i++){
+            require(_amounts[i]<=gamingCompanyRepayment[_loanId].remainingTokenAmounts[i],"excess pay transfer");
+        }
+
+        bool b = royale._loanRepayment(_amounts,transactions[_loanId].iGamingCompany);
+        require(b,"repayment error");
+
+        uint counter=0;
+        for(uint i=0;i<N_COINS;i++) {
+            if(_amounts[i]!=0) {
+                totalLoanTaken[i] =bsub(totalLoanTaken[i],_amounts[i]);
+                totalApprovedLoan[i]=bsub(totalApprovedLoan[i],_amounts[i]);
+                gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] =bsub(gamingCompanyRepayment[_loanId].remainingTokenAmounts[i], _amounts[i]);
+                if(gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] == 0) {
+                    counter++;
+                }
+            }
+        }
+
+        emit loanRepayed(
+            msg.sender,
+            _amounts, 
+            gamingCompanyRepayment[_loanId].remainingTokenAmounts,
+            _loanId
+        );
+
+            if(counter==3){
+                gamingCompanyRepayment[_loanId].isRepaymentDone=true;
+
+                emit wholeLoanRepayed(
+                    msg.sender,
+                    _amounts, 
+                    gamingCompanyRepayment[_loanId].remainingTokenAmounts,
+                    _loanId
+                );
+            }       
     }
 
     /* Admin Function */
@@ -281,92 +367,14 @@ contract rLoan {
         emit signeeRemoved(signee);
     } 
 
-    function withdrawLoan( 
-        uint256[N_COINS] calldata amounts,
-        uint _loanID
-    ) external {
 
-        require(transactions[_loanID].iGamingCompany == msg.sender, "company not-exist");
-        require(transactions[_loanID].approved, "not approved for loan");
-        
-        for(uint8 i=0; i<N_COINS; i++) {
-            require(
-                transactions[_loanID].remAmt[i] >= amounts[i], 
-                "amount requested exceeds amount approved"
-            );
-        }
-        bool b = royale._loanWithdraw(amounts,transactions[_loanID].iGamingCompany);
-        require(b, "Loan Withdraw not succesfull");
-
-        uint8 check = 0;
-        for(uint8 i=0; i<N_COINS; i++) {
-            if(amounts[i] > 0) {
-                totalLoanTaken[i] += amounts[i];
-                transactions[_loanID].remAmt[i] -= amounts[i];
-            }
-            if(transactions[_loanID].remAmt[i] == 0) {
-                check++;
-            }
-        }
-
-        emit loanWithdrawn(msg.sender, amounts, transactions[_loanID].remAmt, _loanID);
-
-        if(check == 3) {
-            // Loan fulfilled, company used all its loan
-            transactions[_loanID].executed = true;
-            gamingCompanyRepayment[_loanID] = Repayment({
-                  transactionID: _loanID,
-                  isRepaymentDone: false,
-                  remainingTokenAmounts: transactions[_loanID].tokenAmounts
-            });
-
-            emit loanFulfilled(msg.sender, amounts, transactions[_loanID].tokenAmounts, _loanID);
-        }
-    } 
-    
-    
-    function repayLoan(uint256[N_COINS] calldata _amounts, uint _loanId) external {
-        require(_loanId <= transactionCount, "invalid loan id");
-        require(transactions[_loanId].iGamingCompany == msg.sender, "company not-exist");
-        require(!gamingCompanyRepayment[_loanId].isRepaymentDone, "already repaid");
-        
-
-        bool b = royale._loanRepayment(_amounts,transactions[_loanId].iGamingCompany);
-        require(b,"Loan Payment not succesfull");
-        uint counter=0;
-        for(uint i=0;i<N_COINS;i++) {
-            if(_amounts[i]!=0) {
-                totalLoanTaken[i] -=_amounts[i];
-                totalApprovedLoan[i]-=_amounts[i];
-                gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] -= _amounts[i];
-                if(gamingCompanyRepayment[_loanId].remainingTokenAmounts[i] == 0) {
-                    counter++;
-                }
-            }
-        }
-
-        emit loanRepayed(
-            msg.sender,
-            _amounts, 
-            gamingCompanyRepayment[_loanId].remainingTokenAmounts,
-            _loanId
-        );
-
-            if(counter==3){
-                gamingCompanyRepayment[_loanId].isRepaymentDone=true;
-
-                emit wholeLoanRepayed(
-                    msg.sender,
-                    _amounts, 
-                    gamingCompanyRepayment[_loanId].remainingTokenAmounts,
-                    _loanId
-                );
-            }       
+    function getTransactionDetail(uint _loanID) public view returns(Transaction memory){
+        return transactions[_loanID];
     }
-    
-   
 
-   /* functions for UI */
+    function checkLoanApproved(uint _loanID) external view returns(bool) {
+        return transactions[_loanID].approved;
+    }
 
     function getTotalTakenLoan(uint8 _number)public view returns(uint){
         return totalLoanTaken[_number];
@@ -375,4 +383,10 @@ contract rLoan {
     function getTotalApprovedLoan(uint8 _number)public view returns(uint){
         return totalApprovedLoan[_number];
     }
+
+
+    function updateRoyalePool(address _royale) public onlyOwner {
+        royale = RoyaleInterface(_royale);
+    }
+
 }

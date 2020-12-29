@@ -199,11 +199,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
 
 
-
-    //public function  for utilities
-
-
-   //This function calculate RPT to be mint or burn
+    //This function calculate RPT to be mint or burn
     function calcRptAmount(uint256[N_COINS] memory amounts) public view returns(uint256) {
         uint256 rptAmt;
         uint256 total = 0;
@@ -220,12 +216,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         }
      
         rptAmt = bmul(bdiv(totalSuppliedTokens, total), totalRPTSupply);        
-
-        // if(burn == true) {
-        //     rptAmt = rptAmt + (rptAmt * fees) / 10000;
-        // }
-
-        // rptAmt = ((rptAmt + 10**(18 - 1) / 10**18) * 10**18;
 
         return rptAmt;
     }
@@ -341,7 +331,10 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     }
  
     // Following two functions are called by rLoan Only
-    function _loanWithdraw(uint256[N_COINS] memory amounts, address _loanSeeker) public onlyAuthorized returns(bool) {
+    function _loanWithdraw(
+        uint256[N_COINS] memory amounts, 
+        address _loanSeeker
+    ) public onlyAuthorized returns(bool) {
         _withdraw(amounts);
 
         for(uint8 i=0; i<N_COINS; i++) {
@@ -355,7 +348,10 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     }
 
     //Function only called by multisig contract for transfering tokens
-    function _loanRepayment(uint256[N_COINS] memory amounts, address _loanSeeker) public onlyAuthorized returns(bool) {
+    function _loanRepayment(
+        uint256[N_COINS] memory amounts, 
+        address _loanSeeker
+    ) public onlyAuthorized returns(bool) {
         for(uint8 i=0; i<N_COINS; i++) {
             if(amounts[i] > 0) {
                 loanGiven[i] -= amounts[i];
@@ -379,7 +375,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     /* CORE FUNCTIONS (also exposed to frontend but to be called by owner only) */
 
-   //function for deposit in pool for yield
+    //function for deposit in pool for yield
     function deposit() onlyOwner external {
         uint256[N_COINS] memory amounts = _getBalances();
         uint256 decimal;
@@ -430,10 +426,11 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     }
 
     //function for rebalancing pool(ratio)      
-    function rebalance() onlyOwner external{
+    function rebalance() onlyOwner external {
         uint256[N_COINS] memory currentAmount = _getBalances();
         uint256[N_COINS] memory amountToWithdraw;
         uint256[N_COINS] memory amountToDeposit;
+
         rStrategyI[3] memory strat = controller.getStrategies();
 
         for(uint8 i=0;i<N_COINS;i++) {
@@ -486,7 +483,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         return selfBalance;
     }
 
-
     function getTotalLoanGiven() external view returns(uint256[3] memory) {
         return loanGiven;
     }
@@ -495,7 +491,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         loanContract=_loanContract;
     }
 
-
     function changePoolPart(uint128 _newPoolPart) external onlyOwner returns(bool) {
         poolPart = _newPoolPart;
         return true;
@@ -503,8 +498,9 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     function getYieldProfit() external onlyOwner {
         profitFromYield=controller.getTotalProfit();
+
         for(uint8 i=0;i<N_COINS;i++){
-            selfBalance[i]+=profitFromYield[i];
+            selfBalance[i] += profitFromYield[i];
         }
     }
 

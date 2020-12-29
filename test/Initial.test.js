@@ -38,7 +38,7 @@ function toUsd(n) {
     return result.toString();
 }
 
-contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investorTwo]) => {
+contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer,gamer2, investorOne, investorTwo,investorThree]) => {
 
     let daiToken, usdcToken, usdtToken, crvToken, crvPool;
     let royaleLP, rpToken;
@@ -243,12 +243,12 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
         });
 
         describe('RPToken deployment', async() => {
-            it('has a name', async() => {
+            it('RPT has a name', async() => {
                 x = await rpToken.name();
                 assert.equal(x, "Royale Protocol");
             });
 
-            it('has set minter', async() => {
+            it('has set minter for RPT token', async() => {
                 await rpToken.setCaller(royaleLP.address);
 
                 x = await rpToken.caller();
@@ -264,12 +264,12 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
         });
 
         describe('MRoya deployment', async() => {
-            it('has a name', async() => {
+            it('MROYA has a name', async() => {
                 let result= await mRoya.name();
                 assert.equal(result, "mRoya Token");
             });
 
-            it('has set minter', async() => {
+            it('has set minter of MROYA Token', async() => {
                 await mRoya.addMinter(mRoyaFarm.address);
 
                 result = await mRoya.minter(mRoyaFarm.address);
@@ -289,33 +289,48 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
     describe('Initial Set Up', async() => {
 
         it('Supply each of 1000 tokens to investorOne', async() => {
-            await daiToken.transfer(investorOne, toDai('1000'), { from: owner });
-            await usdcToken.transfer(investorOne, toUsd('1000'), { from: owner });
-            await usdtToken.transfer(investorOne, toUsd('1000'), { from: owner });
+            await daiToken.transfer(investorOne, toDai('5000'), { from: owner });
+            await usdcToken.transfer(investorOne, toUsd('5000'), { from: owner });
+            await usdtToken.transfer(investorOne, toUsd('5000'), { from: owner });
 
             result = await daiToken.balanceOf(investorOne);
-            assert.equal(result, toDai('1000'));
+            assert.equal(result, toDai('5000'));
 
             result = await usdcToken.balanceOf(investorOne);
-            assert.equal(result, toUsd('1000'));
+            assert.equal(result, toUsd('5000'));
 
             result = await usdtToken.balanceOf(investorOne);
-            assert.equal(result, toUsd('1000'));
+            assert.equal(result, toUsd('5000'));
         });
 
         it('Supply each of 1000 tokens to investorTwo', async() => {
-            await daiToken.transfer(investorTwo, toDai('1000'), { from: owner });
-            await usdcToken.transfer(investorTwo, toUsd('1000'), { from: owner });
-            await usdtToken.transfer(investorTwo, toUsd('1000'), { from: owner });
+            await daiToken.transfer(investorTwo, toDai('5000'), { from: owner });
+            await usdcToken.transfer(investorTwo, toUsd('5000'), { from: owner });
+            await usdtToken.transfer(investorTwo, toUsd('5000'), { from: owner });
 
             result = await daiToken.balanceOf(investorTwo);
-            assert.equal(result, toDai('1000'));
+            assert.equal(result, toDai('5000'));
 
             result = await usdcToken.balanceOf(investorTwo);
-            assert.equal(result, toUsd('1000'));
+            assert.equal(result, toUsd('5000'));
 
             result = await usdtToken.balanceOf(investorTwo);
-            assert.equal(result, toUsd('1000'));
+            assert.equal(result, toUsd('5000'));
+        });
+
+        it('Supply each of 1000 tokens to investorThree', async() => {
+            await daiToken.transfer(investorThree, toDai('5000'), { from: owner });
+            await usdcToken.transfer(investorThree, toUsd('5000'), { from: owner });
+            await usdtToken.transfer(investorThree, toUsd('5000'), { from: owner });
+
+            result = await daiToken.balanceOf(investorThree);
+            assert.equal(result, toDai('5000'));
+
+            result = await usdcToken.balanceOf(investorThree);
+            assert.equal(result, toUsd('5000'));
+
+            result = await usdtToken.balanceOf(investorThree);
+            assert.equal(result, toUsd('5000'));
         });
 
         it('Supply each of 1000 tokens to RoyaleLP', async() => {
@@ -354,71 +369,180 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
         describe('Deposit Test', async() => {
             it('investorOne added funds to RoyaleLP', async() => {
                 await daiToken.approve(
-                    royaleLP.address, toDai('500'), { from: investorOne });
+                    royaleLP.address, toDai('1000'), { from: investorOne });
                 await usdcToken.approve(
-                    royaleLP.address, toUsd('500'), { from: investorOne });
+                    royaleLP.address, toUsd('1000'), { from: investorOne });
                 await usdtToken.approve(
-                    royaleLP.address, toUsd('500'), { from: investorOne }); 
+                    royaleLP.address, toUsd('1000'), { from: investorOne }); 
                 
                 await royaleLP.supply(
-                    [toDai('500'), toUsd('500'), toUsd('500')], 
+                    [toDai('1000'), toUsd('0'), toUsd('0')], 
+                    { from: investorOne }
+                );
+                await royaleLP.supply(
+                    [toDai('0'), toUsd('1000'), toUsd('0')], 
+                    { from: investorOne }
+                );
+                await royaleLP.supply(
+                    [toDai('0'),  toUsd('0'),toUsd('1000')], 
                     { from: investorOne }
                 );
 
                 // Check balances of RoyaleLP
                 result = await daiToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toDai('1500'));
+                assert.equal(result.toString(), toDai('2000'));
     
                 result = await usdcToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('1500'));
+                assert.equal(result.toString(), toUsd('2000'));
     
                 result = await usdtToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('1500'));
+                assert.equal(result.toString(), toUsd('2000'));
                 
                 // Check balances of InvestorOne
                 result = await daiToken.balanceOf(investorOne);
-                assert.equal(result.toString(), toDai('500'));
+                assert.equal(result.toString(), toDai('4000'));
     
                 result = await usdcToken.balanceOf(investorOne);
-                assert.equal(result.toString(), toUsd('500'));
+                assert.equal(result.toString(), toUsd('4000'));
     
                 result = await usdtToken.balanceOf(investorOne);
-                assert.equal(result.toString(), toUsd('500'));
+                assert.equal(result.toString(), toUsd('4000'));
             });
 
             it('investorTwo added funds to RoyaleLP', async() => {
                 await daiToken.approve(
-                    royaleLP.address, toDai('200'), { from: investorTwo });
+                    royaleLP.address, toDai('2000'), { from: investorTwo });
                 // await usdcToken.approve(
                 //     royaleLP.address, toUsd('500'), { from: investorTwo });
                 // await usdtToken.approve(
                 //     royaleLP.address, toUsd('500'), { from: investorTwo }); 
                 
                 await royaleLP.supply(
-                    [toDai('200'), toUsd('0'), toUsd('0')], 
+                    [toDai('2000'), toUsd('0'), toUsd('0')], 
                     { from: investorTwo }
                 );
 
                 // Check balances of RoyaleLP
                 result = await daiToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toDai('1700'));
+                assert.equal(result.toString(), toDai('4000'));
     
                 result = await usdcToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('1500'));
+                assert.equal(result.toString(), toUsd('2000'));
     
                 result = await usdtToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('1500'));
+                assert.equal(result.toString(), toUsd('2000'));
                 
                 // Check balances of InvestorTwo
                 result = await daiToken.balanceOf(investorTwo);
-                assert.equal(result.toString(), toDai('800'));
+                assert.equal(result.toString(), toDai('3000'));
     
                 result = await usdcToken.balanceOf(investorTwo);
-                assert.equal(result.toString(), toUsd('1000'));
+                assert.equal(result.toString(), toUsd('5000'));
     
                 result = await usdtToken.balanceOf(investorTwo);
-                assert.equal(result.toString(), toUsd('1000'));
+                assert.equal(result.toString(), toUsd('5000'));
             });
+            it('investorThree added funds to RoyaleLP', async() => {
+                await daiToken.approve(
+                    royaleLP.address, toDai('2000'), { from: investorThree });
+                 await usdcToken.approve(
+                     royaleLP.address, toUsd('2000'), { from: investorThree });
+                 await usdtToken.approve(
+                     royaleLP.address, toUsd('2000'), { from: investorThree }); 
+                
+                await royaleLP.supply(
+                    [toDai('0'), toUsd('2000'), toUsd('0')], 
+                    { from: investorThree }
+                );
+
+                // Check balances of RoyaleLP
+                result = await daiToken.balanceOf(royaleLP.address);
+                assert.equal(result.toString(), toDai('4000'));
+    
+                result = await usdcToken.balanceOf(royaleLP.address);
+                assert.equal(result.toString(), toUsd('4000'));
+    
+                result = await usdtToken.balanceOf(royaleLP.address);
+                assert.equal(result.toString(), toUsd('2000'));
+                
+                // Check balances of InvestorTwo
+                result = await daiToken.balanceOf(investorThree);
+                assert.equal(result.toString(), toDai('5000'));
+    
+                result = await usdcToken.balanceOf(investorThree);
+                assert.equal(result.toString(), toUsd('3000'));
+    
+                result = await usdtToken.balanceOf(investorThree);
+                assert.equal(result.toString(), toUsd('5000'));
+            });
+            it('investorTwo added funds to RoyaleLP again USDC', async() => {
+                await daiToken.approve(
+                    royaleLP.address, toDai('2000'), { from: investorTwo });
+                 await usdcToken.approve(
+                     royaleLP.address, toUsd('2000'), { from: investorTwo });
+                 await usdtToken.approve(
+                   royaleLP.address, toUsd('2000'), { from: investorTwo }); 
+                
+                await royaleLP.supply(
+                    [toDai('0'), toUsd('0'), toUsd('2000')], 
+                    { from: investorTwo }
+                );
+
+                // Check balances of RoyaleLP
+                result = await daiToken.balanceOf(royaleLP.address);
+                assert.equal(result.toString(), toDai('4000'));
+    
+                result = await usdcToken.balanceOf(royaleLP.address);
+                assert.equal(result.toString(), toUsd('4000'));
+    
+                result = await usdtToken.balanceOf(royaleLP.address);
+                assert.equal(result.toString(), toUsd('4000'));
+                
+                // Check balances of InvestorTwo
+                result = await daiToken.balanceOf(investorTwo);
+                assert.equal(result.toString(), toDai('3000'));
+    
+                result = await usdcToken.balanceOf(investorTwo);
+                assert.equal(result.toString(), toUsd('5000'));
+    
+                result = await usdtToken.balanceOf(investorTwo);
+                assert.equal(result.toString(), toUsd('3000'));
+            });
+
+            it('investorThree added funds to RoyaleLP', async() => {
+                await daiToken.approve(
+                    royaleLP.address, toDai('2000'), { from: investorThree });
+                 await usdcToken.approve(
+                     royaleLP.address, toUsd('2000'), { from: investorThree });
+                 await usdtToken.approve(
+                     royaleLP.address, toUsd('2000'), { from: investorThree }); 
+                
+                await royaleLP.supply(
+                    [toDai('2000'), toUsd('0'), toUsd('0')], 
+                    { from: investorThree }
+                );
+
+                // Check balances of RoyaleLP
+                result = await daiToken.balanceOf(royaleLP.address);
+                assert.equal(result.toString(), toDai('6000'));
+    
+                result = await usdcToken.balanceOf(royaleLP.address);
+                assert.equal(result.toString(), toUsd('4000'));
+    
+                result = await usdtToken.balanceOf(royaleLP.address);
+                assert.equal(result.toString(), toUsd('4000'));
+                
+                // Check balances of InvestorTwo
+                result = await daiToken.balanceOf(investorThree);
+                assert.equal(result.toString(), toDai('3000'));
+    
+                result = await usdcToken.balanceOf(investorThree);
+                assert.equal(result.toString(), toUsd('3000'));
+    
+                result = await usdtToken.balanceOf(investorThree);
+                assert.equal(result.toString(), toUsd('5000'));
+            });
+
 
             it('investorOne recieved RPT', async() => {
                 result = await rpToken.balanceOf(investorOne);
@@ -447,18 +571,25 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 // result = await royaleLP.totalRPT();
                 // console.log(result.toString());
             });
+            it('investorThree recieved RPT', async() => {
+                result = await rpToken.balanceOf(investorThree);
+                console.log(result.toString());
+
+                // result = await royaleLP.totalRPT();
+                // console.log(result.toString());
+            });
 
             it('Supplied funds to 3pool', async() => {
                 await royaleLP.deposit();
                 
                 result = await daiToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toDai('85'));
+                assert.equal(result.toString(), toDai('300'));
     
                 result = await usdcToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('75'));
+                assert.equal(result.toString(), toUsd('200'));
     
                 result = await usdtToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('75'));
+                assert.equal(result.toString(), toUsd('200'));
                 
                 lpCRV = await crvToken.balanceOf(daipool.address);
                 console.log(`DaiPool CRV balance: ${lpCRV / 1e18}`);
@@ -515,7 +646,7 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
             let id;
 
             it('gamer requests for loan', async() => {
-                amtToWithdraw = [toDai('100'), toUsd('100'), toUsd('100')];
+                amtToWithdraw = [toDai('500'), toUsd('300'), toUsd('200')];
                 
                 await rLoan.requestLoan(
                     amtToWithdraw, { from: gamer });
@@ -554,6 +685,8 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 // result = await royaleLP.getTransactionDetail(id.toString());
                 // console.log("After approval: ", result);
             });
+           
+            
 
             it('loan withdrawn', async() => {
                 amtToWithdraw = [toDai('50'), toUsd('50'), toUsd('50')];
@@ -568,20 +701,37 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
 
                 result = await usdtToken.balanceOf(gamer);
                 assert.equal(result.toString(), toUsd('50'));
+            
+
             });
 
             it('Loan repayed', async() => {
                 await daiToken.approve(
-                    royaleLP.address, toDai('50'), { from: gamer });
+                    royaleLP.address, toDai('100'), { from: gamer });
                 await usdcToken.approve(
-                    royaleLP.address, toUsd('50'), { from: gamer });
+                    royaleLP.address, toUsd('100'), { from: gamer });
                 await usdtToken.approve(
-                    royaleLP.address, toUsd('50'), { from: gamer }); 
+                    royaleLP.address, toUsd('100'), { from: gamer }); 
+                    console.log("\nBalance Before repayment\n");
+                    result = await daiToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdcToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdtToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    
 
                 amountToRepay = [toDai('50'), toUsd('50'), toUsd('50')];
                  id = await rLoan.transactionCount();
                 rLoan.repayLoan(amountToRepay, id.toString(), { from: gamer });
-
+ 
+                console.log("\nBalance After repayment\n");
+                    result = await daiToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdcToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdtToken.balanceOf(gamer);
+                    console.log(result.toString());
                 result = await daiToken.balanceOf(gamer);
                 assert.equal(result.toString(), toDai('0'));
 
@@ -591,100 +741,174 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 result = await usdtToken.balanceOf(gamer);
                 assert.equal(result.toString(), toUsd('0'));
             });
+            it("Withdraw Loan again",async()=>{
+                amtToWithdraw = [toDai('50'), toUsd('50'), toUsd('50')];
+                id = await rLoan.transactionCount();
+                await rLoan.withdrawLoan(amtToWithdraw, id.toString(), { from: gamer });
+
+                result = await daiToken.balanceOf(gamer);
+                assert.equal(result.toString(), toDai('50'));
+
+                result = await usdcToken.balanceOf(gamer);
+                assert.equal(result.toString(), toUsd('50'));
+
+                result = await usdtToken.balanceOf(gamer);
+                assert.equal(result.toString(), toUsd('50'));
+            });
+            it('Loan repayed again', async() => {
+                await daiToken.approve(
+                    royaleLP.address, toDai('100'), { from: gamer });
+                await usdcToken.approve(
+                    royaleLP.address, toUsd('100'), { from: gamer });
+                await usdtToken.approve(
+                    royaleLP.address, toUsd('100'), { from: gamer }); 
+                    console.log("\nBalance Before repayment\n");
+                    result = await daiToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdcToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdtToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    
+
+                amountToRepay = [toDai('50'), toUsd('50'), toUsd('50')];
+                 id = await rLoan.transactionCount();
+                rLoan.repayLoan(amountToRepay, id.toString(), { from: gamer });
+ 
+                console.log("\nBalance After repayment\n");
+                    result = await daiToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdcToken.balanceOf(gamer);
+                    console.log(result.toString());
+                    result = await usdtToken.balanceOf(gamer);
+                    console.log(result.toString());
+                result = await daiToken.balanceOf(gamer);
+                assert.equal(result.toString(), toDai('0'));
+
+                result = await usdcToken.balanceOf(gamer);
+                assert.equal(result.toString(), toUsd('0'));
+
+                result = await usdtToken.balanceOf(gamer);
+                assert.equal(result.toString(), toUsd('0'));
+            });
+            it('gamer2 requests for loan', async() => {
+                amtToWithdraw = [toDai('800'), toUsd('600'), toUsd('650')];
+                
+                await rLoan.requestLoan(
+                    amtToWithdraw, { from: gamer2 });
+                
+                id = await rLoan.transactionCount();
+                console.log("Loan ID: ", id.toString());
+
+                result = await rLoan.transactionCount();
+                assert.equal(result.toString(), "2");
+                
+                // result = await royaleLP.getTransactionDetail(id.toString());
+                // console.log("Before Approval: ", result);
+            });
+            it('signeeOne signs', async() => {
+                // id = await rLoan.transactionCount();
+                await rLoan.confirmLoan(id.toString(), { from: signeeOne });
+            });
+
+            it('signeeTwo signs', async() => {
+                // id = await rLoan.transactionCount();
+                await rLoan.confirmLoan(id.toString(), { from: signeeTwo });
+            });
+
+            it('gamer signs', async() => {
+                // id = await rLoan.transactionCount();
+                await rLoan.signTransaction(id.toString(), { from: gamer2 });
+            });
+
+            it('loan approved', async() => {
+                // id = await rLoan.transactionCount();
+
+                result = await rLoan.checkLoanApproved(id.toString());
+                assert.equal(result, true);
+
+                // result = await royaleLP.getTransactionDetail(id.toString());
+                // console.log("After approval: ", result);
+            });
+           
         });
 
         describe('Withdraw Test', async() => {
 
             it('Drop a withdraw request', async() => {
-                amounts = [toDai('400'), toUsd('400'), toUsd('400')];
+                amounts = [toDai('400'), toUsd('0'), toUsd('0')];
                 await royaleLP.requestWithdraw(amounts, { from: investorOne });
 
+                amounts = [toDai('0'), toUsd('0'), toUsd('300')];
+                await royaleLP.requestWithdraw(amounts, { from: investorTwo });
+
+                amounts = [toDai('0'), toUsd('370'), toUsd('0')];
+                await royaleLP.requestWithdraw(amounts, { from: investorThree });
+                
                 result = await royaleLP.isInQ(investorOne);
                 assert.equal(result, true);
 
-                result = await royaleLP.availableWithdraw(investorOne, 0);
-                console.log(result.toString());
+                result = await royaleLP.isInQ(investorOne);
+                console.log(result);
+ 
+                result = await royaleLP.isInQ(investorTwo);
+                console.log(result);
+ 
+                result = await royaleLP.isInQ(investorThree);
+                console.log(result);
 
+                console.log("Balance of investor one before withdraw request fulfilling\n")
                 result = await daiToken.balanceOf(investorOne);
                 console.log(result.toString());
-                result = await usdcToken.balanceOf(investorOne);
+                result = await usdtToken.balanceOf(investorTwo);
                 console.log(result.toString());
-                result = await usdtToken.balanceOf(investorOne);
+                result = await usdcToken.balanceOf(investorThree);
                 console.log(result.toString());
+                
 
                 result = await royaleLP.totalWithdraw(0);
                 assert.equal(result.toString(), toDai('400'));
 
                 result = await royaleLP.totalWithdraw(1);
-                assert.equal(result.toString(), toUsd('400'));
+                assert.equal(result.toString(), toUsd('370'));
 
                 result = await royaleLP.totalWithdraw(2);
-                assert.equal(result.toString(), toUsd('400'));
-            });
-
-            it('Again Drop a withdraw request', async() => {
-                amounts = [toDai('150'), toUsd('0'), toUsd('0')];
-
-                result = await royaleLP.calcRptAmount(amounts);
-                console.log("Again: ", result.toString());
-
-                await royaleLP.requestWithdraw(amounts, { from: investorTwo });
-
-                result = await royaleLP.isInQ(investorTwo);
-                assert.equal(result, true);
-
-                result = await daiToken.balanceOf(investorTwo);
-                console.log(result.toString());
-                result = await usdcToken.balanceOf(investorTwo);
-                console.log(result.toString());
-                result = await usdtToken.balanceOf(investorTwo);
-                console.log(result.toString());
-
-                result = await royaleLP.totalWithdraw(0);
-                assert.equal(result.toString(), toDai('550'));
-
-                result = await royaleLP.totalWithdraw(1);
-                assert.equal(result.toString(), toUsd('400'));
-
-                result = await royaleLP.totalWithdraw(2);
-                assert.equal(result.toString(), toUsd('400'));
+                assert.equal(result.toString(), toUsd('300'));
             });
 
             it('Withdraw from 3pool and fulfill withdraw request', async() => {
-                await royaleLP.withdraw();
+                console.log("\n balance given to yield pool before\n");
 
-                console.log("Investor One: \n");
+                result=await royaleLP.YieldPoolBalance(0);
+                console.log(result.toString());
+
+                await royaleLP.withdraw();
+                console.log("\n balance remaining to yield pool After\n");
+
+                result=await royaleLP.YieldPoolBalance(0);
+                console.log(result.toString());
+
+                console.log("Balance of investor one before withdraw request fulfilling\n")
+
+
                 result = await daiToken.balanceOf(investorOne);
                 console.log(result.toString());
-                result = await usdcToken.balanceOf(investorOne);
+                result = await usdtToken.balanceOf(investorTwo);
                 console.log(result.toString());
-                result = await usdtToken.balanceOf(investorOne);
+                result = await usdcToken.balanceOf(investorThree);
                 console.log(result.toString());
 
                 result = await rpToken.balanceOf(investorOne);
                 console.log(result.toString());
 
-                console.log("Investor Two: \n");
-                result = await daiToken.balanceOf(investorTwo);
-                console.log(result.toString());
-                result = await usdcToken.balanceOf(investorTwo);
-                console.log(result.toString());
-                result = await usdtToken.balanceOf(investorTwo);
-                console.log(result.toString());
-
-                result = await rpToken.balanceOf(investorTwo);
-                console.log(result.toString());
-
-                
-
                 result = await daiToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toDai('135'));
+                assert.equal(result.toString(), toDai('401'));
 
                 result = await usdcToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('125'));
+                assert.equal(result.toString(), toUsd('300.925'));
 
                 result = await usdtToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('125'));
+                assert.equal(result.toString(), toUsd('300.75'));
 
                 lpCRV = await crvToken.balanceOf(daipool.address);
                 console.log(`DaiPool CRV balance: ${lpCRV / 1e18}`);
@@ -695,9 +919,247 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 lpCRV = await crvToken.balanceOf(daipool2.address);
                 console.log(`DaiPool2 CRV balance: ${lpCRV / 1e18}`);
             });
+       
+            it('Again Drop a withdraw request', async() => {
+                amounts = [toDai('0'), toUsd('220'), toUsd('0')];
+                await royaleLP.requestWithdraw(amounts, { from: investorOne });
+
+                // result = await royaleLP.isInQ(investorOne);
+                // assert.equal(result, true);
+
+                result = await daiToken.balanceOf(investorOne);
+                console.log(result.toString());
+                result = await usdcToken.balanceOf(investorOne);
+                console.log(result.toString());
+                result = await usdtToken.balanceOf(investorOne);
+                console.log(result.toString());
+
+                // result = await royaleLP.totalWithdraw(0);
+                // assert.equal(result.toString(), toDai('400'));
+
+                // result = await royaleLP.totalWithdraw(1);
+                // assert.equal(result.toString(), toUsd('400'));
+
+                // result = await royaleLP.totalWithdraw(2);
+                // assert.equal(result.toString(), toUsd('400'));
+            });
+
+            it('loan withdrawn for gamer2', async() => {
+                amtToWithdraw = [toDai('250'), toUsd('250'), toUsd('0')];
+                 id = await rLoan.transactionCount();
+                await rLoan.withdrawLoan(amtToWithdraw, id.toString(), { from: gamer2 });
+
+                result = await daiToken.balanceOf(gamer2);
+                assert.equal(result.toString(), toDai('250'));
+
+                result = await usdcToken.balanceOf(gamer2);
+                assert.equal(result.toString(), toUsd('250'));
+
+                result = await usdtToken.balanceOf(gamer2);
+                assert.equal(result.toString(), toUsd('0'));
+            
+
+            });
+
+            it('Again Drop a withdraw request(1)', async() => {
+                amounts = [toDai('200'), toUsd('0'), toUsd('0')];
+                await royaleLP.requestWithdraw(amounts, { from: investorOne});
+
+                console.log("\n withdraw of i1  200,0,0 before......................................................")
+                result = await royaleLP.totalWithdraw(0);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(1);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(2);
+                console.log(result.toString());
+                console.log("\n queue results withdraw of i1  200,0,0 before......................................................")
+
+                result = await royaleLP.isInQ(investorOne);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorTwo);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorThree);
+               console.log(result);
+
+                await royaleLP.withdraw();
+
+                console.log("\n withdraw of i1  200,0,0 After......................................................")
+                result = await royaleLP.totalWithdraw(0);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(1);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(2);
+                console.log(result.toString());
+
+                console.log("\n queue results withdraw of i1  200,0,0 After......................................................")
+
+                result = await royaleLP.isInQ(investorOne);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorTwo);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorThree);
+               console.log(result);
+            });
+
+            it('Again Drop a withdraw request(2)', async() => {
+               
+                amounts = [toDai('0'), toUsd('550'), toUsd('0')];
+                await royaleLP.requestWithdraw(amounts, { from: investorThree });
+                console.log("\n queue results withdraw of i3  0,550,0 before......................................................")
+
+                result = await royaleLP.isInQ(investorOne);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorTwo);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorThree);
+               console.log(result);
+
+                await royaleLP.withdraw();
+
+                console.log("\n withdraw of i3  0,550,0 After......................................................")
+                result = await royaleLP.totalWithdraw(0);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(1);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(2);
+                console.log(result.toString());
+
+                console.log("\n queue results withdraw of i3  0,550,0 After......................................................")
+
+                result = await royaleLP.isInQ(investorOne);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorTwo);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorThree);
+               console.log(result);
+            });
+
+            it('Again Drop a withdraw request(3)', async() => {
+               
+                amounts = [toDai('500'), toUsd('0'), toUsd('0')];
+                await royaleLP.requestWithdraw(amounts, { from: investorThree });
+                amounts = [toDai('0'), toUsd('0'), toUsd('250')];
+                await royaleLP.requestWithdraw(amounts, { from: investorTwo });
+
+                console.log("\n withdraw of investorThree and two 500,0,0 anf 0,0,250......................................................")
+                result = await royaleLP.totalWithdraw(0);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(1);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(2);
+                console.log(result.toString());
+
+                console.log("\n queue results withdraw of investorThree and two 500,0,0 anf 0,0,250 before......................................................")
+
+                result = await royaleLP.isInQ(investorOne);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorTwo);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorThree);
+               console.log(result);
+
+
+                await royaleLP.withdraw();
+
+                console.log("\nwithdraw of investorThree and two 500,0,0 anf 0,0,250 after......................................................")
+                result = await royaleLP.totalWithdraw(0);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(1);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(2);
+                console.log(result.toString());
+
+                console.log("\n queue results withdraw of investorThree and two 500,0,0 anf 0,0,250 after......................................................")
+
+                result = await royaleLP.isInQ(investorOne);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorTwo);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorThree);
+               console.log(result);
+            });
 
             it('Again Withdraw from 3pool and fulfill withdraw request', async() => {
+                amounts = [toDai('0'), toUsd('0'), toUsd('250')];
+                await royaleLP.requestWithdraw(amounts, { from: investorOne });
+                amounts = [toDai('450'), toUsd('0'), toUsd('0')];
+                await royaleLP.requestWithdraw(amounts, { from: investorTwo });
+                console.log("\n  withdraw of i1 and i2 0,0,250 and 450,0,0......................................................")
+                result = await royaleLP.totalWithdraw(0);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(1);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(2);
+                console.log(result.toString());
+
+                console.log("\n queue results of  withdraw of i1 and i2 0,0,250 and 450,0,0 before......................................................")
+
+                result = await royaleLP.isInQ(investorOne);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorTwo);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorThree);
+               console.log(result);
+
                 await royaleLP.withdraw();
+
+                console.log("\n queue results after ......................................................")
+
+                result = await royaleLP.isInQ(investorOne);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorTwo);
+               console.log(result);
+
+               result = await royaleLP.isInQ(investorThree);
+               console.log(result);
+
+                console.log("\after withdraw of i1 and i2 0,0,250 and 450,0,0 before......................................................")
+                result = await royaleLP.totalWithdraw(0);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(1);
+                console.log(result.toString());
+
+                result = await royaleLP.totalWithdraw(2);
+                console.log(result.toString());
+
+
+                
+
+
+        
+
+
+                
+
+               
 
                 result = await daiToken.balanceOf(investorOne);
                 console.log(result.toString());
@@ -709,14 +1171,14 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 result = await rpToken.balanceOf(investorOne);
                 console.log(result.toString());
 
-                result = await daiToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toDai('135'));
+                /* result = await daiToken.balanceOf(royaleLP.address);
+                assert.equal(result.toString(), toDai('401'));
 
                 result = await usdcToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('125'));
+                assert.equal(result.toString(), toUsd('301.475'));
 
                 result = await usdtToken.balanceOf(royaleLP.address);
-                assert.equal(result.toString(), toUsd('125'));
+                assert.equal(result.toString(), toUsd('300.75')); */
 
                lpCRV = await crvToken.balanceOf(daipool.address);
                 console.log(`YieldOpt CRV balance: ${lpCRV / 1e18}`);
@@ -762,7 +1224,7 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
                 console.log(result.toString());
         
                 
-                await royaleLP.rebalance({ from: owner });
+                
                     
                 console.log("\n balance After balancing of royalepool\n");
                 
@@ -775,6 +1237,36 @@ contract('RoyaleLP', ([owner, signeeOne, signeeTwo, gamer, investorOne, investor
         
                 result = await usdtToken.balanceOf(royaleLP.address);
                 console.log(result.toString());
+
+                console.log("\n balance of Investors\n");
+                result = await daiToken.balanceOf(investorOne);
+                console.log(result.toString());
+        
+                result = await usdcToken.balanceOf(investorOne);
+                console.log(result.toString());
+        
+                result = await usdtToken.balanceOf(investorOne);
+                console.log(result.toString());
+
+                result = await daiToken.balanceOf(investorTwo);
+                console.log(result.toString());
+        
+                result = await usdcToken.balanceOf(investorTwo);
+                console.log(result.toString());
+        
+                result = await usdtToken.balanceOf(investorTwo);
+                console.log(result.toString());
+
+                result = await daiToken.balanceOf(investorThree);
+                console.log(result.toString());
+        
+                result = await usdcToken.balanceOf(investorThree);
+                console.log(result.toString());
+        
+                result = await usdtToken.balanceOf(investorThree);
+                console.log(result.toString());
+
+                await royaleLP.rebalance({ from: owner });
             });
        
         });

@@ -6,7 +6,6 @@ import '../Interfaces/rStrategyInterface.sol';
 
 contract rController {
 
-
     address public owner;
 
     address royaleAddress;
@@ -19,25 +18,28 @@ contract rController {
 
     Erc20[3] Coins;
 
-     modifier onlyAuthorized {
+    modifier onlyAuthorized {
         require(msg.sender == owner || msg.sender == royaleAddress, "not authorized");
         _;
     }
 
     constructor(Erc20[3] memory coins, address _royaleaddress) public {
         owner = msg.sender;
+
         royaleAddress =_royaleaddress;
+
         for(uint8 i=0; i<3; i++) {
             Coins[i] = coins[i];
         }
     }
 
+
     function setStrategy(address _addr, uint8 coin) public onlyAuthorized {
         rStrategy[coin] = rStrategyI(_addr);
     }
 
-     function setProfitBreak(uint8 _profitBreak) public onlyAuthorized {
-        profitBreak=_profitBreak;
+    function setProfitBreak(uint8 _profitBreak) public onlyAuthorized {
+        profitBreak = _profitBreak;
     }
 
     function getStrategies() external view returns(rStrategyI[3] memory) {
@@ -62,18 +64,6 @@ contract rController {
         }
     }
 
-    function changeStrategy(address _to, uint8 coin) external onlyAuthorized {
-
-        rStrategy[coin].withdrawAll();
-
-        setStrategy(_to, coin);
-
-        uint bal = Coins[coin].balanceOf(address(this));
-        Coins[coin].transfer(_to, bal);
-        rStrategy[coin].deposit(bal);
-
-    }
-
     function getTotalProfit() external onlyAuthorized returns(uint256[3] memory) {
         for(uint8 coin=0; coin<3; coin++){
             totalProfit[coin] += rStrategy[coin].sellCRV();
@@ -93,6 +83,7 @@ contract rController {
         return royaleLPProfit;
     }
 
+
     function stakeLPtokens(uint8 coin) external onlyAuthorized {
         rStrategy[coin].stakeLP();
     }
@@ -100,5 +91,23 @@ contract rController {
     function unstakeLPtokens(uint8 coin,uint256 _amount) external onlyAuthorized {
         rStrategy[coin].unstakeLP(_amount);
     }
+
+
+    function updateRoyalePool(address _royale) public onlyAuthorized {
+       royaleAddress = _royale;
+    }
+
+    function changeStrategy(address _to, uint8 coin) external onlyAuthorized {
+
+        rStrategy[coin].withdrawAll();
+
+        setStrategy(_to, coin);
+
+        uint bal = Coins[coin].balanceOf(address(this));
+        Coins[coin].transfer(_to, bal);
+        rStrategy[coin].deposit(bal);
+
+    }
+
 
 }
