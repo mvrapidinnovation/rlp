@@ -123,7 +123,7 @@ contract rDAI3Pool {
     }
 
     function sellCRV() external onlyAuthorized returns(uint256) {
-        _claimCRV();
+        // _claimCRV();
         uint256 crvAmt = Erc20(crvAddr).balanceOf(address(this));
         uint256 prevCoin=Coin.balanceOf(address(this));
 
