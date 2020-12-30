@@ -26,18 +26,22 @@ contract WithdrawQueue {
 
         return data;
     }
+    function resetQueue()internal{
+        first=1;
+        last=0;
+    }
 }
 
 contract RoyaleLPstorage  is WithdrawQueue {
 
 
-    //varaible for pool features
+    //storage for pool features
 
     uint128 constant N_COINS = 3;
 
-    uint128 public fees = 25;
+    uint128 public fees = 25; // for .25% fee, for 1.75% fee => 175
 
-    uint128 public poolPart = 95;
+    uint128 public poolPart = 95; // 95% of pool to deposit into smart backed pool
 
     uint256[N_COINS] public selfBalance;
 
@@ -47,7 +51,7 @@ contract RoyaleLPstorage  is WithdrawQueue {
 
     Erc20 rpToken;
 
-    //varaible for Yield Optimization
+    //storage for Yield Optimization
 
     rControllerI controller;
 
@@ -58,7 +62,7 @@ contract RoyaleLPstorage  is WithdrawQueue {
     uint256[N_COINS] public profitFromYield;
 
 
-   //Varaible for user related to supply and withdraw
+   //storage for user related to supply and withdraw
     uint128 public lock_period;
 
     struct depositDetails {
@@ -77,11 +81,10 @@ contract RoyaleLPstorage  is WithdrawQueue {
     uint256[N_COINS] public totalWithdraw;
 
 
-    //Varaible to store total loan given
+    //storage to store total loan given
     uint256[N_COINS] public loanGiven;  
 
 
-    //varaible realated to loan contract
-
+    //storage realated to loan contract
      address public loanContract;
 }

@@ -13,6 +13,8 @@ contract rDAI3Pool {
     PoolGauge public gauge;
     Minter public minter;
 
+    bool public TEST = true;
+
     address rControllerAddress;
     address RoyaleLPaddr;
 
@@ -25,9 +27,9 @@ contract rDAI3Pool {
     uint8 public _perc=75;
     uint256 public stakedAmt;
 
-    address public uniAddr;
-    address public crvAddr;
-    address public wethAddr;
+    address public uniAddr  = address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
+    address public crvAddr  = address(0x5dDBDBB1D1e691d2994d4A44470EB07dFCbd57C3);
+    address public wethAddr = address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
 
 
     modifier onlyAuthorized {
@@ -129,10 +131,22 @@ contract rDAI3Pool {
 
         Erc20(crvAddr).approve(uniAddr, crvAmt);
 
-        address[] memory path = new address[](3);
-        path[0] = crvAddr;
-        path[1] = wethAddr;
-        path[2] = address(Coin);
+        address[] memory path; 
+
+        if(TEST) {
+            path = new address[](2);
+
+            path[0] = crvAddr;
+            path[1] = address(Coin);
+
+        } else {
+            path = new address[](3);
+
+            path[0] = crvAddr;
+            path[1] = wethAddr;
+            path[2] = address(Coin);
+        }
+
 
         UniswapI(uniAddr).swapExactTokensForTokens(
             crvAmt, 

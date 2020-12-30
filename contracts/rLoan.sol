@@ -140,6 +140,8 @@ contract rLoan is rNum{
 
     constructor(address[N_COINS] memory _tokens , address _royale) public {
         ownerAddress = msg.sender;
+        isSignee[msg.sender] = true;
+        signees.push(msg.sender);
 
         // Set Tokens supported by Pool
         for(uint8 i=0; i<N_COINS; i++) {
@@ -239,6 +241,46 @@ contract rLoan is rNum{
         }
     }
 
+    function checkLoanApproved(uint _loanID) external view returns(bool) {
+        return transactions[_loanID].approved;
+    }
+
+    /* Admin Function */
+    
+    function setRequiredSignee(
+        uint _required
+    ) public signeeExists(msg.sender) validRequirement(signees.length, _required) {
+        required = _required;
+
+        emit addedRequiredSignee(msg.sender, required);
+    }
+
+    function addSignee(address signee) public signeeExists(msg.sender) {
+        require(isSignee[signee] == false, "already added");
+
+        isSignee[signee] = true;
+        signees.push(signee);
+
+        emit signeeAdded(signee);
+    }
+    
+    function removeSignee(address signee) public signeeExists(msg.sender) signeeExists(signee) {
+        
+        isSignee[signee] = false;
+        for (uint i=0; i<signees.length - 1; i++) {
+            if (signees[i] == signee) {
+                signees[i] = signees[signees.length - 1];
+                break;
+            }
+        }
+        signees.pop();
+        
+        if (required > signees.length) {
+            required--;
+        }
+
+        emit signeeRemoved(signee);
+    } 
 
     function withdrawLoan( 
         uint256[N_COINS] calldata amounts,
@@ -247,16 +289,13 @@ contract rLoan is rNum{
 
         require(transactions[_loanID].iGamingCompany == msg.sender, "company not-exist");
         require(transactions[_loanID].approved, "not approved for loan");
-
         uint256[N_COINS] memory loanAmount;
-
         for(uint8 i=0; i<N_COINS; i++) {
             require(
                 transactions[_loanID].remAmt[i] >= amounts[i], 
                 "amount requested exceeds amount approved"
             );
         }
-
         bool b = royale._loanWithdraw(amounts,transactions[_loanID].iGamingCompany);
         require(b, "Loan Withdraw not succesfull");
 
@@ -271,7 +310,6 @@ contract rLoan is rNum{
                 check++;
             }
         }
-
         gamingCompanyRepayment[_loanID] = Repayment({
                   transactionID: _loanID,
                   isRepaymentDone: false,
@@ -288,21 +326,15 @@ contract rLoan is rNum{
     } 
     
     
-    function repayLoan(
-        uint256[N_COINS] calldata _amounts, 
-        uint _loanId
-    ) external {
+    function repayLoan(uint256[N_COINS] calldata _amounts, uint _loanId) external {
         require(_loanId <= transactionCount, "invalid loan id");
         require(transactions[_loanId].iGamingCompany == msg.sender, "company not-exist");
         require(!gamingCompanyRepayment[_loanId].isRepaymentDone, "already repaid");
-
         for(uint8 i=0;i<N_COINS;i++){
-            require(_amounts[i]<=gamingCompanyRepayment[_loanId].remainingTokenAmounts[i],"excess pay transfer");
+            require(_amounts[i]<=gamingCompanyRepayment[_loanId].remainingTokenAmounts[i],"Don't have that much of remaining repayment");
         }
-
         bool b = royale._loanRepayment(_amounts,transactions[_loanId].iGamingCompany);
-        require(b,"repayment error");
-
+        require(b,"Loan Payment not succesfull");
         uint counter=0;
         for(uint i=0;i<N_COINS;i++) {
             if(_amounts[i]!=0) {
@@ -333,60 +365,5 @@ contract rLoan is rNum{
                 );
             }       
     }
-
-    /* Admin Function */
     
-    function setRequiredSignee(
-        uint _required
-    ) public onlyOwner validRequirement(signees.length, _required) {
-        required = _required;
-
-        emit addedRequiredSignee(msg.sender, required);
-    }
-
-    function addSignee(address signee) public onlyOwner {
-        isSignee[signee] = true;
-        signees.push(signee);
-
-        emit signeeAdded(signee);
-    }
-    
-    function removeSignee(address signee) public onlyOwner signeeExists(signee) {
-        isSignee[signee] = false;
-        for (uint i=0; i<signees.length - 1; i++) {
-            if (signees[i] == signee) {
-                signees[i] = signees[signees.length - 1];
-                break;
-            }
-        }
-        
-        if (required > signees.length) {
-            required--;
-        }
-
-        emit signeeRemoved(signee);
-    } 
-
-
-    function getTransactionDetail(uint _loanID) public view returns(Transaction memory){
-        return transactions[_loanID];
-    }
-
-    function checkLoanApproved(uint _loanID) external view returns(bool) {
-        return transactions[_loanID].approved;
-    }
-
-    function getTotalTakenLoan(uint8 _number)public view returns(uint){
-        return totalLoanTaken[_number];
-    }
-
-    function getTotalApprovedLoan(uint8 _number)public view returns(uint){
-        return totalApprovedLoan[_number];
-    }
-
-
-    function updateRoyalePool(address _royale) public onlyOwner {
-        royale = RoyaleInterface(_royale);
-    }
-
 }

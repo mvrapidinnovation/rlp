@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
-import '@openzeppelin/contracts/math/SafeMath.sol';
-
 interface MRoya{
 
     function totalSupply() external view  returns (uint256);
@@ -62,9 +60,9 @@ contract Reserve {
     RoyaleToken public royaT;
     BToken public bptToken;
 
-    address[] stakersRPT;
-    mapping(address => bool) hasStakedRPT;
-    mapping(address => bool) isStakingRPT;
+    address[] stakersRoya;
+    mapping(address => bool) hasStakedRoya;
+    mapping(address => bool) isStakingRoya;
 
     address[] stakersBPT;
     mapping(address => bool) hasStakedBPT;
@@ -73,8 +71,8 @@ contract Reserve {
     uint256 mRoyaPerBlock = 1 * 10**18;
     
     struct stakerRData {
-        uint256 stakedRPT;
-        uint256 initialStakedRPT;
+        uint256 stakedRoya;
+        uint256 initialStakedRoya;
         uint256 startTimestamp;
         uint256 blockNumber;
     }
@@ -86,7 +84,7 @@ contract Reserve {
         uint256 blockNumber;
     }
     
-    mapping(address => stakerRData) public stakerRPT;
+    mapping(address => stakerRData) public stakerRoya;
     mapping(address => stakerBData) public stakerBPT;
 
     using SafeMath for uint256;
@@ -110,7 +108,7 @@ contract Reserve {
     }
     
     
-    function updateRPTAddress(RoyaleToken _royaT) public onlyOwner returns (bool){
+    function updateRoyaAddress(RoyaleToken _royaT) public onlyOwner returns (bool){
         royaT = _royaT;
         return true;
     }
@@ -126,17 +124,17 @@ contract Reserve {
 
         royaT.transferFrom(msg.sender, address(this), _amount);
 
-        stakerRPT[msg.sender].stakedRPT += _amount;
-        stakerRPT[msg.sender].initialStakedRPT += _amount;
-        stakerRPT[msg.sender].startTimestamp = now;
-        stakerRPT[msg.sender].blockNumber = block.number;
+        stakerRoya[msg.sender].stakedRoya += _amount;
+        stakerRoya[msg.sender].initialStakedRoya += _amount;
+        stakerRoya[msg.sender].startTimestamp = now;
+        stakerRoya[msg.sender].blockNumber = block.number;
 
-        if(!hasStakedRPT[msg.sender]) {
-            stakersRPT.push(msg.sender);
+        if(!hasStakedRoya[msg.sender]) {
+            stakersRoya.push(msg.sender);
         }
 
-        hasStakedRPT[msg.sender] = true;
-        isStakingRPT[msg.sender] = true;
+        hasStakedRoya[msg.sender] = true;
+        isStakingRoya[msg.sender] = true;
     }
     
         
@@ -146,7 +144,7 @@ contract Reserve {
         bptToken.transferFrom(msg.sender, address(this), _amount);
 
         stakerBPT[msg.sender].stakedBPT += _amount;
-        stakerRPT[msg.sender].initialStakedRPT += _amount;
+        stakerBPT[msg.sender].initialStakedBPT += _amount;
         stakerBPT[msg.sender].startTimestamp = now;
         stakerBPT[msg.sender].blockNumber = block.number;
 
@@ -161,17 +159,17 @@ contract Reserve {
 
     
     
-    function calculateMRoyaRPT(address recipient) public view returns (uint){
-        uint256 stakedRPTAmount = stakerRPT[recipient].stakedRPT;
+    function calculateMRoyaRoya(address recipient) public view returns (uint){
+        uint256 stakedRoyaAmount = stakerRoya[recipient].stakedRoya;
         
-        uint256 duration = block.number.sub(stakerRPT[recipient].blockNumber);
-        uint256 totalRPT = royaT.balanceOf(address(this)); // getting total staked RPT Amount
+        uint256 duration = block.number.sub(stakerRoya[recipient].blockNumber);
+        uint256 totalRoya = royaT.balanceOf(address(this)); // getting total staked Roya Amount
         
-        require(totalRPT > 0, 'No RPT available');
+        require(totalRoya > 0, 'No Roya available');
     
-        uint256 mRoyaAmt = duration * stakedRPTAmount * 10**18 / totalRPT;
+        uint256 mRoyaG = duration * stakedRoyaAmount * 10**18 / totalRoya;
 
-        return mRoyaAmt * mRoyaPerBlock / 10**18;
+        return mRoyaG * mRoyaPerBlock / 10**18;
     }
     
     
@@ -182,32 +180,32 @@ contract Reserve {
         
         require(totalBPT > 0, 'No BPT available');
     
-        uint256 mRoyaAmt = duration * stakedBPTAmount * 10**18 / totalBPT;
+        uint256 mRoyaG = duration * stakedBPTAmount * 10**18 / totalBPT;
 
-        return mRoyaAmt * mRoyaPerBlock / 10**18;
+        return mRoyaG * mRoyaPerBlock / 10**18;
     }
 
     
     function calculateMRoyaTotal(address recipient) public view returns (uint){
-        return calculateMRoyaBPT(recipient).add(calculateMRoyaRPT(recipient));
+        return calculateMRoyaBPT(recipient).add(calculateMRoyaRoya(recipient));
     }
 
 
-    function _claimRewardsRPT(address recipient) internal returns (bool) {
-        uint256 balance = stakerRPT[recipient].stakedRPT;
+    function _claimRewardsRoya(address recipient) internal returns (bool) {
+        uint256 balance = stakerRoya[recipient].stakedRoya;
         
         require(balance > 0, 'Staking balance cannot be 0');
 
-        uint256 rewards = calculateMRoyaRPT(recipient);
+        uint256 rewards = calculateMRoyaRoya(recipient);
             
 
         if(rewards > 0) {
 
                 mRoya.mint(recipient, rewards);
 
-                //stakerRPT[msg.sender].stakedRPT = balance;
-                stakerRPT[recipient].startTimestamp = now;
-                stakerRPT[recipient].blockNumber = block.number;
+                //stakerRoya[msg.sender].stakedRoya = balance;
+                stakerRoya[recipient].startTimestamp = now;
+                stakerRoya[recipient].blockNumber = block.number;
                 return true;
             }
         
@@ -227,7 +225,7 @@ contract Reserve {
 
                 mRoya.mint(recipient, rewards);
 
-                //stakerRPT[msg.sender].stakedBPT = balance;
+                //stakerBPT[msg.sender].stakedBPT = balance;
                 stakerBPT[recipient].startTimestamp = now;
                 stakerBPT[recipient].blockNumber = block.number;
                 return true;
@@ -238,8 +236,8 @@ contract Reserve {
     }
 
 
-    function claimRewardsRPT() public returns (bool) {
-        return _claimRewardsRPT(msg.sender);
+    function claimRewardsRoya() public returns (bool) {
+        return _claimRewardsRoya(msg.sender);
     }
 
     function claimRewardsBPT() public returns (bool) {
@@ -249,41 +247,41 @@ contract Reserve {
     
     function claimRewardsTotal() public returns (bool){
             bool b = _claimRewardsBPT(msg.sender);
-            bool r = _claimRewardsRPT(msg.sender);
+            bool r = _claimRewardsRoya(msg.sender);
             return r && b;
     }
 
 
-    function unstakeRPT() public {
-        uint256 balance = stakerRPT[msg.sender].stakedRPT;
-        uint256 duration = stakerRPT[msg.sender].startTimestamp.sub(now) / 86400;
+    function unstakeRoya() public {
+        uint256 balance = stakerRoya[msg.sender].stakedRoya;
+        uint256 duration = stakerRoya[msg.sender].startTimestamp.sub(now) / 86400;
         
-        //require (isStaking[msg.sender],'Not staking any RPT');
+        //require (isStaking[msg.sender],'Not staking any Roya');
 
         require(balance > 0, 'Staking balance cannot be 0');
         require(duration > 10, 'Should stake at least 10 days');
 
         royaT.transfer(msg.sender, balance);
         
-        uint256 rewards = calculateMRoyaRPT(msg.sender);
+        uint256 rewards = calculateMRoyaRoya(msg.sender);
             
 
         if(rewards > 0) {
                 mRoya.mint(msg.sender, rewards);
             }
 
-        stakerRPT[msg.sender].stakedRPT = 0;
-        stakerRPT[msg.sender].startTimestamp = 0;
-        stakerRPT[msg.sender].blockNumber = 0;
+        stakerRoya[msg.sender].stakedRoya = 0;
+        stakerRoya[msg.sender].startTimestamp = 0;
+        stakerRoya[msg.sender].blockNumber = 0;
 
-        isStakingRPT[msg.sender] = false;
+        isStakingRoya[msg.sender] = false;
     }
 
     function unstakeBPT() public {
         uint256 balance = stakerBPT[msg.sender].stakedBPT;
         uint256 duration = stakerBPT[msg.sender].startTimestamp.sub(now) / 86400;
         
-        //require (isStaking[msg.sender],'Not staking any RPT');
+        //require (isStaking[msg.sender],'Not staking any Roya');
 
         require(balance > 0, 'Staking balance cannot be 0');
         require(duration > 10, 'Should stake at least 10 days');
@@ -315,10 +313,10 @@ contract Reserve {
         require(amount>totalRoyaStaked,"Not enough Roya to withdraw");
         uint256 deductionPercent = amount * 10000 / totalRoyaStaked;
         uint256 totalDeduction = 0;
-        for(uint i=0; i<stakersRPT.length; i++) {
-            uint256 balance = stakerRPT[stakersRPT[i]].stakedRPT;
+        for(uint i=0; i<stakersRoya.length; i++) {
+            uint256 balance = stakerRoya[stakersRoya[i]].stakedRoya;
             uint256 deductionAmount = balance * deductionPercent / 10000;
-            stakerRPT[stakersRPT[i]].stakedRPT = balance.sub(deductionAmount);
+            stakerRoya[stakersRoya[i]].stakedRoya = balance.sub(deductionAmount);
             totalDeduction.add(deductionAmount);
 
         }
@@ -342,5 +340,39 @@ contract Reserve {
         bptToken.transfer(recipient,totalDeduction);
         return totalDeduction == amount;
     }
+
+}
+
+library SafeMath { 
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+      assert(b <= a);
+      return a - b;
+    }
+    
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+      uint256 c = a + b;
+      assert(c >= a);
+      return c;
+    }
+    
+    function div(uint256 a, uint256 b) internal pure returns (uint256) {
+      require(b > 0);
+      uint256 c = a / b;
+      // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+      return c;
+    }
+    
+    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+    
+        if (a == 0) {
+            return 0;
+        }
+
+        uint256 c = a * b;
+        require(c / a == b, "SafeMath: multiplication overflow");
+
+        return c;
+    }
+
 
 }

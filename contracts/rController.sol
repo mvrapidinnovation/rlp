@@ -19,7 +19,10 @@ contract rController {
     Erc20[3] Coins;
 
     modifier onlyAuthorized {
-        require(msg.sender == owner || msg.sender == royaleAddress, "not authorized");
+        require(
+            msg.sender == owner || msg.sender == royaleAddress, 
+            "not authorized"
+        );
         _;
     }
 
@@ -35,6 +38,10 @@ contract rController {
 
 
     function setStrategy(address _addr, uint8 coin) public onlyAuthorized {
+        require(
+            address(rStrategy[coin]) == address(0),
+            "cannot set strategy again: use changeStrategy()"
+        );
         rStrategy[coin] = rStrategyI(_addr);
     }
 
@@ -98,6 +105,10 @@ contract rController {
     }
 
     function changeStrategy(address _to, uint8 coin) external onlyAuthorized {
+        require(
+            address(rStrategy[coin]) != address(0),
+            "cannot change strategy: not set"
+        );
 
         rStrategy[coin].withdrawAll();
 

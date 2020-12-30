@@ -9,12 +9,15 @@ import './RoyaleLPstorage.sol';
 contract RoyaleLP is RoyaleLPstorage, rNum {
 
     modifier onlyOwner {
-        require(msg.sender == owner);
+        require(msg.sender == owner, "not authorized");
         _;
     }
 
     modifier onlyAuthorized {
-        require(msg.sender == owner || msg.sender == loanContract,"not authorized");
+        require(
+            msg.sender == owner || msg.sender == loanContract,
+            "not authorized"
+        );
         _;
     }
 
@@ -87,7 +90,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                     address(this), 
                     amounts[i]
                 );
-                require(result,"Transfer not successful");
+                require(result, "coin transfer failed");
                 selfBalance[i] += amounts[i];
                 amountSupplied[msg.sender][i] += amounts[i];
             }
@@ -121,11 +124,9 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                     temp
                 );
                 require(result);
-
                 amountSupplied[recipient][i] -= amountWithdraw[recipient][i];
                 totalWithdraw[i] -= amountWithdraw[recipient][i];
-                selfBalance[i] -= amountWithdraw[recipient][i];
-
+                selfBalance[i] -= temp;
                 uint x = amountWithdraw[recipient][i];
                 for(uint8 j=0; j<supplyTime[recipient].length; j++) {
                     if(supplyTime[recipient][j].withdrawn[i] != true && x > 0) {
@@ -142,11 +143,11 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                 }
 
                 amountWithdraw[recipient][i] = 0;
-
-                isInQ[recipient] = false;
-                recipientCount -= 1;
+   
             }
         }
+        isInQ[recipient] = false;
+        recipientCount -= 1;
     }
 
 
@@ -302,7 +303,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
                     result = tokens[i].transfer(msg.sender, temp);
                     require(result);
                     amountSupplied[msg.sender][i] -= amounts[i];
-                    selfBalance[i] -= amounts[i];
+                    selfBalance[i] -= temp;
                     
                     uint x = amounts[i];
                     for(uint8 j=0; j<supplyTime[msg.sender].length; j++) {
@@ -373,9 +374,9 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     }
 
 
-    /* CORE FUNCTIONS (also exposed to frontend but to be called by owner only) */
+    /* CORE FUNCTIONS (called by owner only) */
 
-    //function for deposit in pool for yield
+    //Deposit in the smart backed pool
     function deposit() onlyOwner external {
         uint256[N_COINS] memory amounts = _getBalances();
         uint256 decimal;
@@ -408,7 +409,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         }
     }
 
-    //Function available in ui for owner , withdrawing from Pool(curve or any other)
+    //Withdraw from Pool
     function withdraw() onlyOwner external {
 
         uint8 counter = 0;
@@ -423,6 +424,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
         _withdraw(totalWithdraw);
         _giveBack();
+        resetQueue();
     }
 
     //function for rebalancing pool(ratio)      
@@ -434,13 +436,22 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         rStrategyI[3] memory strat = controller.getStrategies();
 
         for(uint8 i=0;i<N_COINS;i++) {
+           uint256 decimal=tokens[i].decimals();
            uint256 a = (selfBalance[i] * (100 - poolPart)) / 100;
            if(a > currentAmount[i]) {
               amountToWithdraw[i] = a - currentAmount[i];
+              if(amountToWithdraw[i]<(50*(10**decimal))){
+                  amountToWithdraw[i]=0;
+              }
            }
            else if(a < currentAmount[i]) {
                amountToDeposit[i] = currentAmount[i] - a;
-               tokens[i].transfer(address(strat[i]), amountToDeposit[i]);
+               if(amountToDeposit[i]<(50*(10**decimal))){
+                   amountToDeposit[i]=0;
+               }
+               else{
+                  tokens[i].transfer(address(strat[i]), amountToDeposit[i]);
+               }
            }
            else {
                amountToWithdraw[i] = 0;
