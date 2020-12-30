@@ -51,7 +51,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     /* INTERNAL FUNCTIONS */
 
-    function _getBalances() internal view returns(uint256[N_COINS] memory) {
+    function getBalances() public view returns(uint256[N_COINS] memory) {
         uint256[N_COINS] memory balances;
 
         for(uint8 i=0; i<N_COINS; i++) {
@@ -231,7 +231,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
             if(
                 ((now - supplyTime[addr][j].time) 
                 > 
-                (24 * 60 * 60 * lock_period))
+                (/*24 * 60 * 60 **/ lock_period))
                 &&
                 supplyTime[addr][j].withdrawn[coin] != true
             ) {
@@ -272,7 +272,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         );
         
         uint256[N_COINS] memory poolBalance;
-        poolBalance = _getBalances();
+        poolBalance = getBalances();
         
         bool checkTime = true;
         bool instant;
@@ -378,7 +378,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     //Deposit in the smart backed pool
     function deposit() onlyOwner external {
-        uint256[N_COINS] memory amounts = _getBalances();
+        uint256[N_COINS] memory amounts = getBalances();
         uint256 decimal;
 
         rStrategyI[3] memory strat = controller.getStrategies();
@@ -429,7 +429,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     //function for rebalancing pool(ratio)      
     function rebalance() onlyOwner external {
-        uint256[N_COINS] memory currentAmount = _getBalances();
+        uint256[N_COINS] memory currentAmount = getBalances();
         uint256[N_COINS] memory amountToWithdraw;
         uint256[N_COINS] memory amountToDeposit;
 
@@ -521,7 +521,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     }
 
     function setInitialDeposit() onlyOwner external returns(bool) {
-        selfBalance = _getBalances();
+        selfBalance = getBalances();
         return true;
     }
 
