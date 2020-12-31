@@ -8,14 +8,16 @@ import './RoyaleLPstorage.sol';
 
 contract RoyaleLP is RoyaleLPstorage, rNum {
 
-    modifier onlyOwner {
-        require(msg.sender == owner, "not authorized");
+  
+    
+    modifier ownerExists(address _caller) {
+        require(multiSig.checkOwner(_caller),"owner not exist");
         _;
     }
 
-    modifier onlyAuthorized {
+    modifier onlyAuthorized(address _caller) {
         require(
-            msg.sender == owner || msg.sender == loanContract,
+            multiSig.checkOwner(_caller) || _caller == loanContract,
             "not authorized"
         );
         _;
@@ -23,13 +25,14 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
 
     constructor(
         address[N_COINS] memory _tokens,
-        address _rpToken
+        address _rpToken,
+        address _multiSig
     ) public {
-        owner = msg.sender;
-
+     
         for(uint8 i=0; i<N_COINS; i++) {
             tokens[i] = Erc20(_tokens[i]);
         }
+        multiSig= MultiSignatureInterface(_multiSig);
         rpToken = Erc20(_rpToken);
     }
     
@@ -335,7 +338,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     function _loanWithdraw(
         uint256[N_COINS] memory amounts, 
         address _loanSeeker
-    ) public onlyAuthorized returns(bool) {
+    ) public onlyAuthorized(msg.sender) returns(bool) {
         _withdraw(amounts);
 
         for(uint8 i=0; i<N_COINS; i++) {
@@ -352,7 +355,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     function _loanRepayment(
         uint256[N_COINS] memory amounts, 
         address _loanSeeker
-    ) public onlyAuthorized returns(bool) {
+    ) public onlyAuthorized(msg.sender) returns(bool) {
         for(uint8 i=0; i<N_COINS; i++) {
             if(amounts[i] > 0) {
                 loanGiven[i] -= amounts[i];
@@ -377,7 +380,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     /* CORE FUNCTIONS (called by owner only) */
 
     //Deposit in the smart backed pool
-    function deposit() onlyOwner external {
+    function deposit() ownerExists(msg.sender) external {
         uint256[N_COINS] memory amounts = getBalances();
         uint256 decimal;
 
@@ -410,7 +413,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     }
 
     //Withdraw from Pool
-    function withdraw() onlyOwner external {
+    function withdraw() ownerExists(msg.sender) external {
 
         uint8 counter = 0;
         for(uint8 i=0; i<N_COINS; i++) {
@@ -428,7 +431,7 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     }
 
     //function for rebalancing pool(ratio)      
-    function rebalance() onlyOwner external {
+    function rebalance() ownerExists(msg.sender) external {
         uint256[N_COINS] memory currentAmount = getBalances();
         uint256[N_COINS] memory amountToWithdraw;
         uint256[N_COINS] memory amountToDeposit;
@@ -498,16 +501,16 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         return loanGiven;
     }
 
-    function setLoanContract(address _loanContract)external onlyOwner returns(bool){
+    function setLoanContract(address _loanContract)external ownerExists(msg.sender)returns(bool){
         loanContract=_loanContract;
     }
 
-    function changePoolPart(uint128 _newPoolPart) external onlyOwner returns(bool) {
+    function changePoolPart(uint128 _newPoolPart) external ownerExists(msg.sender) returns(bool) {
         poolPart = _newPoolPart;
         return true;
     }
 
-    function getYieldProfit() external onlyOwner {
+    function getYieldProfit() external ownerExists(msg.sender){
         profitFromYield=controller.getTotalProfit();
 
         for(uint8 i=0;i<N_COINS;i++){
@@ -515,27 +518,27 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
         }
     }
 
-    function setThresholdTokenAmount(uint256 _newThreshold) external onlyOwner returns(bool) {
+    function setThresholdTokenAmount(uint256 _newThreshold) external ownerExists(msg.sender) returns(bool) {
         thresholdTokenAmount = _newThreshold;
         return true;
     }
 
-    function setInitialDeposit() onlyOwner external returns(bool) {
+    function setInitialDeposit() ownerExists(msg.sender) external returns(bool) {
         selfBalance = getBalances();
         return true;
     }
 
-    function setController(rControllerI _controller) onlyOwner external returns(bool) {
+    function setController(rControllerI _controller)ownerExists(msg.sender) external returns(bool) {
         controller = _controller;
         return true;
     }
 
-    function setLockPeriod(uint128 lockperiod) onlyOwner external returns(bool) {
+    function setLockPeriod(uint128 lockperiod) ownerExists(msg.sender) external returns(bool) {
         lock_period = lockperiod;
         return true;
     }
 
-    function setWithdrawFees(uint128 _fees) onlyOwner external returns(bool) {
+    function setWithdrawFees(uint128 _fees) ownerExists(msg.sender) external returns(bool) {
         fees = _fees;
         return true;
     }
