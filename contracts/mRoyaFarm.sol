@@ -141,27 +141,29 @@ contract MRoyaFarm {
     }
 
     // function to unstake tokens
-    function unstakeTokens() public {
+    function unstakeTokens(uint amount) public {
         uint256 balance = staker[msg.sender].stakedRPT;
-        
-        //require (isStaking[msg.sender],'Not staking any RPT');
+        require(balance > amount, 'staking balance cannot be less');
 
-        require(balance > 0, 'Staking balance cannot be 0');
-
-        rpToken.transfer(msg.sender, balance);
+        rpToken.transfer(msg.sender, amount);
         
         uint256 rewards = calculateMRoya(msg.sender);
-            
 
+        staker[msg.sender].stakedRPT -= amount;    
+        
         if(rewards > 0) {
-                mRoya.mint(msg.sender, rewards);
-            }
+            mRoya.mint(msg.sender, rewards);
 
-        staker[msg.sender].stakedRPT = 0;
-        staker[msg.sender].startTimestamp = 0;
-        staker[msg.sender].blockNumber = 0;
+            staker[msg.sender].startTimestamp = now;
+            staker[msg.sender].blockNumber = block.number;
+        }
 
-        isStaking[msg.sender] = false;
+        if(staker[msg.sender].stakedRPT == 0) {
+            staker[msg.sender].stakedRPT = 0;
+            staker[msg.sender].startTimestamp = 0;
+            staker[msg.sender].blockNumber = 0;
+            isStaking[msg.sender] = false;
+        }
     }
 
     /* Admin Functions */
