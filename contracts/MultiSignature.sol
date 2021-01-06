@@ -2,7 +2,7 @@
 pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
-contract MultiSig{
+contract MultiSignature{
     uint8 constant public MAX_OWNER_COUNT = 50;
 
     mapping(address => bool) isOwner;
@@ -59,7 +59,7 @@ contract MultiSig{
         owners.push(msg.sender);
     }
 
-    function setRequiredowner(
+    function setRequiredOwner(
         uint8 _required
     ) public ownerExists(msg.sender) ZeroRequired(_required) validRequirement(owners.length, _required) {
         required = _required;
@@ -68,7 +68,7 @@ contract MultiSig{
     }
 
    
-    function addowner(address owner)
+    function addOwner(address owner)
     public
     ownerDoesNotExist(owner) 
     ownerExists(msg.sender)
@@ -81,7 +81,7 @@ contract MultiSig{
         emit ownerAdded(owner);
     }
     
-    function removeowner(address owner) 
+    function removeOwner(address owner) 
     public 
     ownerExists(msg.sender) 
     ownerExists(owner) 

@@ -66,7 +66,7 @@ contract RoyaleLPstorage  is WithdrawQueue {
 
 
    //storage for user related to supply and withdraw
-    uint128 public lock_period = 5 minutes;
+    uint128 public lock_period = 0 minutes;
 
     struct depositDetails {
         uint256[N_COINS] amount;
