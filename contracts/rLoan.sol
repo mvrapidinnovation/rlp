@@ -5,6 +5,7 @@ pragma experimental ABIEncoderV2;
 import '../Interfaces/Erc20Interface.sol';
 import '../Interfaces/RoyaleInterface.sol';
 import './MathLib.sol';
+import '../Interfaces/MultisigInterface.sol';
 
 
 contract rLoan is rNum{
@@ -12,20 +13,20 @@ contract rLoan is rNum{
     
     Erc20[N_COINS] tokens;
 
-    uint constant public MAX_SIGNEE_COUNT = 50;
+    
     
     mapping(uint256 => Transaction) public transactions;
     mapping(address => mapping (uint256 => bool)) public confirmations;
     mapping(uint256 => Repayment) public gamingCompanyRepayment;
-    mapping(address => bool) public isSignee;
+   
   
     mapping(address => uint[])public takenLoan;
-    address[] public signees;
+    
     uint256 public transactionCount = 0;
    
-    uint256 public required;
-
     RoyaleInterface public royale;
+
+     MultiSignatureInterface public multiSig;
 
     address public ownerAddress;
 
@@ -58,7 +59,7 @@ contract rLoan is rNum{
     );
 
     event signed(
-        address signee,
+        address owner,
         uint loanID
     );
 
@@ -66,18 +67,9 @@ contract rLoan is rNum{
         uint loanID
     );
 
-    event addedRequiredSignee(
-        address adder,
-        uint numberOfSignees
-    );
+   
 
-    event signeeAdded(
-        address signee
-    );
-
-    event signeeRemoved(
-        address signee
-    );
+    
 
     event loanWithdrawn(
         address by,
@@ -114,39 +106,38 @@ contract rLoan is rNum{
         _;
     }
 
-    modifier signeeExists(address signee) {
-        require(isSignee[signee]);
-        _;
-    }
+    
 
     modifier transactionExists(uint _loanID) {
         require(_loanID > 0 && _loanID <= transactionCount);
         _;
     }
 
+    modifier signeeExists(address signee) {
+        require(multiSig.checkOwner(signee),"signee not exist");
+        _;
+    }
+
+   
+
     modifier notConfirmed(address addr,uint _loanID) {
-        require(!confirmations[addr][_loanID]);
-        _;
-    }
-
-    modifier validRequirement(uint signeeCount, uint _required) {
-        require(signeeCount <= MAX_SIGNEE_COUNT
-            && _required <= signeeCount
-            && _required != 0
-            && signeeCount != 0);
+        require(!confirmations[addr][_loanID],"ALready confirmed");
         _;
     }
 
 
-    constructor(address[N_COINS] memory _tokens , address _royale) public {
+   
+
+
+    constructor(address[N_COINS] memory _tokens , address _royale,address _multiSig) public {
         ownerAddress = msg.sender;
-        isSignee[msg.sender] = true;
-        signees.push(msg.sender);
-
+         multiSig=MultiSignatureInterface(_multiSig);
+         royale = RoyaleInterface(_royale);
         // Set Tokens supported by Pool
+
         for(uint8 i=0; i<N_COINS; i++) {
             tokens[i] = Erc20(_tokens[i]);
-            royale = RoyaleInterface(_royale);
+           
         }
     }
 
@@ -185,14 +176,14 @@ contract rLoan is rNum{
         takenLoan[transactions[_loanID].iGamingCompany].push(_loanID);
     }
 
-    function _isConfirmed(
+     function _isConfirmed(
         uint _loanID
     ) internal view returns (bool) {
         uint count = 0;
-        for (uint i=0; i<signees.length; i++) {
-            if (confirmations[signees[i]][_loanID])
+        for (uint i=0; i<multiSig.getNumberOfOwner(); i++) {
+            if (confirmations[multiSig.getOwner(i)][_loanID])
                 count += 1;
-            if (count == required && transactions[_loanID].isGamingCompanySigned)
+            if (count == multiSig.getRequired() && transactions[_loanID].isGamingCompanySigned)
                 return true;
         }
     }
@@ -204,7 +195,7 @@ contract rLoan is rNum{
     function requestLoan(
         uint256[N_COINS] calldata amounts
     ) external  {
-       require(signees.length >= required, "insufficient signees");
+     
        _addTransaction(amounts);
 
        emit loanRequested(msg.sender, amounts, transactionCount);
@@ -225,7 +216,7 @@ contract rLoan is rNum{
         }
     }
     
-    // Signee signs using this
+   // Signee signs using this
     function confirmLoan(uint _loanID) public
         signeeExists(msg.sender)
         transactionExists(_loanID)
@@ -247,40 +238,7 @@ contract rLoan is rNum{
 
     /* Admin Function */
     
-    function setRequiredSignee(
-        uint _required
-    ) public signeeExists(msg.sender) validRequirement(signees.length, _required) {
-        required = _required;
-
-        emit addedRequiredSignee(msg.sender, required);
-    }
-
-    function addSignee(address signee) public signeeExists(msg.sender) {
-        require(isSignee[signee] == false, "already added");
-
-        isSignee[signee] = true;
-        signees.push(signee);
-
-        emit signeeAdded(signee);
-    }
-    
-    function removeSignee(address signee) public signeeExists(msg.sender) signeeExists(signee) {
-        
-        isSignee[signee] = false;
-        for (uint i=0; i<signees.length - 1; i++) {
-            if (signees[i] == signee) {
-                signees[i] = signees[signees.length - 1];
-                break;
-            }
-        }
-        signees.pop();
-        
-        if (required > signees.length) {
-            required--;
-        }
-
-        emit signeeRemoved(signee);
-    } 
+   
 
     function withdrawLoan( 
         uint256[N_COINS] calldata amounts,
@@ -364,6 +322,10 @@ contract rLoan is rNum{
                     _loanId
                 );
             }       
+    }
+
+     function setMultiSig(address _multiSig)external onlyOwner{
+        multiSig=MultiSignatureInterface(_multiSig);
     }
     
 }

@@ -4,6 +4,7 @@ pragma solidity ^0.6.0;
 import '../../Interfaces/CurveInterface.sol';
 import '../../Interfaces/ERC20Interface.sol';
 import '../../Interfaces/UniswapInterface.sol';
+import '../../Interfaces/MultisigInterface.sol';
 
 contract rDAI3Pool {
 
@@ -12,8 +13,10 @@ contract rDAI3Pool {
     curvePool public Pool;
     PoolGauge public gauge;
     Minter public minter;
+     MultiSignatureInterface multiSig;
 
     bool public TEST = true;
+
 
     address rControllerAddress;
     address RoyaleLPaddr;
@@ -22,7 +25,7 @@ contract rDAI3Pool {
 
     uint256 virtual_price;
 
-    address public owner;
+    
 
     uint8 public _perc=75;
     uint256 public stakedAmt;
@@ -32,8 +35,8 @@ contract rDAI3Pool {
     address public wethAddr = address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
 
 
-    modifier onlyAuthorized {
-        require(msg.sender == owner || msg.sender == rControllerAddress,"not authorized");
+    modifier onlyAuthorized(address _caller) {
+        require( multiSig.checkOwner(_caller) || _caller == rControllerAddress,"not authorized");
         _;
     }
 
@@ -43,22 +46,24 @@ contract rDAI3Pool {
         address _coin,
         address _crvtoken,
         address _royaLP,
-        address _gauge
+        address _gauge,
+        address _multiSig
     ) public {
-        owner=msg.sender;
+       
         rControllerAddress = _controller;
         Pool = curvePool(_crvpool);
         Coin = Erc20(_coin);
         PoolToken = Erc20(_crvtoken);
         RoyaleLPaddr = _royaLP;
         gauge = PoolGauge(_gauge);
+        multiSig= MultiSignatureInterface(_multiSig);
     }
 
-    function set3CRVPercentage(uint8 _percentage3CRV)external onlyAuthorized{
+    function set3CRVPercentage(uint8 _percentage3CRV)external onlyAuthorized(msg.sender){
         _perc=_percentage3CRV;
     }
 
-    function deposit(uint amount) external onlyAuthorized {
+    function deposit(uint amount) external onlyAuthorized(msg.sender){
         Coin.approve(address(Pool), amount);
         uint mintAmount = Pool.calc_token_amount([amount, 0, 0], true);
         mintAmount = (99 * mintAmount) / 100;
@@ -67,7 +72,7 @@ contract rDAI3Pool {
         depositBal += amount;
     }
 
-    function withdraw(uint amount) external onlyAuthorized {
+    function withdraw(uint amount) external onlyAuthorized(msg.sender) {
 
         uint256 max_burn = 0;
         uint256 decimal = 0;
@@ -86,7 +91,7 @@ contract rDAI3Pool {
         depositBal -= amount;
     }
 
-    function withdrawAll() external onlyAuthorized {
+    function withdrawAll() external onlyAuthorized(msg.sender){
         
         uint bal = PoolToken.balanceOf(address(this));
 
@@ -95,7 +100,7 @@ contract rDAI3Pool {
         Coin.transfer(rControllerAddress, Coin.balanceOf(address(this)));
     }
 
-    function stakeLP() external onlyAuthorized {
+    function stakeLP() external onlyAuthorized(msg.sender) {
        uint depositAmt = ((PoolToken.balanceOf(address(this)) + stakedAmt) * _perc) / 100;
         depositAmt -= stakedAmt;
         if(depositAmt!=0){
@@ -105,7 +110,7 @@ contract rDAI3Pool {
         }
     }
 
-    function unstakeLP(uint _amount) external onlyAuthorized {
+    function unstakeLP(uint _amount) external onlyAuthorized(msg.sender) {
         require(stakedAmt >= _amount,"You have not staked that amount");
        
         gauge.withdraw(_amount);
@@ -116,13 +121,13 @@ contract rDAI3Pool {
         minter.mint(address(gauge));
     }
 
-    function calculateProfit() external view onlyAuthorized returns(uint256) {
+    function calculateProfit() external view onlyAuthorized(msg.sender) returns(uint256) {
          uint current_virtual_price=Pool.get_virtual_price();
          uint profit=(PoolToken.balanceOf(address(this))*(current_virtual_price-virtual_price))/(10**18);
          return profit;
     }
 
-    function sellCRV() external onlyAuthorized returns(uint256) {
+    function sellCRV() external onlyAuthorized(msg.sender) returns(uint256) {
         // _claimCRV();
         uint256 crvAmt = Erc20(crvAddr).balanceOf(address(this));
         uint256 prevCoin=Coin.balanceOf(address(this));

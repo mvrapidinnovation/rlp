@@ -3,12 +3,15 @@ pragma solidity ^0.6.0;
 
 import '../Interfaces/ERC20Interface.sol';
 import '../Interfaces/rStrategyInterface.sol';
+import '../Interfaces/MultisigInterface.sol';
 
 contract rController {
 
-    address public owner;
+
 
     address royaleAddress;
+
+    MultiSignatureInterface multiSig;
 
     rStrategyI[3] rStrategy;
 
@@ -18,17 +21,17 @@ contract rController {
 
     Erc20[3] Coins;
 
-    modifier onlyAuthorized {
+    modifier onlyAuthorized(address _caller) {
         require(
-            msg.sender == owner || msg.sender == royaleAddress, 
+             multiSig.checkOwner(_caller) || _caller == royaleAddress, 
             "not authorized"
         );
         _;
     }
 
-    constructor(Erc20[3] memory coins, address _royaleaddress) public {
-        owner = msg.sender;
-
+    constructor(Erc20[3] memory coins, address _royaleaddress,address _multiSig) public {
+     
+        multiSig= MultiSignatureInterface(_multiSig);
         royaleAddress =_royaleaddress;
 
         for(uint8 i=0; i<3; i++) {
@@ -37,7 +40,7 @@ contract rController {
     }
 
 
-    function setStrategy(address _addr, uint8 coin) public onlyAuthorized {
+    function setStrategy(address _addr, uint8 coin) public onlyAuthorized(msg.sender) {
         require(
             address(rStrategy[coin]) == address(0),
             "cannot set strategy again: use changeStrategy()"
@@ -45,7 +48,7 @@ contract rController {
         rStrategy[coin] = rStrategyI(_addr);
     }
 
-    function setProfitBreak(uint8 _profitBreak) public onlyAuthorized {
+    function setProfitBreak(uint8 _profitBreak) public onlyAuthorized(msg.sender) {
         profitBreak = _profitBreak;
     }
 
@@ -54,7 +57,7 @@ contract rController {
     }
 
 
-    function deposit(uint[3] calldata amounts) external onlyAuthorized {
+    function deposit(uint[3] calldata amounts) external onlyAuthorized(msg.sender) {
         for(uint8 coin=0; coin<3; coin++) {
             if(amounts[coin] > 0) {
                 totalProfit[coin] += rStrategy[coin].calculateProfit();
@@ -63,7 +66,7 @@ contract rController {
         }
     }
 
-    function withdraw(uint[3] calldata amounts) external onlyAuthorized {
+    function withdraw(uint[3] calldata amounts) external onlyAuthorized(msg.sender) {
         for(uint8 coin=0; coin<3; coin++) {
             if(amounts[coin] > 0) {
                 rStrategy[coin].withdraw(amounts[coin]);
@@ -71,7 +74,7 @@ contract rController {
         }
     }
 
-    function getTotalProfit() external onlyAuthorized returns(uint256[3] memory) {
+    function getTotalProfit() external onlyAuthorized(msg.sender) returns(uint256[3] memory) {
         for(uint8 coin=0; coin<3; coin++){
             totalProfit[coin] += rStrategy[coin].sellCRV();
         }
@@ -91,20 +94,20 @@ contract rController {
     }
 
 
-    function stakeLPtokens(uint8 coin) external onlyAuthorized {
+    function stakeLPtokens(uint8 coin) external onlyAuthorized(msg.sender) {
         rStrategy[coin].stakeLP();
     }
 
-    function unstakeLPtokens(uint8 coin,uint256 _amount) external onlyAuthorized {
+    function unstakeLPtokens(uint8 coin,uint256 _amount) external onlyAuthorized(msg.sender) {
         rStrategy[coin].unstakeLP(_amount);
     }
 
 
-    function updateRoyalePool(address _royale) public onlyAuthorized {
+    function updateRoyalePool(address _royale) public onlyAuthorized(msg.sender){
        royaleAddress = _royale;
     }
 
-    function changeStrategy(address _to, uint8 coin) external onlyAuthorized {
+    function changeStrategy(address _to, uint8 coin) external onlyAuthorized(msg.sender) {
         require(
             address(rStrategy[coin]) != address(0),
             "cannot change strategy: not set"

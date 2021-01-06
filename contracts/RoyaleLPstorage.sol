@@ -4,6 +4,7 @@ pragma solidity ^0.6.0;
 import '../Interfaces/Erc20Interface.sol';
 import '../Interfaces/ControllerInterface.sol';
 import '../Interfaces/rStrategyInterface.sol';
+import '../Interfaces/MultisigInterface.sol';
 
 contract WithdrawQueue {
     mapping(uint256 => address) withdrawQ;
@@ -54,6 +55,8 @@ contract RoyaleLPstorage  is WithdrawQueue {
     //storage for Yield Optimization
 
     rControllerI controller;
+
+    MultiSignatureInterface multiSig;
 
     uint[N_COINS] public YieldPoolBalance;
 
