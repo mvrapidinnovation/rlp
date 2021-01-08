@@ -15,16 +15,16 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"BASE_DECIMAL\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/MathLib.sol\":\"rNum\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/MathLib.sol\":{\"keccak256\":\"0x7069a71e044c0d55b52c11923e13bfc508028eba702241027e8706c8138b4070\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://5dd513a229847e275fa63911a9f2a1508bd6c1d8aa87ef83b76be00fd9c92873\",\"dweb:/ipfs/Qme1ZPyqMVRHXEiGf7NSTMfhLGs5eVP2iYPo1NYCasVFJi\"]}},\"version\":1}",
-  "bytecode": "0x6080604052348015600f57600080fd5b50608b8061001e6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c80638af8147814602d575b600080fd5b60336049565b6040518082815260200191505060405180910390f35b670de0b6b3a76400008156fea264697066735822122067509e025be90cc395e17ee8c9df56c4be5293437c32747c1d41d648669f57ac64736f6c634300060c0033",
-  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060285760003560e01c80638af8147814602d575b600080fd5b60336049565b6040518082815260200191505060405180910390f35b670de0b6b3a76400008156fea264697066735822122067509e025be90cc395e17ee8c9df56c4be5293437c32747c1d41d648669f57ac64736f6c634300060c0033",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"BASE_DECIMAL\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/MathLib.sol\":\"rNum\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/MathLib.sol\":{\"keccak256\":\"0x7069a71e044c0d55b52c11923e13bfc508028eba702241027e8706c8138b4070\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://5dd513a229847e275fa63911a9f2a1508bd6c1d8aa87ef83b76be00fd9c92873\",\"dweb:/ipfs/Qme1ZPyqMVRHXEiGf7NSTMfhLGs5eVP2iYPo1NYCasVFJi\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50608b8061001e6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c80638af8147814602d575b600080fd5b60336049565b6040518082815260200191505060405180910390f35b670de0b6b3a76400008156fea264697066735822122015e8b7a42897e835bf66aebd5b034170f537711658e54914b0f8a7e6ec05c9e864736f6c634300060c0033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060285760003560e01c80638af8147814602d575b600080fd5b60336049565b6040518082815260200191505060405180910390f35b670de0b6b3a76400008156fea264697066735822122015e8b7a42897e835bf66aebd5b034170f537711658e54914b0f8a7e6ec05c9e864736f6c634300060c0033",
   "immutableReferences": {},
   "sourceMap": "67:1537:8:-:0;;;;;;;;;;;;;;;;;;;",
   "deployedSourceMap": "67:1537:8:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;88:42;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;124:6;88:42;:::o",
   "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\n\r\ncontract rNum {\r\n    uint public constant BASE_DECIMAL = 10**18;\r\n\r\n    function btoi(uint a) internal pure returns (uint) {\r\n        return a / BASE_DECIMAL;\r\n    }\r\n\r\n    function bfloor(uint a) internal pure returns (uint) {\r\n        return btoi(a) * BASE_DECIMAL;\r\n    }\r\n\r\n    function badd(uint a, uint b) internal pure returns (uint) {\r\n        uint c = a + b;\r\n        require(c >= a, \"ERR_ADD_OVERFLOW\");\r\n        return c;\r\n    }\r\n\r\n    function bsub(uint a, uint b) internal pure returns (uint) {\r\n        (uint c, bool flag) = bsubSign(a, b);\r\n        require(!flag, \"ERR_SUB_UNDERFLOW\");\r\n        return c;\r\n    }\r\n\r\n    function bsubSign(uint a, uint b) internal pure returns (uint, bool) {\r\n        if (a >= b) {\r\n            return (a - b, false);\r\n        } else {\r\n            return (b - a, true);\r\n        }\r\n    }\r\n\r\n    function bmul(uint a, uint b) internal pure returns (uint) {\r\n        uint c0 = a * b;\r\n        require(a == 0 || c0 / a == b, \"ERR_MUL_OVERFLOW\");\r\n        uint c1 = c0 + (BASE_DECIMAL / 2);\r\n        require(c1 >= c0, \"ERR_MUL_OVERFLOW\");\r\n        uint c2 = c1 / BASE_DECIMAL;\r\n        return c2;\r\n    }\r\n\r\n    function bdiv(uint a, uint b) internal pure returns (uint) {\r\n        require(b != 0, \"ERR_DIV_ZERO\");\r\n        uint c0 = a * BASE_DECIMAL;\r\n        require(a == 0 || c0 / a == BASE_DECIMAL, \"ERR_DIV_INTERNAL\"); // bmul overflow\r\n        uint c1 = c0 + (b / 2);\r\n        require(c1 >= c0, \"ERR_DIV_INTERNAL\"); //  badd require\r\n        uint c2 = c1 / b;\r\n        return c2;\r\n    }\r\n}",
-  "sourcePath": "C:\\Users\\vishn\\OneDrive\\Desktop\\TempRoyakle\\rlp\\contracts\\MathLib.sol",
+  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\rlp\\contracts\\MathLib.sol",
   "ast": {
-    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/MathLib.sol",
+    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/MathLib.sol",
     "exportedSymbols": {
       "rNum": [
         615
@@ -3211,7 +3211,7 @@
     "src": "40:1564:8"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/contracts/MathLib.sol",
+    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/contracts/MathLib.sol",
     "exportedSymbols": {
       "rNum": [
         615
@@ -6403,11 +6403,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-<<<<<<< HEAD
-  "updatedAt": "2021-01-04T04:13:53.194Z",
-=======
-  "updatedAt": "2020-12-31T13:16:50.311Z",
->>>>>>> cb3fefcc28bf753486faa41678301388558e9812
+  "updatedAt": "2021-01-08T10:10:10.127Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

@@ -66,16 +66,16 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"checkOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getNumberOfOwner\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRequired\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/MultisigInterface.sol\":\"MultiSignatureInterface\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/MultisigInterface.sol\":{\"keccak256\":\"0xb2a643a62a05d0cc0bd4316f5fceacd8949c2e55efddeea0df9c4ae66a6b26e0\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://f8769685b99073e7130902866890c1ad79786cf46acd13b57f65cde98704c4da\",\"dweb:/ipfs/QmSTGTu9zJa9ARtrRGGxGTqfV3PD67mdYCriw8PkYcokqo\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"checkOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getNumberOfOwner\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRequired\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/MultisigInterface.sol\":\"MultiSignatureInterface\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/MultisigInterface.sol\":{\"keccak256\":\"0xb2a643a62a05d0cc0bd4316f5fceacd8949c2e55efddeea0df9c4ae66a6b26e0\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://f8769685b99073e7130902866890c1ad79786cf46acd13b57f65cde98704c4da\",\"dweb:/ipfs/QmSTGTu9zJa9ARtrRGGxGTqfV3PD67mdYCriw8PkYcokqo\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\npragma experimental ABIEncoderV2;\r\n\r\n\r\ninterface MultiSignatureInterface{\r\n       function checkOwner(address)external view returns(bool);\r\n        function getRequired()external view returns(uint8);\r\n        function getNumberOfOwner()external view returns(uint);\r\n        function getOwner(uint _index)external view returns(address);\r\n}",
-  "sourcePath": "C:\\Users\\vishn\\OneDrive\\Desktop\\TempRoyakle\\rlp\\Interfaces\\MultisigInterface.sol",
+  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\rlp\\Interfaces\\MultisigInterface.sol",
   "ast": {
-    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/MultisigInterface.sol",
+    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/MultisigInterface.sol",
     "exportedSymbols": {
       "MultiSignatureInterface": [
         295
@@ -419,7 +419,7 @@
     "src": "40:363:4"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/MultisigInterface.sol",
+    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/MultisigInterface.sol",
     "exportedSymbols": {
       "MultiSignatureInterface": [
         295
@@ -768,7 +768,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-31T13:16:50.303Z",
+  "updatedAt": "2021-01-06T10:05:20.775Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

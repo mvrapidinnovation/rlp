@@ -35,16 +35,16 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"swapExactTokensForTokens\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/UniswapInterface.sol\":\"UniswapI\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/UniswapInterface.sol\":{\"keccak256\":\"0x85c1c2782dc773a0d30c684a17f5b50849c6805741f2877f07204ce1572c45fb\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://a966406883514ebf86c5c0997db48eb64a9ef985e5e4283b7c70411d301f39ff\",\"dweb:/ipfs/QmRd8w61TnSNa6eHQdXubLpBo1uRMuPHePrsMc68WcpigK\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"swapExactTokensForTokens\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/UniswapInterface.sol\":\"UniswapI\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/UniswapInterface.sol\":{\"keccak256\":\"0x85c1c2782dc773a0d30c684a17f5b50849c6805741f2877f07204ce1572c45fb\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://a966406883514ebf86c5c0997db48eb64a9ef985e5e4283b7c70411d301f39ff\",\"dweb:/ipfs/QmRd8w61TnSNa6eHQdXubLpBo1uRMuPHePrsMc68WcpigK\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.6.0;\r\n\r\nabstract contract UniswapI {\r\n    function swapExactTokensForTokens(\r\n        uint256,\r\n        uint256,\r\n        address[] calldata,\r\n        address,\r\n        uint256\r\n    ) virtual external;\r\n}",
-  "sourcePath": "C:\\Users\\vishn\\OneDrive\\Desktop\\TempRoyakle\\rlp\\Interfaces\\UniswapInterface.sol",
+  "sourcePath": "C:\\Users\\MayankVats\\Desktop\\WORK\\blockchain\\Royale\\rlp\\Interfaces\\UniswapInterface.sol",
   "ast": {
-    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/UniswapInterface.sol",
+    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/UniswapInterface.sol",
     "exportedSymbols": {
       "UniswapI": [
         352
@@ -269,7 +269,7 @@
     "src": "40:223:6"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/vishn/OneDrive/Desktop/TempRoyakle/rlp/Interfaces/UniswapInterface.sol",
+    "absolutePath": "/C/Users/MayankVats/Desktop/WORK/blockchain/Royale/rlp/Interfaces/UniswapInterface.sol",
     "exportedSymbols": {
       "UniswapI": [
         352
@@ -499,7 +499,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-12-31T12:47:34.073Z",
+  "updatedAt": "2021-01-06T10:05:20.795Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

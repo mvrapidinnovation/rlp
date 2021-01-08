@@ -78,34 +78,6 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
     }
 
 
-
-    //Internal Calculation For User Supply 
-
-    function _supply(uint256[N_COINS] memory amounts) internal {
-        uint256 mintTokens;        
-        mintTokens = calcRptAmount(amounts);    
-        
-        bool result;
-        for(uint8 i=0; i<N_COINS; i++) {
-            if(amounts[i] > 0) {
-                result = tokens[i].transferFrom(
-                    msg.sender, 
-                    address(this), 
-                    amounts[i]
-                );
-                require(result, "coin transfer failed");
-                selfBalance[i] += amounts[i];
-                amountSupplied[msg.sender][i] += amounts[i];
-            }
-        }
-        rpToken.mint(msg.sender, mintTokens);
-        bool[N_COINS] memory falseArray;
-        depositDetails memory d = depositDetails(amounts, amounts, now, falseArray);
-        supplyTime[msg.sender].push(d);
-    }
-
-
-
     // functions related to withdraw, withdraw queue and withdraw from Yield Optimizer
     function _takeBack(address recipient) internal {
         bool result;
@@ -256,7 +228,26 @@ contract RoyaleLP is RoyaleLPstorage, rNum {
             "zero tokens supply"
         );
         
-        _supply(amounts);
+        uint256 mintTokens;        
+        mintTokens = calcRptAmount(amounts);    
+        
+        bool result;
+        for(uint8 i=0; i<N_COINS; i++) {
+            if(amounts[i] > 0) {
+                result = tokens[i].transferFrom(
+                    msg.sender, 
+                    address(this), 
+                    amounts[i]
+                );
+                require(result, "coin transfer failed");
+                selfBalance[i] += amounts[i];
+                amountSupplied[msg.sender][i] += amounts[i];
+            }
+        }
+        rpToken.mint(msg.sender, mintTokens);
+        bool[N_COINS] memory falseArray;
+        depositDetails memory d = depositDetails(amounts, amounts, now, falseArray);
+        supplyTime[msg.sender].push(d);
 
         emit userSupplied(msg.sender, amounts);
     }
