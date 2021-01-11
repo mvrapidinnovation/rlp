@@ -56,6 +56,7 @@ abstract contract curvePool {
 abstract contract PoolGauge {
     function deposit(uint256) virtual external;
     function withdraw(uint256) virtual external;
+    function claimable_tokens(address) virtual external returns(uint256);
 }
 
 abstract contract Minter {
