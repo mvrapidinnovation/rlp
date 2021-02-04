@@ -1,4 +1,5 @@
 {
+   //ropsten Addresss
 
     "mDai": "0x29860760485AC90b082043545E3E8d40C69DBDc5",
     "mUsdc": "0xc11Bb97eeb02B848980A13840FFB968B48966C43",
@@ -18,10 +19,12 @@
    "Liquidity Gauge" :  "0x824156384ed2aFa08825595b0346e229baA13ea4",
 
     
-    "mRoyaFarm": "0x6b6A3922dAcDE41B2c70bbA8Eb9A7aCE76886D72",
+    
     "mRoya": "0x4C8f570824ae25e8985c77e0E103e4e96ff65a42",
     
-    "MultiSignature " : "0x76Ce10CeCb807a420d2F8bBD28fef02A7143DB01"
+    "RPT Staking": "0x6b6A3922dAcDE41B2c70bbA8Eb9A7aCE76886D72",
+    
+    
 
 
     "RPToken": "0xa08F418E0a3385cB5e804990e70a5D8f413ea3E3",
@@ -30,11 +33,7 @@
     
     "rCurveStrategy" : "0x4952E6A296275a74bF76c1FF25CE7a3d9095C474"
    
-
-    "rController": "0x76291729C90d5cb0EA6fA58E7D984eE69769c811",
-    "rUSDC3Pool": "0x08cDec86A0eb2a26B36eE3fd2F28Cdb23CBB5cfd",
-    "rUSDT3Pool": "0x9e80207fc2D173676A751Da958ea9e4C5b2D10E2",
-    "rDAI3Pool": "0x32E3bb5A88CEB3B8eB788E5AC7881e0AE6918E4B"
-
+   //Moonbeam Address 
+    
 
 }
